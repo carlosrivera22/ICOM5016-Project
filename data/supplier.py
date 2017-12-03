@@ -73,9 +73,40 @@ class SupplierData:
         return results
 
 
+    def getSuppliersByAddressId(self,address_id):
+        results = []
+        for s in self.suppliers:
+            if s['address_id'] == address_id:
+                results.append(s)
+        return results
 
+    def getSuppliersByCompanyName(self,company_name):
+        results = []
+        for s in self.suppliers:
+            if s['company_name'] == company_name:
+                results.append(s)
+        return results
 
+    def getSupplierByRegionIdAndCompanyName(self,region_id,company_name):
+        results = []
+        for s in self.suppliers:
+            if s['company_name'] == company_name and s['region_id'] == region_id:
+                results.append(s)
+        return results
 
+    def getSupplierByRegionIdAndAddressId(self,region_id,address_id):
+        results = []
+        for s in self.suppliers:
+            if s['region_id'] == region_id and s['address_id'] == address_id:
+                results.append(s)
+        return results
+
+    def getSupplierByAddressIdAndCompanyName(self,address_id,company_name):
+        results = []
+        for s in self.suppliers:
+            if s['company_name'] == company_name and s['address_id'] == address_id:
+                results.append(s)
+        return results
 
 
 

@@ -17,6 +17,8 @@ class RegionHandler:
         result = region.getRegionByName(name)
         return jsonify(result)
 
+
+
     def searchRegion(self,args):
         region_name = args.get('region_name')
         region_id = args.get('region_id')

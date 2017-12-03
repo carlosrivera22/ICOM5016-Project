@@ -19,15 +19,37 @@ class SupplierHandler:
         return jsonify(result)
 
     def getSuppliersByAddressID(self,address_id):
-        return "nothing"
+        supplier = SupplierData()
+        result = supplier.getSuppliersByAddressId(address_id)
+        return jsonify(result)
 
     # WE CAN MAKE FUNCTIONS TO FIND DETAILS ABOUT THE ADDRESS OF THE SUPPLIER THROUGH THE address_id
     # FUNCTIONS CAN GO IN HERE....
 
     def getSuppliersByCompanyName(self,company_name):
-        return "nothing"
+        supplier = SupplierData()
+        result = supplier.getSuppliersByCompanyName(company_name)
+        return jsonify(result)
 
+    def getSuppliersByRegionName(self,region_name):
+        supplier = SupplierData()
+        result = supplier.getSuppliersByRegion(region_name)
+        return jsonify(result)
 
+    def getSupplierByRegionIdAndCompanyName(self, region_id, company_name):
+        supplier = SupplierData()
+        result = supplier.getSupplierByRegionIdAndCompanyName(region_id,company_name)
+        return jsonify(result)
+
+    def getSupplierByRegionIdAndAdressId(self,region_id,address_id):
+        supplier = SupplierData()
+        result = supplier.getSupplierByRegionIdAndAddressId(region_id,address_id)
+        return jsonify(result)
+
+    def getSupplierByAddressIdAndCompanyName(self,address_id,company_name):
+        supplier = SupplierData()
+        result = supplier.getSupplierByAddressIdAndCompanyName(address_id,company_name)
+        return jsonify(result)
 
     def searchSuppliers(self, args):
         region_name = args.get('region_name')
@@ -36,16 +58,12 @@ class SupplierHandler:
         address_id = args.get('address_id')
         if len(args) == 1 and region_name:
             if region_name:
-                data = SupplierData()
-                supplier_list = data.getSuppliersByRegion(region_name)
-                return jsonify(supplier_list)
+                return self.getSuppliersByRegionName(region_name)
             else:
                 return jsonify(Error="Malformed search string."), 400
         elif len(args) == 1 and company_name:
             if company_name:
-                data = SupplierData()
-                #needs finishing
-                return jsonify("nothing")
+                return self.getSuppliersByCompanyName(company_name)
             else:
                 return jsonify(Error="Malformed search string."), 400
         elif len(args) == 1 and region_id:
@@ -55,20 +73,19 @@ class SupplierHandler:
                 return jsonify(Error="Malformed search string."), 400
         elif len(args) == 1 and address_id:
             if address_id:
-                data = SupplierData()
-                #needs finishing
-                return jsonify('nothing')
+                return self.getSuppliersByAddressID(int(address_id))
             else:
                 return jsonify(Error="Malformed search string"), 400
         elif len(args) == 2 and region_name and company_name:
             #create function that serves in a specific regionn to find a supplier with a company
             return("nothing")
         elif len(args) == 2 and region_id and company_name:
-            # create function that serves in a specific region to find a supplier with a company
-            return("nothing")
+            return self.getSupplierByRegionIdAndCompanyName(int(region_id),company_name)
         elif len(args) == 2 and region_id and address_id:
-            #create a function to find a region that
-            return("nothing")
+            return self.getSupplierByRegionIdAndAdressId(int(region_id),int(address_id))
+        elif len(args) == 2 and address_id and company_name:
+            return self.getSupplierByAddressIdAndCompanyName(int(address_id),company_name)
+
         #more possible combinations can go here ----
         #...
         #...
