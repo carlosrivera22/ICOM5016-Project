@@ -12,12 +12,23 @@ def greeting():
 def getAllSuppliers():
     if not request.args:
         return SupplierHandler().getAllSuppliers()
+    else:
+        return "Here"
 
 
 @app.route('/DisasterApp/suppliers/<int:sid>')
 def getSupplierById(sid):
     supplier = SupplierHandler()
     return supplier.getSupplierById(sid)
+
+
+@app.route('/DisasterApp/suppliers/')
+def getSupplierById1():
+    supplier = SupplierHandler()
+    id = request.args.get('supplier_id','default supplier_id')
+    id = int(id)
+    return supplier.getSupplierById(id)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
