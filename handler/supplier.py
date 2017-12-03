@@ -50,8 +50,7 @@ class SupplierHandler:
                 return jsonify(Error="Malformed search string."), 400
         elif len(args) == 1 and region_id:
             if region_id:
-                data = SupplierData()
-                return data.getSuppliersByRegionId(int(region_id))
+                return self.getSuppliersByRegionId(int(region_id))
             else:
                 return jsonify(Error="Malformed search string."), 400
         elif len(args) == 1 and address_id:
@@ -62,10 +61,10 @@ class SupplierHandler:
             else:
                 return jsonify(Error="Malformed search string"), 400
         elif len(args) == 2 and region_name and company_name:
-            #create functio that serves in a specific regionn to find a supplier with a company
+            #create function that serves in a specific regionn to find a supplier with a company
             return("nothing")
         elif len(args) == 2 and region_id and company_name:
-            # create functio that serves in a specific region to find a supplier with a company
+            # create function that serves in a specific region to find a supplier with a company
             return("nothing")
         elif len(args) == 2 and region_id and address_id:
             #create a function to find a region that

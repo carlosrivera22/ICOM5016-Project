@@ -70,8 +70,7 @@ class SupplierData:
         for s in self.suppliers:
             if s['region_id'] == region_id:
                 results.append(s)
-        if len(results) > 0:
-            return results
+        return results
 
 
 
