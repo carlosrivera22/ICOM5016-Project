@@ -18,4 +18,5 @@ class SupplierHandler:
 
     def getSupplierById(self,id):
         supplier = SupplierData()
-        return jsonify(supplier.getSupplierById(id))
+        result = supplier.getSupplierById(id)
+        return jsonify(result)

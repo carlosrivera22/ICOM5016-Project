@@ -17,7 +17,7 @@ def getAllSuppliers():
 @app.route('/DisasterApp/suppliers/<int:sid>')
 def getSupplierById(sid):
     supplier = SupplierHandler()
-    return supplier.getSupplierById(id)
+    return supplier.getSupplierById(sid)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

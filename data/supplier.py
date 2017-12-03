@@ -48,11 +48,11 @@ class SupplierData:
     def getAllSuppliers(self):
         return self.suppliers
 
-    def getSupplierById(self,id):
+    def getSupplierById(self,sid):
         for s in self.suppliers:
-            if s['supplier_id'] == id:
+            if s['supplier_id'] == sid:
                 return s
-        return 'No supplier found'
+        return 'No supplier found ' + str(s['supplier_id'])
 
 
 
