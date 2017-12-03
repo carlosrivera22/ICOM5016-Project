@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from handler.supplier import SupplierHandler
-
+from handler.region import RegionHandler
 
 app = Flask(__name__)
 
@@ -13,22 +13,14 @@ def getAllSuppliers():
     if not request.args:
         return SupplierHandler().getAllSuppliers()
     else:
-        return "Here"
+        return SupplierHandler().searchSuppliers(request.args)
 
-
-@app.route('/DisasterApp/suppliers/<int:sid>')
-def getSupplierById(sid):
-    supplier = SupplierHandler()
-    return supplier.getSupplierById(sid)
-
-
-@app.route('/DisasterApp/suppliers/')
-def getSupplierById1():
-    supplier = SupplierHandler()
-    id = request.args.get('supplier_id','default supplier_id')
-    id = int(id)
-    return supplier.getSupplierById(id)
-
+@app.route('/DisasterApp/regions')
+def getAllRegions():
+    if not request.args:
+        return RegionHandler().getAllRegions()
+    else:
+        return RegionHandler().searchRegion(request.args)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
