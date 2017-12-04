@@ -36,9 +36,9 @@ def getUserById(user_id):
     return UserHandler().getUserById(user_id)
 
 @app.route('/DisasterApp/addresses')
-def getAllAdresses():
+def getAllAddresses():
     if not request.args:
-        return AddressHandler().getAllAdresses()
+        return AddressHandler().getAllAddresses()
     else:
         return AddressHandler().searchAddresses(request.args)
 

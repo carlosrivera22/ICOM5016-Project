@@ -5,7 +5,7 @@ class AddressHandler:
 
     def getAllAddresses(self):
         address_data = AddressData()
-        return jsonify(address_data.getAllAdresses())
+        return jsonify(address_data.getAllAddresses())
 
     def getAddressById(self,aid):
         address_data = AddressData()
