@@ -30,6 +30,9 @@ def getAllUsers():
     else:
         return UserHandler().searchUsers(request.args)
 
+@app.route('/DisasterApp/users/<int:user_id>')
+def getUserById(user_id):
+    return UserHandler().getUserById(user_id)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

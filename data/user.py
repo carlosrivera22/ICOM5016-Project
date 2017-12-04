@@ -29,8 +29,38 @@ class UserData:
     def getAllUsers(self):
         return self.users
 
-    def getUserById(self,sid):
-        for s in self.users:
-            if s['user_id'] == sid:
-                return s
+    def getUserById(self,uid):
+        for u in self.users:
+            if u['user_id'] == uid:
+                return u
+        return 'No user found'
+
+    def getUserByFirstName(self,fname):
+        for u in self.user:
+            if u['first_name'] == fname:
+                return u
+        return 'No user found'
+
+    def getUserByLastName(self,lname):
+        for u in self.user:
+            if u['last_name'] == lname:
+                return u
+        return 'No user found'
+
+    def getUserByFirstNameAndLastName(self,fname,lname):
+        for u in self.user:
+            if u['first_name'] == fname and u['last_name'] == lname:
+                return u
+        return 'No user found'
+
+    def getUserByEmail(self,email):
+        for u in self.user:
+            if u['email'] == email:
+                return u
+        return 'No user found'
+
+    def getUserByPhone(self,phone):
+        for u in self.user:
+            if u['phone'] == phone:
+                return u
         return 'No user found'
