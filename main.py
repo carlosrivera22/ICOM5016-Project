@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from handler.supplier import SupplierHandler
 from handler.region import RegionHandler
 from handler.user import UserHandler
+from handler.address import AddressHandler
 
 app = Flask(__name__)
 
@@ -33,6 +34,18 @@ def getAllUsers():
 @app.route('/DisasterApp/users/<int:user_id>')
 def getUserById(user_id):
     return UserHandler().getUserById(user_id)
+
+@app.route('/DisasterApp/addresses')
+def getAllAdresses():
+    if not request.args:
+        return AddressHandler().getAllAdresses()
+    else:
+        return AddressHandler().searchAddresses(request.args)
+
+@app.route('/DisasterApp/users/<int:user_id>/address')
+def getAddressOfUserByUserId(user_id):
+    return AddressHandler().getAddressOfUserByUserId(user_id)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
