@@ -3,6 +3,7 @@ from handler.supplier import SupplierHandler
 from handler.region import RegionHandler
 from handler.user import UserHandler
 from handler.address import AddressHandler
+from handler.bank_account import BankAccountHandler
 
 app = Flask(__name__)
 
@@ -45,6 +46,17 @@ def getAllAddresses():
 @app.route('/DisasterApp/users/<int:user_id>/address')
 def getAddressOfUserByUserId(user_id):
     return AddressHandler().getAddressOfUserByUserId(user_id)
+
+@app.route('/DisasterApp/bankAccounts')
+def getAllBankAccounts():
+    if not request.args:
+        return BankAccountHandler().getAllBankAccount()
+    else:
+        return BankAccountHandler().searchBankAccount(request.args)
+
+@app.route('/DisasterApp/supplier/<int:supplier_id>/bankAccount')
+def getBankAccountBySupplierId(supplier_id):
+    return BankAccountHandler().getBankAccountBySupplierId(supplier_id)
 
 
 if __name__ == '__main__':
