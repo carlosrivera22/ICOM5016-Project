@@ -3,17 +3,17 @@ class DisasterVictimData:
         {
             'victim_id':1,
             'user_id':1,
-            'cc_id':1
+            'address_id':1
         },
         {
             'victim_id':2,
             'user_id':2,
-            'cc_id':2
+            'address_id':2
         },
         {
-            'victim_id':2,
-            'user_id':2,
-            'cc_id':2
+            'victim_id':3,
+            'user_id':3,
+            'address_id':3
         },
     ]
 
