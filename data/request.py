@@ -2,21 +2,21 @@ class RequestData:
     requests = [
         {
             'request_id':1,
-            'status':'',
+            'status':'Not availabe',
             'date_submitted':'',
             'resource_id':1,
             'victim_id':1
         },
         {
             'request_id':2,
-            'status':'',
+            'status':'Not available',
             'date_submitted':'',
             'resource_id':2,
             'victim_id':1
         },
         {
             'request_id':3,
-            'status':'',
+            'status':'Not available',
             'date_submitted':'',
             'resource_id':2,
             'victim_id':1
@@ -33,13 +33,13 @@ class RequestData:
         return 'No request found'
 
     def getRequestsByVictimId(self,vid):
-        for r in self.request:
+        for r in self.requests:
             if r['victim_id'] == vid:
                 return r
         return 'No request found'
 
     def getRequestsByResource(self,resid):
-        for r in self.request:
+        for r in self.requests:
             if r['resource_id'] == resid:
                 return r
         return 'No request found'

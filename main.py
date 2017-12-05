@@ -167,7 +167,17 @@ def getAllDisasterVictims():
 def getVictimById(victim_id):
     return DisasterVictimHandler().getVictimById(victim_id)
 
+@app.route('/DisasterApp/Requests')
+def getAllRequests():
+    return RequestHandler().getAllRequests()
 
+@app.route('/DisasterApp/victim/<int:victim_id>/requests')
+def getRequestsByVictimById(victim_id):
+    return RequestHandler().getRequestsByVictimId(victim_id)
+
+@app.route('/DisasterApp/resource/<int:resource_id>/requests')
+def getRequestsOfAResource(resource_id):
+    return RequestHandler().getRequestsByResource(resource_id)
 
 
 if __name__ == '__main__':
