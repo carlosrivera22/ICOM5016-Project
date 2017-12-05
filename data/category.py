@@ -1,4 +1,4 @@
-class Category:
+class CategoryData:
     categories = [
 
         {
@@ -70,7 +70,13 @@ class Category:
     def getCategories(self):
         return self.categories;
 
-    def getCategoriesByName(self, category_name):
+    def getCategoryById(self, category_id):
+        for c in self.categories:
+            if c['category_id'] == category_id:
+                return c
+        return 'No Category Found'
+
+    def getCategoryByName(self, category_name):
         for c in self.categories:
             if c['category_name'] == category_name:
                 return c

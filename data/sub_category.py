@@ -1,4 +1,4 @@
-class SubCategory:
+class SubCategoryData:
     sub_categories = [
 
         {
@@ -41,8 +41,21 @@ class SubCategory:
     def getSubCategories(self):
         return self.sub_categories
 
-    def getSubCategoriesByName(self, sub_category_name):
+    def getSubCategoryById(self, sub_category_id):
+        for s in self.sub_categories:
+            if s['sub_category_id'] ==  sub_category_id:
+                return s
+        return 'No SubCategory Found'
+
+    def getSubCategoryByName(self, sub_category_name):
         for s in self.sub_categories:
             if s['sub_category_name'] ==  sub_category_name:
                 return s
         return 'No SubCategory Found'
+
+    def getSubCategoryByCategoryId(self, category_id):
+        results = []
+        for s in self.sub_categories:
+            if s['category_id'] == category_id:
+                results.append(s)
+        return results

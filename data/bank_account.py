@@ -73,7 +73,7 @@ class BankAccountData:
 
     def getBankAccountByID(self, bank_account_id):
         for b in self.bankAccount:
-            if b[bank_account_id]:
+            if b['bank_account_id'] == bank_account_id:
                 return b
         return 'No Bank Account Found'
 

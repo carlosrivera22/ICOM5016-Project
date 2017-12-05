@@ -43,7 +43,7 @@ class BankAccountHandler:
         bank_account_no = args.get('bank_account_no')
         bank_account_type = args.get('bank_account_type')
         amount = args.get('amount')
-        suplier_id = args.get('supplier_id')
+        supplier_id = args.get('supplier_id')
 
         if len(args) == 1 and bank_account_id:
             if bank_account_id:
@@ -52,7 +52,7 @@ class BankAccountHandler:
                 return jsonify(Error="Malformed search string."), 400
         elif len(args) == 1 and bank_account_no:
             if bank_account_no:
-                return self.getBankAccountByAccountNo(bank_account_no)
+                return self.getBankAccountByAccountNo(int(bank_account_no))
             else:
                 return jsonify(Error="Malformed search string."), 400
         elif len(args) == 1 and bank_account_type:
@@ -63,16 +63,16 @@ class BankAccountHandler:
 
         elif len(args) == 1 and amount:
             if amount:
-                return self.getBankAccountByAmount(amount)
+                return self.getBankAccountByAmount(int(amount))
             else:
                 return jsonify(Error="Malformed search string."), 400
-        elif len(args) == 1 and suplier_id:
-            if suplier_id:
-                return self.getBankAccountBySupplierId(suplier_id)
+        elif len(args) == 1 and supplier_id:
+            if supplier_id:
+                return self.getBankAccountBySupplierId(int(supplier_id))
             else:
                 return jsonify(Error="Malformed search string."), 400
-        elif len(args) == 2 and bank_account_type and suplier_id:
-                return self.getBankAccountByBankAccountTypeAndSupplierId(bank_account_type,suplier_id)
+        elif len(args) == 2 and bank_account_type and supplier_id:
+                return self.getBankAccountByBankAccountTypeAndSupplierId(bank_account_type, supplier_id)
         else:
             return jsonify(Error="Malformed search string"), 400
 
