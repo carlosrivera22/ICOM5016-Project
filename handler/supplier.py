@@ -56,11 +56,15 @@ class SupplierHandler:
         company_name = args.get('company_name')
         region_id = args.get('region_id')
         address_id = args.get('address_id')
+        supplier_id = args.get('supplier_id')
         if len(args) == 1 and region_name:
             if region_name:
                 return self.getSuppliersByRegionName(region_name)
             else:
                 return jsonify(Error="Malformed search string."), 400
+        elif len(args) == 1 and supplier_id:
+            if supplier_id:
+                return self.getSupplierById(int(supplier_id))
         elif len(args) == 1 and company_name:
             if company_name:
                 return self.getSuppliersByCompanyName(company_name)
