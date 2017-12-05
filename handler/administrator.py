@@ -1,5 +1,5 @@
 from flask import jsonify
-from data.administrator import
+from data.administrator import AdminData
 
 class AdminHandler:
 

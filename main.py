@@ -9,6 +9,10 @@ from handler.region import RegionHandler
 from handler.user import UserHandler
 from handler.address import AddressHandler
 from handler.bank_account import BankAccountHandler
+from handler.disaster_victim import DisasterVictimHandler
+from handler.request import RequestHandler
+from handler.administrator import AdminHandler
+
 
 app = Flask(__name__)
 
@@ -154,6 +158,17 @@ def getrequestCompletedByCategoryId(category_id):
 @app.route('/DisasterApp/requestsCompleted/<float:price>/price')
 def getrequestCompletedByPrice(price):
     return RequestCompletedHandler().getRequestCompletedByPrice(price)
+
+@app.route('/DisasterApp/DisasterVictims')
+def getAllDisasterVictims():
+    return DisasterVictimHandler().getAllDisasterVictims()
+
+@app.route('/DisasterApp/victim/<int:victim_id>')
+def getVictimById(victim_id):
+    return DisasterVictimHandler().getVictimById(victim_id)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

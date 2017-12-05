@@ -4,21 +4,21 @@ class RequestData:
             'request_id':1,
             'status':'',
             'date_submitted':'',
-            'resource_id':1
+            'resource_id':1,
             'victim_id':1
         },
         {
             'request_id':2,
             'status':'',
             'date_submitted':'',
-            'resource_id':2
+            'resource_id':2,
             'victim_id':1
         },
         {
             'request_id':3,
             'status':'',
             'date_submitted':'',
-            'resource_id':2
+            'resource_id':2,
             'victim_id':1
         }
     ]
