@@ -32,6 +32,7 @@ python3 main.py
 /// If you only have Python 3 installed
 python main.py
 ```
+Enter desired route on the browser bar.
 ---
 <i class="icon-star"></i> Thanks
 ---
