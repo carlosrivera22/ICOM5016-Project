@@ -1,0 +1,32 @@
+<!doctype html>
+
+<html ng-app="DisasterApp">
+	
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+		<script src="static/app.js"></script>
+	
+		 <!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<!-- jQuery library -->
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+	</head>
+
+
+	<title>Disaster App</title>
+	<body ng-controller="RoutesController">
+		<div class="container">
+			<h1>Backend System for Disaster Site Resources Locator</h1>
+			
+		</div>
+		
+		<div ng-repeat="button in buttons">
+			<br>
+			<center><a href="{{'{{button.route}}'}}" type="button" class="btn btn-primary">{{'{{button.name}}'}}</a></center
+		</div>
+
+	</body>
+</html>
