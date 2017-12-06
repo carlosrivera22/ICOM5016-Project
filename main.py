@@ -179,6 +179,13 @@ def getRequestsByVictimById(victim_id):
 def getRequestsOfAResource(resource_id):
     return RequestHandler().getRequestsByResource(resource_id)
 
+@app.route('/DisasterApp/admins')
+def getAllAdmins():
+    return AdminHandler().getAllAdmins()
+
+@app.route('/DisasterApp/admin/<int:admin_id>')
+def getAdminById(admin_id):
+    return AdminHandler().getAdminById(admin_id)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

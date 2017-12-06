@@ -11,7 +11,7 @@ class AdminData:
     ]
 
     def getAllAdmins(self):
-        return self.adminis
+        return self.admins
 
     def getAdminById(self,aid):
         for a in self.admins:
