@@ -19,13 +19,14 @@
 	<title>Disaster App</title>
 	<body ng-controller="RoutesController">
 		<div class="container">
-			<h1>Backend System for Disaster Site Resources Locator</h1>
+			<center><h1>Backend System for Disaster Site Resources Locator</h1></center>
 			
 		</div>
-		
+			<center><h2>Only Routes without Parameters in the following Buttons: </h2></center>
 		<div ng-repeat="button in buttons">
 			<br>
-			<center><a href="{{'{{button.route}}'}}" type="button" class="btn btn-primary">{{'{{button.name}}'}}</a></center
+			<center><a href="{{'{{button.route}}'}}" type="button" class="btn btn-primary">{{'{{button.name}}'}}</a></center>
+		
 		</div>
 
 	</body>
