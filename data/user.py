@@ -1,4 +1,16 @@
+from config.db_config import pg_config
+import psycopg2 
+
 class UserData:
+    def __init__(self):
+        connection_url = "dbname=%s user=%s host=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['host'],
+                                                            pg_config['passwd'])
+
+        self.conn = psycopg2._connect(connection_url)
+
+
     users = [
         {
             'user_id':1,
@@ -27,7 +39,15 @@ class UserData:
     ]
 
     def getAllUsers(self):
-        return self.users
+        cursor = self.conn.cursor()
+        query = "select * from users;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        print(result)
+        return result
+        #return self.users
 
     def getUserById(self,uid):
         for u in self.users:
