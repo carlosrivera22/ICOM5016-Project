@@ -188,4 +188,5 @@ def getAdminById(admin_id):
     return AdminHandler().getAdminById(admin_id)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run(host="0.0.0.0", port=port)
+    #app.run(debug=True, port=8080)
