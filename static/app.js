@@ -3,7 +3,7 @@ var app = angular.module('DisasterApp',[]);
 
 app.controller('RoutesController', function($scope){
 
-	$scope.disaster_service = DisasterService;
+
 	//array of buttons without parameters
 	$scope.buttons = [
 		{
@@ -53,8 +53,5 @@ app.controller('RoutesController', function($scope){
 
 	]
 
-	$scope.getSupplier = function(){
-		console.log("hiola");
-		$scope.disaster_service.getSupplierRoute();
-	}
+
 })
