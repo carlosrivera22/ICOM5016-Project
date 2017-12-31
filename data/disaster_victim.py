@@ -1,33 +1,19 @@
+from config.db_config import pg_config
+import psycopg2
 class DisasterVictimData:
-    victims = [
-        {
-            'victim_id':1,
-            'user_id':1,
-            'address_id':1
-        },
-        {
-            'victim_id':2,
-            'user_id':2,
-            'address_id':2
-        },
-        {
-            'victim_id':3,
-            'user_id':3,
-            'address_id':3
-        },
-    ]
+    def __init__(self):
+        connection_url = "dbname=%s user=%s host=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['host'],
+                                                            pg_config['passwd'])
 
-    def getAllDisasterVictims(self):
-        return self.victims
+        self.conn = psycopg2._connect(connection_url)
 
-    def getVictimById(self, vid):
-        for v in self.victims:
-            if v['victim_id'] == vid:
-                return v
-        return 'No victim found'
+    def getVictimById(self,victim_id):
+        cursor = self.conn.cursor()
 
-    def getVictimByUserId(self, uid):
-        for v in self.victims:
-            if v['user_id'] == uid:
-                return v
-        return 'No victim found'
+    def getVictimAddress(self,address_id):
+        cursor = self.conn.cursor()
+
+    def getAllVictims(self):
+        cursor = self.conn.cursor()

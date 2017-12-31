@@ -1,26 +1,24 @@
+from config.db_config import pg_config
+import psycopg2
 class AdminData:
-    admins = [
-        {
-            'admin_id':1,
-            'user_id':1
-        },
-        {
-            'admin_id':2,
-            'user_id':2
-        },
-    ]
+    def __init__(self):
+        connection_url = "dbname=%s user=%s host=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['host'],
+                                                            pg_config['passwd'])
 
-    def getAllAdmins(self):
-        return self.admins
+        self.conn = psycopg2._connect(connection_url)
 
-    def getAdminById(self,aid):
-        for a in self.admins:
-            if a['admin_id'] == aid:
-                return a
-        return 'No admin found'
+    def getAdministratorById(self,administrator_id):
+        cursor = self.conn.cursor()
 
-    def getAdminByUserId(self,uid):
-        for a in self.admins:
-            if a['user_id'] == uid:
-                return a
-        return 'No admin found'
+
+    def getAllAdministrators(self):
+        cursor = self.conn.cursor()
+        query = "select * from administrator;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+

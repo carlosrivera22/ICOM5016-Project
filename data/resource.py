@@ -1,81 +1,40 @@
+from config.db_config import pg_config
+import psycopg2
 class ResourceData:
-    resources = [
-        {
-           'resource_name':'Dasani',
-            'is_available': True,
-            'is_needed': True,
-            'quantity': 300,
-            'keyword':'water',
-            'category_id': 1
-        },
-        {
-            'resource_name': 'Nikini',
-            'is_available': True,
-            'is_needed': False,
-            'quantity': 500,
-            'keyword': 'water',
-            'category_id': 1
-        },
-        {
-            'resource_name': 'Advil',
-            'is_available': False,
-            'is_needed': True,
-            'quantity': 100,
-            'keyword': 'medication',
-            'category_id': 2
-        },
-        {
-            'resource_name': 'Puma',
-            'is_available': False,
-            'is_needed': False,
-            'quantity': 0,
-            'keyword': 'fuel',
-            'category_id': 7
-        },
-        {
-            'resource_name': 'Empire Gas',
-            'is_available': True,
-            'is_needed': False,
-            'quantity': 5000,
-            'keyword': 'fuel',
-            'category_id': 7
-        },
-        {
-            'resource_name': 'Tito Gas',
-            'is_available': True,
-            'is_needed': True,
-            'quantity': 2000,
-            'keyword': 'fuel',
-            'category_id': 7
-        },
-        {
-            'resource_name': 'Panadol',
-            'is_available': True,
-            'is_needed': True,
-            'quantity': 150,
-            'keyword': 'medication',
-            'category_id': 2
-        },
 
-    ]
+    def __init__(self):
+        connection_url = "dbname=%s user=%s host=%s password=%s" % (pg_config['dbname'],
+                                                            pg_config['user'],
+                                                            pg_config['host'],
+                                                            pg_config['passwd'])
 
-    def getResources(self):
-        return self.resources
+        self.conn = psycopg2._connect(connection_url)
 
-    def getResourcesByName(self,resource_name):
-        for r in self.resources:
-            if r['resource_name'] == resource_name:
-                return r
-            return 'No Resource found'
+
+    def getAllResources(self):
+        cursor = self.conn.cursor()
+        query = "select * from resource;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getResourcesById(self,resource_id):
+        cursor = self.conn.cursor()
 
     def getAvailableResources(self):
-        result = []
-        for r in self.resources:
-            if r['is_available'] == True:
-                result.append(r)
+        cursor = self.conn.cursor()
 
     def getNeededResources(self):
-        result = []
-        for r in self.resources:
-            if r['is_needed'] == True:
-                result.append(r)
+        cursor = self.conn.cursor()
+
+    def getResourcesByName(self,resource_name):
+        cursor = self.conn.cursor()
+
+    def getResourceCategory(self,resource_id):
+        cursor = self.conn.cursor()
+
+    def getResourceSubCategory(self,resource_id):
+        cursor = self.conn.cursor()
+
