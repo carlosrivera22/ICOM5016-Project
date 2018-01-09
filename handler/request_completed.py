@@ -1,53 +1,125 @@
 from flask import jsonify
-from data.request_completed import RequestCompletedData
+from dao.request_completed import RequestCompletedData
 
 class RequestCompletedHandler:
 
+    def build_request_completed_dict(self,row):
+        result = {}
+        result['resource_name'] = row[0]
+        result['date_submited'] = row[1]
+        result['price'] = row[2]
+        result['order_type'] = row[3]
+        return result
+
+    def build_request_dict(self, row):
+        result = {}
+        result['request_id'] = row[0]
+        result['status'] = row[1]
+        result['date_submitted'] = row[2]
+        result['resource_id'] = row[3]
+        return result
+
+
+    def build_victim_dict(self, row):
+        result = {}
+        result['victim_id'] = row[0]
+        result['user_id'] = row[1]
+        result['address_id'] = row[2]
+        return result
+
+    def build_resource_dict(self, row):
+        result = {}
+        result['resource_id'] = row[0]
+        result['category_id'] = row[1]
+        result['resource_name'] = row[2]
+        result['is_available'] = row[3]
+        result['quantity'] = row[4]
+        result['keyword'] = row[5]
+        return result
+
     def getAllRequestsCompleted(self):
-        request_completed = RequestCompletedData()
-        return jsonify(request_completed.getAllRequestsCompleted())
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getAllRequestsCompleted()
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests = result_list)
 
     def getRequestCompletedById(self, request_completed_id):
-        request_completed = RequestCompletedData()
-        result = request_completed.getRequestCompletedByID(request_completed_id)
-        return jsonify(result)
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getRequestCompletedByID(request_completed_id)
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests = result_list)
 
     def getRequestCompletedByDateResolved(self, date_resolved):
-        request_completed = RequestCompletedData()
-        result = request_completed.getRequestCompletedByDateResolved(date_resolved)
-        return jsonify(result)
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getRequestCompletedByDateResolved(date_resolved)
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests = result_list)
 
     def getRequestCompletedByOrderType(self, order_type):
-        request_completed = RequestCompletedData()
-        result = request_completed.getRequestCompletedByOrderType(order_type)
-        return jsonify(result)
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getRequestCompletedByOrderType(order_type)
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests = result_list)
 
     def getRequestCompletedBySupplierId(self, supplier_id):
-        request_completed = RequestCompletedData()
-        result = request_completed.getRequestCompletedBySupplierId(supplier_id)
-        return jsonify(result)
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getRequestCompletedBySupplierId(supplier_id)
+        result_list = []
+
+        for row in requests_completed_list:
+            result = self.build_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests = result_list)
 
     def getRequestCompletedByVictimId(self, victim_id):
-        request_completed = RequestCompletedData()
-        result = request_completed.getRequestCompletedByVictimId(victim_id)
-        return jsonify(result)
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getRequestCompletedByVictimId(victim_id)
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests = result_list)
 
     def getRequestCompletedByResourceId(self, resource_id):
-        request_completed = RequestCompletedData()
-        result = request_completed.getRequestCompletedByResourceId(resource_id)
-        return jsonify(result)
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getRequestCompletedByResourceId(resource_id)
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests = result_list)
 
     def getRequestCompletedByCategoryId(self, category_id):
-        request_completed = RequestCompletedData()
-        result = request_completed.getRequestCompletedByCategoryId(category_id)
-        return jsonify(result)
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getRequestCompletedByCategoryId(category_id)
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests = result_list)
 
     def getRequestCompletedByPrice(self, price):
-        request_completed = RequestCompletedData()
-        result = request_completed.getRequestCompletedByPrice(price)
-        return jsonify(result)
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getRequestCompletedByPrice(price)
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests = result_list)
 
-    def searchRequestCompleted(self, args):
+    def searchRequestsCompleted(self, args):
         request_completed_id = args.get['request_completed_id']
         date_resolved = args.get['date_resolved']
         order_type = args.get['order_type']
@@ -58,49 +130,28 @@ class RequestCompletedHandler:
         price = args.get['price']
 
         if len(args) == 1 and request_completed_id:
-            if request_completed_id:
-                return self.getRequestCompletedById(int(request_completed_id))
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return self.getRequestCompletedById(int(request_completed_id))
+
         elif len(args) == 1 and date_resolved:
-            if date_resolved:
-                return self.getRequestCompletedByDateResolved(date_resolved)
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return self.getRequestCompletedByDateResolved(date_resolved)
+
         elif len(args) == 1 and order_type:
-            if order_type:
-                return self.getRequestCompletedByOrderType(order_type)
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return self.getRequestCompletedByOrderType(order_type)
+
         elif len(args) == 1 and supplier_id:
-            if supplier_id:
-                return self.getRequestCompletedBySupplierId(int(supplier_id))
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return self.getRequestCompletedBySupplierId(int(supplier_id))
+
         elif len(args) == 1 and victim_id:
-            if victim_id:
-                return self.getRequestCompletedByVictimId(int(victim_id))
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return self.getRequestCompletedByVictimId(int(victim_id))
+
         elif len(args) == 1 and resource_id:
-            if resource_id:
-                return self.getRequestCompletedByResourceId(int(resource_id))
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return self.getRequestCompletedByResourceId(int(resource_id))
+
         elif len(args) == 1 and category_id:
-            if category_id:
-                return self.getRequestCompletedByCategoryId(int(category_id))
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return self.getRequestCompletedByCategoryId(int(category_id))
+
         elif len(args) == 1 and price:
-            if price:
-                return self.getRequestCompletedByPrice(int(price))
-            else:
-                return jsonify(Error="Malformed search string."), 400
+            return self.getRequestCompletedByPrice(int(price))
+
         else:
             return jsonify(Error="Malformed search string"), 400
-
-
-
-
-

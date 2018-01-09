@@ -1,70 +1,73 @@
 from flask import jsonify
-from data.user import UserData
+from dao.user import UserDAO
+
 
 class UserHandler:
 
+    def build_user_dict(self,row):
+        result = {}
+        result['user_id'] = row[0]
+        result['first_name'] = row[1]
+        result['last_name'] = row[2]
+        result['email'] = row[3]
+        result['phone'] = row[4]
+        result['password'] = row[5]
+        result['confirm_password'] = row[6]
+        return result
+
+    def build_user_attributes(self, user_id, first_name, last_name, email, phone, password, confirm_password):
+        result = {}
+        result['user_id'] = user_id
+        result['first_name'] = first_name
+        result['last_name'] = last_name
+        result['email'] = email
+        result['phone'] = phone
+        result['password'] = password
+        result['confirm_password'] = confirm_password
+        return result
+
     def getAllUsers(self):
-        user_data = UserData()
-        return jsonify(user_data.getAllUsers())
+        dao = UserDAO()
+        users_list = dao.getAllUsers()
+        result_list = []
+        for row in users_list:
+            result = self.build_user_dict(row)
+            result_list.append(result)
+        return jsonify(Users=result_list)
 
-    def getUserById(self,uid):
-        user_data = UserData()
-        return jsonify(user_data.getUserById(uid))
-
-    def getUserByFirstName(self,fname):
-        user_data = UserData()
-        return jsonify(user_data.getUserByFirstName(fname))
-
-    def getUserByLastName(self,lname):
-        user_data = UserData()
-        return jsonify(user_data.getUserByLastName(lname))
-
-    def getUserByFirstNameAndLastName(self,fname,lname):
-        user_daa = UserData()
-        return jsonify(user_data.getUserByFirstNameAndLastName(fname,lname))
-
-    def getUserByEmail(self,email):
-        user_data = UserData()
-        return jsonify(user_data.getUserByEmail(email))
-
-    def getUserByPhone(self,phone):
-        user_data = UserData()
-        return jsonify(user_data.getUserByPhone(phone))
+    def getUserById(self, user_id):
+        dao = UserDAO
+        row = dao.getUserByUserId(user_id)
+        if not row:
+            return jsonify(Error="User Not Found"), 404
+        else:
+            user = self.build_user_dict(row)
+            return jsonify(User=user)
 
     def searchUsers(self, args):
-        user_id = args.get('user_id')
-        first_name = args.get('first_name')
-        last_name = args.get('last_name')
-        email = args.get('email')
-        phone = args.get('phone')
-        password = args.get('password')
+        first_name = args.get("first_name")
+        last_name = args.get("last_name")
+        email = args.get("email")
+        phone = args.get("phone")
+        dao = UserDAO()
+        users_list = []
 
-        if len(args) == 1 and user_id:
-            if user_id:
-                return self.getUserById(int(user_id))
-            else:
-                return jsonify(Error="Malformed search string."), 400
-        elif len(args) == 1 and first_name:
-            if first_name:
-                return self.getUserByFirstName(first_name)
-            else:
-                return jsonify(Error="Malformed search string."), 400
-        elif len(args) == 1 and last_name:
-            if last_name:
-                return self.getUserByLastName(last_name)
-            else:
-                return jsonify(Error="Malformed search string."), 400
-        elif len(args) == 2 and first_name and last_name:
-                return self.getUserByFirstNameAndLastName(first_name,last_name)
-        elif len(args) == 1 and email:
-            if email:
-                return self.getUserByEmail(email)
-            else:
-                return jsonify(Error="Malformed search string."), 400
-        elif len(args) == 1 and phone:
-            if phone:
-                return self.getUserByPhone(phone)
-            else:
-                return jsonify(Error="Malformed search string."), 400
+        if(len(args) == 1) and first_name:
+            users_list = dao.getUserByFirstName(first_name)
+        elif(len(args) == 1) and last_name:
+            users_list = dao.getUserByLastName(last_name)
+        elif(len(args) == 1) and email:
+            users_list = dao.getUserByEmail(email)
+        elif(len(args) == 1) and phone:
+            users_list = dao.getUserByPhone(phone)
+        elif(len(args) == 2) and first_name and last_name:
+            users_list =  dao.getUserByFirstNameAndLastName(first_name, last_name)
+        elif(len(args) == 2) and email and phone:
+            users_list = dao.getUserByEmailAndPhone(email, phone)
         else:
-            return jsonify(Error="Malformed search string"), 400
+            return jsonify(Error="Malformed query string"), 400
+        result_list = []
+        for row in users_list:
+            result = self.build_user_dict(row)
+            result_list.append(result)
+        return jsonify(Users=users_list)

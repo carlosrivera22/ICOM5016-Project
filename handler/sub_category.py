@@ -1,27 +1,60 @@
 from flask import jsonify
-from data.sub_category import SubCategoryData
+from dao.sub_category import SubCategoryData
 
 class SubCategoryHandler:
+    def build_subcategory_dict(self,row):
+        result = {}
+        result['subcategory_id'] = row[0]
+        result['subcategory_name'] = row[1]
+        result['category_id'] = row[2]
+        return result
+
+    def build_category_dict(self,row):
+        result = {}
+        result['category_id'] = row[0]
+        result['category_name'] = row[1]
+        return result
 
     def getAllSubCategories(self):
-        sub_category = SubCategoryData()
-        return jsonify(sub_category.getSubCategories())
+        data = SubCategoryData()
+        subcategory_list = data.getAllSubcategories()
+        result_list = []
+        for row in subcategory_list:
+            result = self.build_subcategory_dict(row)
+            result_list.append(result)
+        return jsonify(Subcategories=result_list)
 
     def getSubCategoryById(self, sub_category_id):
-        sub_category = SubCategoryData()
-        result = sub_category.getSubCategoryById(sub_category_id)
-        return jsonify(result)
-
-    def getSubCategoryByName(self, sub_category_name):
-        sub_category = SubCategoryData()
-        result = sub_category.getSubCategoryByName(sub_category_name)
-        return jsonify(result)
+        data = SubCategoryData()
+        row = data.getSubCategoryById(sub_category_id)
+        if not row:
+            return jsonify(Error="Subcategory Not Found"),404
+        else:
+            subcategory = self.build_subcategory_dict(row)
+        return jsonify(Subcategory=subcategory)
 
     def getSubCategoryByCategoryId(self, category_id):
-        sub_category = SubCategoryData()
-        result = sub_category.getSubCategoryByCategoryId(category_id)
-        return jsonify(result)
+        data= SubCategoryData()
+        subcategory_list = data.getSubCategoryByCategoryId(category_id)
+        result_list = []
+        for row in subcategory_list:
+            result = self.build_subcategory_dict(row)
+            result_list.append(result)
+        return jsonify(Subcategories=result_list)
 
+
+    def getCategoryFromSubcategoryId(self,subcategory_id):
+        data = SubCategoryData()
+        if not data.getSubCategoryById(subcategory_id):
+            return jsonify(Error="Subcategory not found"),404
+        subcategory_list = data.getCategoryFromSubcategoryId(subcategory_id)
+        result_list = []
+        for row in subcategory_list:
+            result = self.build_category_dict(row)
+            result_list.append(result)
+        return jsonify(SubcategoryCategory=result_list)
+
+    #FALTA ESTO
     def searchSubCategory(self, args):
         sub_category_id = args.get['sub_category_id']
         sub_category_name = args.get['sub_category_name']
