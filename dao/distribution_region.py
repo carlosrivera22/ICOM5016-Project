@@ -16,7 +16,7 @@ class DistributionRegionData:
         result = []
         for row in cursor:
             result.append(row)
-        self.conn.close()
+
         return result
 
     def getDistributionRegionById(self,distribution_region_id):
@@ -33,7 +33,7 @@ class DistributionRegionData:
         result = []
         for row in cursor:
             result.append(row)
-        self.conn.close()
+
         return result
 
     def getSupplierFromDistributionRegion(self,supplier_id):
@@ -43,7 +43,7 @@ class DistributionRegionData:
         result = []
         for row in cursor:
             result.append(row)
-        self.conn.close()
+
         return result
 
     def getRegionFromDistributionRegion(self,region_id):
@@ -53,5 +53,17 @@ class DistributionRegionData:
         result = []
         for row in cursor:
             result.append(row)
-        self.conn.close()
         return result
+
+    def getResourcesByRegionIdAndResourceId(self,region_id, resource_id):
+        cursor = self.conn.cursor()
+        query = "select resource_name, resource_id, company_name, supplier_id, region_name, region_id from region natural inner join distribution_region natural inner join supplies natural inner join supplier natural inner join resource where region_id = %s and resource_id=%s and isavailable=TRUE;"
+        cursor.execute(query,(region_id,resource_id))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+
+
+

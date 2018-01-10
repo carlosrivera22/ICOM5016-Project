@@ -1,5 +1,5 @@
 from flask import jsonify
-from data.disaster_victim import DisasterVictimData
+from dao.disaster_victim import DisasterVictimData
 
 class DisasterVictimHandler:
 
@@ -31,7 +31,8 @@ class DisasterVictimHandler:
     def build_request_dict(self, row):
         result = {}
         result['request_id'] = row[0]
-        result['date_submited'] = row[1]
+        result['resource_name'] = row[1]
+        result['date_submited'] = row[2]
         result['resource_id'] = row[3]
         return result
 
@@ -96,7 +97,7 @@ class DisasterVictimHandler:
         dao = DisasterVictimData()
         if not dao.getVictimById(victim_id):
             return jsonify(Error="Victim Not Found"), 404
-        request_list = dao.getRequestByVictimId(victim_id)
+        request_list = dao.getRequestedByVictimId(victim_id)
         result_list = []
         for row in request_list:
             result = self.build_request_dict(row)
@@ -107,9 +108,11 @@ class DisasterVictimHandler:
         dao = DisasterVictimData()
         if not dao.getVictimById(victim_id):
             return jsonify(Error="Victim Not Found"), 404
-        request_completed_list = dao.getRequestedCompletedByVictimId(victim_id)
+        request_completed_list = dao.getRequestedByVictimId(victim_id)
         result_list = []
         for row in request_completed_list:
             result = self.build_request_complete_dict(row)
             result_list.append(result)
         return jsonify(Request_Completed=result_list)
+
+

@@ -105,6 +105,7 @@ class SupplierDAO:
             result.append(row)
         return result
 
+
     def getRequestedCompletedBySupplierId(self, supplier_id):
         cursor = self.conn.cursor()
         query = "select request_compledted_id, request_id, date_resolved, order_type, supplier_id, victim_id, resource_id, price from request_completed natural inner join supplier where supplier_id = %s;"
@@ -113,6 +114,7 @@ class SupplierDAO:
         for row in cursor:
             result.append(row)
         return result
+
 
     def getSuppliersByResource(self,resource_name):
         cursor = self.conn.cursor()

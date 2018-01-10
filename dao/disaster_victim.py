@@ -50,9 +50,10 @@ class DisasterVictimData:
 
     def getRequestedByVictimId(self, victim_id):
         cursor = self.conn.cursor()
-        query = "select request_id, date_submited, resource_id from request natural inner join disaster_victim natural inner join requestby where victim_id = %s;"
+        query = "select * from request natural inner join requestby natural inner join resource natural inner join disaster_victim where victim_id=%s;"
         cursor.execute(query, (victim_id,))
         result = []
         for row in cursor:
             result.append(row)
         return result
+

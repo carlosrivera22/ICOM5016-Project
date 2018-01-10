@@ -4,6 +4,8 @@ from handler.resource import ResourceHandler
 from handler.request import RequestHandler
 from handler.supplier import SupplierHandler
 from handler.request_completed import RequestCompletedHandler
+from handler.disaster_victim import DisasterVictimHandler
+from handler.distribution_region import DistributionRegionHandler
 
 app = Flask(__name__)
 
@@ -35,7 +37,11 @@ def getSuppliersByResource(rame):
     return SupplierHandler().getSuppliersByResource(rame)
 
 # Products supplied by region route
+@app.route('/DisasterApp/region/<int:region_id>/<int:resource_id>/resource')
+def getResourceByRegionIdAndResourceId(region_id,resource_id):
+    return DistributionRegionHandler().getResourcesByRegionIdAndResourceId(region_id,resource_id)
 
+#=====================================================
 
 # Request completed by Supplier route
 @app.route('/DisasterApp/supplier/<int:sid>/requestsCompleted')
@@ -46,7 +52,7 @@ def getRequestCompletedBySupplierId(sid):
 # Orders made by Victim
 @app.route('/DisasterApp/victim/<int:victim_id>/requests')
 def getRequestsByVictimId(victim_id):
-    return RequestHandler().getRequestsByVictimId(victim_id)
+    return DisasterVictimHandler().getRequestsByVictimId(victim_id)
 
 
 # Keyword search resources being requested, with sorting by resource name
