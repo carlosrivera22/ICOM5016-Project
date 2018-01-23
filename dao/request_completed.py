@@ -63,7 +63,7 @@ class RequestCompletedData:
 
     def getRequestCompletedByResourceId(self, resource_id):
         cursor = self.conn.cursor()
-        query = "select * from request_completed natural inner join resource where resource_id = %s;"
+        query = "select resource_name,date_resolved,price,order_type from request_completed natural inner join resource where resource_id = %s;"
         cursor.execute(query, (resource_id,))
         result = []
         for row in cursor:
@@ -83,6 +83,15 @@ class RequestCompletedData:
         cursor = self.conn.cursor()
         query = "select * from request_completed where price = %s;"
         cursor.execute(query, (price,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def getResourceNameFromRequestCompleted(self):
+        cursor = self.conn.cursor()
+        query = "select resource_name from request_completed natural inner join resource;"
+        cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)

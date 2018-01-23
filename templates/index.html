@@ -5,29 +5,127 @@
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 		<script src="static/app.js"></script>
-	
-		 <!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		 <script src="static/service.js"></script>
+		<!-- Latest compiled and minified CSS -->
+		
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
 		<!-- jQuery library -->
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		
+		<title>Disaster App</title>
 	</head>
 
+		<body background="../static/img/background.jpg" ng-controller="RoutesController">
+			<div class="container">
+				<br>
+					<center><h1>Backend System for Disaster Site Resources Locator</h1></center>
 
-	<title>Disaster App</title>
-	<body ng-controller="RoutesController">
-		<div class="container">
-			<center><h1>Backend System for Disaster Site Resources Locator</h1></center>
-			
-		</div>
-			<center><h3>Only Routes without Parameters in the following Buttons: </h3></center>
-		<div ng-repeat="button in buttons">
-			<br>
-			<center><a href="{{'{{button.route}}'}}" type="button" class="btn btn-primary">{{'{{button.name}}'}}</a></center>
-		
-		</div>
+				<br><br>
+				<center><h3>Get Operations</h3></center>
+				<br>
+				<h4>Phase2 Operations</h4>
+				<ul>
+					<b><li>Get Resources by Supplier's Id: <font color="green"> /DisasterApp/supplier/&ltint:sid&gt/supplies </font></li> </b>
+					<b><li>Get Resource  by Region and Resource Id: <font color="green"> /DisasterApp/region/&ltint:region_id&gt/&ltint:resource_id&gt/resource </font></li> </b>
+					<b><li>Get Orders Completed by Supplier Id: <font color="green"> /DisasterApp/supplier/&ltint:sid&gt/requestsCompleted</font></li> </b>
+					<b><li>Get Orders made by Victim Id: <font color="green"> /DisasterApp/victim/&ltint:victim_id&gt/requests </font></li> </b>
+					<b><li>Keyword search for resources being requested, with sorting by Resource name: <font color="green"> /DisasterApp/resources/requested/&ltstring:keyword&gt </font></li> </b>
+					<b><li>Keyword search for resources available with sorting by Resource name: <font color="green"> /DisasterApp/resources/available/&ltstring:keyword&gt </font></li> </b>
+				</ul>
+				<br>
+				<div class="row">
+					<div class="col-lg-6" ng-repeat="button in buttons">
+						<div>
+							<br>
+							<center><a href="{{'{{button.route}}'}}" type="button" class="btn btn-primary">{{'{{button.name}}'}}</a></center>
+						</div>
+					</div>
+				</div>
+				<br><br><br><br><br>
 
-	</body>
+				<h4>Phase3 Operations</h4>
+				<center><h3>Add Operations</h3></center>
+				<br>
+				<div class="row">
+					<div class="col-lg-6" ng-repeat="input in inputs">
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <button href="{{'{{input.route}}'}}" class="btn btn-primary" type="button">{{'{{input.name}}'}}</button>
+						  </div>
+						  <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+						</div>
+					</div>
+				</div>
+				<br><br>
+				<center><h3>Select Operations</h3></center>
+				<br>
+				<div class="row">
+					<div class="col-lg-6" ng-repeat="select in selects">
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <a ng-href="/DisasterApp/seeResourceTransaction" ng-click="seeTransaction()" class="btn btn-primary" type="button">{{'{{select.name}}'}}</a>
+						  </div>
+						  <select ng-model="show_transaction_information.resource_id" class="custom-select" id="inputGroupSelect03">
+						    <option ng-repeat="resource in select.resource_list">{{'{{resource}}'}}</option>
+						  </select>
+						</div>
+					</div>
+		    	</div>
+		    	<br><br>
+		    	<center><h3>Update Operations</h3></center>
+
+		    	<div class="row">
+
+		    		<div class="col-lg-12" ng-repeat="update in updates">
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <!--<button href="{{'{{update.route}}'}}" ng-click="run()" class="btn btn-primary" type="button">{{'{{update.name}}'}}</button>-->
+							<a ng-href="/DisasterApp/updatecreditcard" ng-click="run()" type="button" class="btn btn-primary">{{'{{update.name}}'}}</a>
+
+						  </div>
+
+						  <select ng-model="update_card_information.credit_card_id" class="custom-select" id="inputGroupSelect03">
+							  <option  value="Credit Card Id" disabled selected>Select Credit Card Id</option>
+							  <option  ng-repeat="card in update.credit_card_list">{{'{{card.credit_card_id}}'}}</option>
+
+							  <input ng-model="update_card_information.field_list['victim_id']" type="text" class="form-control" placeholder="victim id" aria-label="" aria-describedby="basic-addon1">
+							  <input ng-model="update_card_information.field_list['credit_card_number']" type="text" class="form-control" placeholder="credit card #" aria-label="" aria-describedby="basic-addon1">
+							  <input ng-model="update_card_information.field_list['name_on_card']" type="text" class="form-control" placeholder="name on card" aria-label="" aria-describedby="basic-addon1">
+							  <input ng-model="update_card_information.field_list['exp_date']" type="text" class="form-control" placeholder="exp date" aria-label="" aria-describedby="basic-addon1">
+							  <input ng-model="update_card_information.field_list['cvs']" type="text" class="form-control" placeholder="cvs" aria-label="" aria-describedby="basic-addon1">
+
+						</div>
+					</div>
+		    	</div>
+
+
+
+				<div class="row">
+
+		    		<div class="col-lg-12" ng-repeat="change in changes">
+
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <!--<button href="{{'{{update.route}}'}}" ng-click="run()" class="btn btn-primary" type="button">{{'{{update.name}}'}}</button>-->
+							<a type="button" class="btn btn-primary">{{'{{change.name}}'}}</a>
+
+						  </div>
+
+						  <select class="custom-select" id="inputGroupSelect03">
+							  <option  value="Credit Card Id" disabled selected>Select Resource Id</option>
+							  <option  ng-repeat="resource in change.product_list">{{'{{resource}}'}}</option>
+
+							  <input ng-model="update_card_information.field_list['victim_id']" type="text" class="form-control" placeholder="victim id" aria-label="" aria-describedby="basic-addon1">
+
+						</div>
+					</div>
+		    	</div>
+
+		    	<br><br>
+		</body>
+	
 </html>
+

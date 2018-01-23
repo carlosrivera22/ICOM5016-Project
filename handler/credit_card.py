@@ -23,6 +23,15 @@ class CreditCardHandler:
         result['password'] = row[5]
         return result
 
+    def build_card_attributes(self,credit_card_id,victim_id,credit_card_number,name_on_card,exp_date,cvs):
+        result = {}
+        result['credit_card_id'] = credit_card_id
+        result['victim_id'] = victim_id
+        result['credit_card_number'] = credit_card_number
+        result['name_on_card'] = name_on_card
+        result['exp_date'] = exp_date
+        result['cvs'] = cvs
+        return result
 
     #funciona
     def getAllCreditCards(self):
@@ -147,6 +156,29 @@ class CreditCardHandler:
             result = self.build_victim_dict(row)
             result_list.append(result)
         return jsonify(Victims=result_list)
+
+    def updateCreditCard(self,credit_card_id,fields):
+        dao =  CreditCardData()
+        if not dao.getCreditCardById(credit_card_id):
+            return jsonify(Error="Credit Card Not Found."),404
+        else:
+            if len(fields) != 5:
+                return jsonify(Error="Malformed update request"),400
+            else:
+                victim_id = fields['victim_id']
+                card_number = fields['credit_card_number']
+                name_on_card = fields['name_on_card']
+                exp_date = fields['exp_date']
+                cvs = fields['cvs']
+                if victim_id and card_number and name_on_card and exp_date and cvs:
+                    dao.updateCreditCard(credit_card_id,victim_id,card_number,name_on_card,exp_date,cvs)
+                    result = self.build_card_attributes(credit_card_id,victim_id,card_number,name_on_card,exp_date,cvs)
+                    return jsonify(CreditCard=result),200
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"),400
+
+
+
 
 
 

@@ -6,7 +6,7 @@ class RequestCompletedHandler:
     def build_request_completed_dict(self,row):
         result = {}
         result['resource_name'] = row[0]
-        result['date_submited'] = row[1]
+        result['date_resolved'] = row[1]
         result['price'] = row[2]
         result['order_type'] = row[3]
         return result
@@ -118,6 +118,7 @@ class RequestCompletedHandler:
             result = self.build_request_completed_dict(row)
             result_list.append(result)
         return jsonify(Requests = result_list)
+
 
     def searchRequestsCompleted(self, args):
         request_completed_id = args.get['request_completed_id']

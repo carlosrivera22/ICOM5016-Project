@@ -1,18 +1,24 @@
-import os
-from flask import Flask, jsonify, request, render_template
-
+from flask import Flask, jsonify, request, render_template,json
+import re
 from handler.resource import ResourceHandler
 from handler.request import RequestHandler
 from handler.supplier import SupplierHandler
 from handler.request_completed import RequestCompletedHandler
 from handler.disaster_victim import DisasterVictimHandler
 from handler.distribution_region import DistributionRegionHandler
+from handler.credit_card import CreditCardHandler
 
 app = Flask(__name__)
+
+resource_id = 0
 
 @app.route('/')
 def greeting():
     return render_template('index.html')
+
+@app.route('/DisasterApp/allResources')
+def getAllResources():
+    return ResourceHandler().getAllResources()
 
 # Available Resources route
 @app.route('/DisasterApp/AvailableResources')
@@ -68,7 +74,30 @@ def getAvailableResourcesByKeyword(keyword):
     return ResourceHandler().getResourcesByKeywordAndAvailability(keyword,False,True)
 
 
+# Get all credit cards
+@app.route('/DisasterApp/creditcards')
+def getAllCreditCards():
+    return CreditCardHandler().getAllCreditCards()
+
+# Updates credit cards
+@app.route('/DisasterApp/updatecreditcard', methods=['PUT','GET'])
+def updateCreditCard():
+    data = request.get_json()
+    if request.method == 'PUT':
+        return CreditCardHandler().updateCreditCard(data['card_id'], data['field_list'])
+    else:
+        return CreditCardHandler().getAllCreditCards()
+
+@app.route('/DisasterApp/seeResourceTransaction', methods=['POST','GET'])
+def seeResourceTransaction():
+    global resource_id
+    if(request.method == 'POST'):
+        data = request.get_json()
+        resource_id = str(data)
+        resource_id = int(re.search(r'\d+', resource_id).group())
+        return RequestCompletedHandler().getRequestCompletedByResourceId(resource_id)
+    else:
+        return RequestCompletedHandler().getRequestCompletedByResourceId(resource_id)
+
 if __name__ == '__main__':
-    #app.run(debug=True, port=8080)
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True, port=8080)
