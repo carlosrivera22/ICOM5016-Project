@@ -94,7 +94,17 @@ def getAllVictims():
             return DisasterVictimHandler().getAllDisasterVictims()
         else:
             return DisasterVictimHandler().searchVictims(request.args)
-    
+
+
+@app.route('/DisasterApp/Supplier', methods=['GET', 'POST'])
+def getAllSupplier():
+    if request.method == 'POST':
+        return SupplierHandler().insertSupplier(request.form)
+    else:
+        if not request.args:
+            return SupplierHandler().getAllSuppliers()
+        else:
+            return SupplierHandler().searchSuppliers(request.args)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
