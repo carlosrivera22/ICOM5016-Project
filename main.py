@@ -10,7 +10,7 @@ from handler.credit_card import CreditCardHandler
 
 app = Flask(__name__)
 
-resource_id = 0
+
 
 @app.route('/')
 def greeting():
@@ -88,19 +88,9 @@ def updateCreditCard():
     else:
         return CreditCardHandler().getAllCreditCards()
 
-@app.route('/DisasterApp/seeResourceTransaction', methods=['POST','GET'])
-def seeResourceTransaction():
-    global resource_id
-    if(request.method == 'POST'):
-        data = request.get_json()
-        resource_id = str(data)
-        resource_id = int(re.search(r'\d+', resource_id).group())
-        return RequestCompletedHandler().getRequestCompletedByResourceId(resource_id)
-    else:
-        return RequestCompletedHandler().getRequestCompletedByResourceId(resource_id)
 
 
-@app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
+@app.route('/DisasterApp/DisasterVictim', methods=['GET', 'POST'])
 def getAllVictims():
     if request.method == 'POST':
         return DisasterVictimHandler().insertVictim(request.form)
