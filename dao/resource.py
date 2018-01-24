@@ -61,8 +61,6 @@ class ResourceData:
             result.append(row)
         return result
 
-
-
     def getResourcesByKeywordAndAvailability(self, keyword, by_needed, by_available):
         cursor = self.conn.cursor()
         if(by_needed):
@@ -95,5 +93,17 @@ class ResourceData:
         cursor.execute(query, (name,))
         result = cursor.fetchone()
         return result
+
+
+    #GET FREE RESOURCES
+    def getFreeResources(self):
+        cursor = self.conn.cursor()
+        query = "select resource_id, category_id, resource_name, isavailable, isneeded, quantity, keyword from resource natural inner join supplies where isfree= TRUE;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
 
 

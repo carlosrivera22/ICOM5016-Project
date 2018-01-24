@@ -99,5 +99,17 @@ def seeResourceTransaction():
     else:
         return RequestCompletedHandler().getRequestCompletedByResourceId(resource_id)
 
+
+@app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
+def getAllVictims():
+    if request.method == 'POST':
+        return DisasterVictimHandler().insertVictim(request.form)
+    else:
+        if not request.args:
+            return DisasterVictimHandler().getAllDisasterVictims()
+        else:
+            return DisasterVictimHandler().searchVictims(request.args)
+    
+
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

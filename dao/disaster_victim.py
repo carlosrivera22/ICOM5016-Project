@@ -57,3 +57,17 @@ class DisasterVictimData:
             result.append(row)
         return result
 
+    def insert(self, first_name, last_name, email, phone, password, confirm_password, street, region_id, city, state,
+               country, zipcode):
+        cursor = self.conn.cursor()
+        query_1 = "insert into Account(first_name, last_name, email, phone, password, confirm_password) values (%s, %s, %s, %s, %s, %s) returning user_id;"
+        cursor.execute(query_1, (first_name, last_name, email, phone, password, confirm_password))
+        user_id = cursor.fetchone()[0]
+        query_2 = "insert into Address(street, region_id, city, state, country, zipcode) values (%s, %s, %s, %s, %s, %s) returning address_id;"
+        cursor.execute(query_2, (street, region_id, city, state, country, zipcode))
+        address_id = cursor.fetchone()[0]
+        query_3 = "insert into Victim(user_id, address_id) values (user_id, address_id)"
+        cursor.execute(query_3, (user_id, address_id))
+        victim_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return victim_id

@@ -64,7 +64,7 @@ class UserDAO:
     def getUserByFirstNameAndLastName(self, first_name, last_name):
         cursor = self.conn.cursor()
         query = "select * from Account where first_name = %s and last_name = %s;"
-        cursor.execute(query, (first_name, last_name))
+        cursor.execute(query, (first_name, last_name,))
         result = []
         for row in cursor:
             result.append(row)
@@ -73,10 +73,31 @@ class UserDAO:
     def getUserByEmailAndPhone(self, email, phone):
         cursor = self.conn.cursor()
         query = "select * from Account where email = %s and phone = %s;"
-        cursor.execute(query, (email, phone))
+        cursor.execute(query, (email, phone,))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
+    def getUserFullNameByVictimId(self, victim_id):
+        cursor = self.conn.cursor()
+        query = "select first_name, last_name from disaster_victim natural inner join account where victim_id=%s;"
+        cursor.execute(query, (victim_id,))
+        result = cursor.fetchone()
+        return result
 
+    def getUserByVictimId(self,victim_id):
+        cursor = self.conn.cursor()
+        query = "select * from account natural inner join disaster_victim where victim_id = %s;"
+        cursor.execute(query,(victim_id,))
+        result = cursor.fetchone()
+        return result
+
+'''
+    def getUserFullNameByUserId(self,user_id):
+        cursor = self.conn.cursor()
+        query = "select first_name, last_name from account where user_id = %s;"
+        cursor.execute(query,(user_id,))
+        result = cursor.fetchone()
+        return result
+'''

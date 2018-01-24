@@ -118,6 +118,15 @@ class CreditCardData:
         self.conn.commit()
         return credit_card_id
 
+    #Phase3
+    def insertCreditCard(self,victim_id,credit_card_number,name_on_card,exp_date,cvs):
+        cursor = self.conn.cursor()
+        #metodo para sacar el name del victim
+        query = "insert into credit_card(victim_id, credit_card_number, name_on_card, exp_date, cvs) values(%s, %s, %s, %s, %s) returning credit_card_id;"
+        cursor.execute(query,(victim_id,credit_card_number,name_on_card,exp_date,cvs))
+        credit_card_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return credit_card_id
 
 
     '''def update(self, pid, pname, pcolor, pmaterial, pprice):

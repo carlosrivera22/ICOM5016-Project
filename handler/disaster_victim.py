@@ -115,4 +115,40 @@ class DisasterVictimHandler:
             result_list.append(result)
         return jsonify(Request_Completed=result_list)
 
+    def insertVictim(self, form):
+        if form and len(form) == 12:
+            first_name = form['first_name']
+            last_name = form['last_name']
+            email = form['email']
+            phone = form['phone']
+            password = form['password']
+            confirm_password = form['confirm_password']
+            street = form['street']
+            region_id = form['region_id']
+            city = form['city']
+            state = form['state']
+            country = form['country']
+            zipcode = form['zipcode']
 
+            if first_name and last_name and email and phone and password and confirm_password and street and region_id and city and state and country and zipcode:
+                dao = DisasterVictimData()
+                victim_id = dao.insert(first_name, last_name, email, phone, password, confirm_password, street,
+                                       region_id, city, state, country, zipcode)
+                result = {}
+                result["first_name"] = first_name
+                result["last_name"] = last_name
+                result["email"] = email
+                result["phone"] = phone
+                result["password"] = password
+                result["confirm_password"] = confirm_password
+                result["street"] = street
+                result["region_id"] = region_id
+                result["city"] = city
+                result["state"] = state
+                result["country"] = country
+                result["zipcode"] = zipcode
+                return jsonify(Victim=result), 201
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")

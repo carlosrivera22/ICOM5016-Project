@@ -1,6 +1,6 @@
 from flask import jsonify
 from dao.credit_card import CreditCardData
-
+from dao.user import UserDAO
 class CreditCardHandler:
 
     def build_creditcard_dict(self,row):
@@ -156,6 +156,32 @@ class CreditCardHandler:
             result = self.build_victim_dict(row)
             result_list.append(result)
         return jsonify(Victims=result_list)
+
+    #Phase3
+    def insertCreditCard(self, form):
+        #sacar nombre de la victima basado en su id
+        if len(form) != 5:
+            return jsonify(Error="Malformed post request"),400
+        else:
+            victim_id = form['victim_id']
+            credit_card_number = form['credit_card_number']
+            name_on_card = form['name_on_card']
+            exp_date = form['exp_date']
+            cvs = form['cvs']
+            if victim_id and credit_card_number and name_on_card and exp_date and cvs:
+                user_data = UserDAO()
+                data = CreditCardData()
+                if not user_data.getUserByVictimId(victim_id):
+                    return jsonify(Error="Victim Not Found")
+                else:
+                    credit_card_id = data.insertCreditCard()
+
+
+
+
+
+
+
 
     def updateCreditCard(self,credit_card_id,fields):
         dao =  CreditCardData()

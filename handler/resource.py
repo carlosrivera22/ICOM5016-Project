@@ -77,6 +77,15 @@ class ResourceHandler:
             result_list.append(result)
         return jsonify(Resources = result_list)
 
+    #get free resources PHASE3
+    def getFreeResources(self):
+        resource_dao = ResourceData()
+        resource_list = resource_dao.getFreeResources()
+        result_list = []
+        for row in resource_list:
+            result = self.build_resource_dict(row)
+            result_list.append(result)
+        return result
 
     def searchResources(self, args):
         resource_id = args.get('victim_id')
