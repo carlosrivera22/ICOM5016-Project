@@ -4,9 +4,9 @@ import psycopg2
 class CreditCardData:
     def __init__(self):
         connection_url = "dbname=%s user=%s host=%s password=%s" % (pg_config['dbname'],
-                                                            pg_config['user'],
-                                                            pg_config['host'],
-                                                            pg_config['passwd'])
+                                                                    pg_config['user'],
+                                                                    pg_config['host'],
+                                                                    pg_config['passwd'])
 
         self.conn = psycopg2._connect(connection_url)
 
@@ -17,7 +17,7 @@ class CreditCardData:
         result = []
         for row in cursor:
             result.append(row)
-        self.conn.close()
+
         return result
 
     def getCreditCardByVictimId(self,victim_id):
@@ -27,7 +27,7 @@ class CreditCardData:
         result = []
         for row in cursor:
             result.append(row)
-        self.conn.close()
+
         return result
 
     def getCreditCardByNameOnCard(self,full_name):
@@ -37,7 +37,7 @@ class CreditCardData:
         result = []
         for row in cursor:
             result.append(row)
-        self.conn.close()
+
         return result
 
 
@@ -121,9 +121,8 @@ class CreditCardData:
     #Phase3
     def insertCreditCard(self,victim_id,credit_card_number,name_on_card,exp_date,cvs):
         cursor = self.conn.cursor()
-        #metodo para sacar el name del victim
         query = "insert into credit_card(victim_id, credit_card_number, name_on_card, exp_date, cvs) values(%s, %s, %s, %s, %s) returning credit_card_id;"
-        cursor.execute(query,(victim_id,credit_card_number,name_on_card,exp_date,cvs))
+        cursor.execute(query,(victim_id,credit_card_number,name_on_card,exp_date,cvs,))
         credit_card_id = cursor.fetchone()[0]
         self.conn.commit()
         return credit_card_id

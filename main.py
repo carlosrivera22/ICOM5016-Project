@@ -75,18 +75,13 @@ def getAvailableResourcesByKeyword(keyword):
 
 
 # Get all credit cards
-@app.route('/DisasterApp/creditcards')
+@app.route('/DisasterApp/creditcards', methods=['GET','POST'])
 def getAllCreditCards():
-    return CreditCardHandler().getAllCreditCards()
-
-# Updates credit cards
-@app.route('/DisasterApp/updatecreditcard', methods=['PUT','GET'])
-def updateCreditCard():
-    data = request.get_json()
-    if request.method == 'PUT':
-        return CreditCardHandler().updateCreditCard(data['card_id'], data['field_list'])
+    if request.method == 'POST':
+        return CreditCardHandler().insertCreditCard(request.form)
     else:
-        return CreditCardHandler().getAllCreditCards()
+        if not request.args:
+            return CreditCardHandler().getAllCreditCards()
 
 
 

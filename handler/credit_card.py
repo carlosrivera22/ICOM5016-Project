@@ -171,10 +171,16 @@ class CreditCardHandler:
             if victim_id and credit_card_number and name_on_card and exp_date and cvs:
                 user_data = UserDAO()
                 data = CreditCardData()
-                if not user_data.getUserByVictimId(victim_id):
-                    return jsonify(Error="Victim Not Found")
-                else:
-                    credit_card_id = data.insertCreditCard()
+                credit_card_id = data.insertCreditCard(victim_id,credit_card_number,name_on_card,exp_date,cvs)
+                result = self.build_card_attributes(credit_card_id,victim_id,credit_card_number,name_on_card,exp_date,cvs)
+                return jsonify(CreditCard=result),201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"),400
+
+
+
+
+
 
 
 
