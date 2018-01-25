@@ -1,5 +1,5 @@
-from flask import Flask, jsonify, request, render_template,json
-import re
+from flask import Flask, jsonify, request, render_template
+
 from handler.resource import ResourceHandler
 from handler.request import RequestHandler
 from handler.supplier import SupplierHandler
@@ -25,6 +25,9 @@ def getAllResources():
 def getAvailableResources():
     return ResourceHandler().getAvailableResources()
 
+@app.route('/DisasterApp/FreeResources')
+def getFreeResources():
+    return ResourceHandler().getFreeResources()
 
 # Needed Resources route
 @app.route('/DisasterApp/RequestedResources')
@@ -75,7 +78,7 @@ def getAvailableResourcesByKeyword(keyword):
 
 
 # Get all credit cards
-@app.route('/DisasterApp/creditcards', methods=['GET','POST'])
+@app.route('/DisasterApp/CreditCards', methods=['GET','POST'])
 def getAllCreditCards():
     if request.method == 'POST':
         return CreditCardHandler().insertCreditCard(request.form)
@@ -105,6 +108,16 @@ def getAllSupplier():
             return SupplierHandler().getAllSuppliers()
         else:
             return SupplierHandler().searchSuppliers(request.args)
+
+@app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
+def getAllResource():
+    if request.method == 'POST':
+        return ResourceHandler().insertSupplier(request.form)
+    else:
+        if not request.args:
+            return ResourceHandler().getAllResources()
+        else:
+            return ResourceHandler().searchResources(request.args)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

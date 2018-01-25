@@ -1,6 +1,5 @@
 from flask import jsonify
 from dao.credit_card import CreditCardData
-from dao.user import UserDAO
 class CreditCardHandler:
 
     def build_creditcard_dict(self,row):
@@ -169,7 +168,6 @@ class CreditCardHandler:
             exp_date = form['exp_date']
             cvs = form['cvs']
             if victim_id and credit_card_number and name_on_card and exp_date and cvs:
-                user_data = UserDAO()
                 data = CreditCardData()
                 credit_card_id = data.insertCreditCard(victim_id,credit_card_number,name_on_card,exp_date,cvs)
                 result = self.build_card_attributes(credit_card_id,victim_id,credit_card_number,name_on_card,exp_date,cvs)

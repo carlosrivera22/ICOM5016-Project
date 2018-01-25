@@ -105,5 +105,23 @@ class ResourceData:
             result.append(row)
         return result
 
+    # Tienes que escoger un suplidor
+    # Categoria tiene que existir en la base de datos
+    # Subcategoria tiene que existir en la base de datos (opcional)
+    def insert(self, category_id, resource_name, isavailable, isneeded, quantity, keyword, subcategory_id, supplier_id,
+               price, isfree):
+        cursor = self.conn.cursor()
+        query_1 = "insert into Resource(category_id, resource_name, isavailable, isneeded, quantity, keyword, subcategory_id) values (%s, %s, %s, %s, %s, %s, %s) returning resource_id;"
+        cursor.execute(query_1, (category_id, resource_name, isavailable, isneeded, quantity, keyword, subcategory_id))
+        resource_id = cursor.fetchone()[0]
+        print(resource_id)
+        query_2 = "insert into Supplies(supplier_id, resource_id, price, isfree) values (%s, %s, %s, %s) returning supplies_id"
+        cursor.execute(query_2, (supplier_id, resource_id, price, isfree))
+        supplies_id = cursor.fetchone()[0]
+        print(supplier_id)
+        self.conn.commit()
+        return resource_id
+
+
 
 

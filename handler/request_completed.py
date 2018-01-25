@@ -99,7 +99,7 @@ class RequestCompletedHandler:
         for row in requests_completed_list:
             result = self.build_request_completed_dict(row)
             result_list.append(result)
-        return jsonify(Requests = result_list)
+        return jsonify(Requests=result_list)
 
     def getRequestCompletedByCategoryId(self, category_id):
         requests_completed_dao = RequestCompletedData()

@@ -56,7 +56,7 @@ class ResourceHandler:
         if not row:
             return jsonify(Error = "Resource not exist"), 404
         else:
-            result = this.build_resource_dict(row)
+            result = self.build_resource_dict(row)
         return jsonify(Resource = result)
 
     def getResourcesByKeyword(self, keyword):
@@ -86,6 +86,42 @@ class ResourceHandler:
             result = self.build_resource_dict(row)
             result_list.append(result)
         return result
+
+    def insertSupplier(self, form):
+        if form and len(form) == 10:
+            category_id = form['category_id']
+            resource_name = form['resource_name']
+            isavailable = form['isavailable']
+            isneeded = form['isneeded']
+            quantity = form['quantity']
+            keyword = form['keyword']
+            subcategory_id = form['subcategory_id']
+            supplier_id = form['supplier_id']
+            price = form['price']
+            isfree = form['isfree']
+
+            if category_id and resource_name and isavailable and isneeded and quantity and keyword and subcategory_id and supplier_id and price and isfree:
+                dao = ResourceData()
+                resource_id = dao.insert(category_id, resource_name, isavailable, isneeded, quantity, keyword,
+                                         subcategory_id, subcategory_id,
+                                         price, isfree)
+                result = {}
+                result["category_id"] = category_id
+                result["resource_name"] = resource_name
+                result["isavailable"] = isavailable
+                result["isneeded"] = isneeded
+                result["quantity"] = quantity
+                result["keyword"] = keyword
+                result["subcategory_id"] = subcategory_id
+                result["supplier_id"] = supplier_id
+                result["price"] = price
+                result["isfree"] = isfree
+                return jsonify(Resource=result), 201
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")
+
 
     def searchResources(self, args):
         resource_id = args.get('victim_id')
