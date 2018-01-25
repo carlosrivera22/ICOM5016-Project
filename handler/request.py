@@ -6,7 +6,7 @@ class RequestHandler:
     def build_request_dict(self, row):
         result = {}
         result['request_id'] = row[0]
-        result['date_submitted'] = row[1]
+        result['date_submited'] = row[1]
         result['resource_id'] = row[2]
         return result
 

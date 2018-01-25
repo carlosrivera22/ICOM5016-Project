@@ -12,7 +12,7 @@ class RequestData:
 
     def getAllRequests(self):
         cursor = self.conn.cursor()
-        query = "select request_id, date_submitted, resource_id from request;"
+        query = "select request_id, date_submited, resource_id from request;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -46,7 +46,7 @@ class RequestData:
 
     def getRequestsByVictimId(self,vid):
         cursor = self.conn.cursor()
-        query = "select first_name, last_name, date_submitted, resource_name, isFree from request natural inner join disaster_victim where victim_id = %s;"
+        query = "select first_name, last_name, date_submited, resource_name, isFree from request natural inner join disaster_victim where victim_id = %s;"
         cursor.execute(query, (vid,))
         result = []
         for row in cursor:
