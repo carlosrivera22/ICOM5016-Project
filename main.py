@@ -99,15 +99,29 @@ def getAllVictims():
             return DisasterVictimHandler().searchVictims(request.args)
 
 
+result = {}
+result["category_id"] = "1"
+result["resource_name"] = "Great Value"
+result["isavailable"] = "TRUE"
+result["isneeded"] = "FALSE"
+result["quantity"] = "12"
+result["keyword"] = "Great Value"
+result["subcategory_id"] = "1"
+result["supplier_id"] = "2"
+result["price"] = "5.00"
+result["isfree"] = "FALSE"
+
 @app.route('/DisasterApp/Supplier', methods=['GET', 'POST'])
 def getAllSupplier():
-    if request.method == 'POST':
+    #if request.method == 'POST':
         return SupplierHandler().insertSupplier(request.form)
-    else:
-        if not request.args:
-            return SupplierHandler().getAllSuppliers()
-        else:
-            return SupplierHandler().searchSuppliers(request.args)
+    #else:
+        #if not request.args:
+         #   return SupplierHandler().getAllSuppliers()
+        #else:
+          #  return SupplierHandler().searchSuppliers(request.args)
+
+
 
 @app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
 def getAllResource():
