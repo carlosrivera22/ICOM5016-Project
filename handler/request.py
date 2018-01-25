@@ -97,9 +97,9 @@ class RequestHandler:
                 result["victim_id"] = victim_id
                 return jsonify(Request=result), 201
             else:
-                return jsonify(Error="Malformed post request")
+                return jsonify(Error="Malformed post request1")
         else:
-            return jsonify(Error="Malformed post request")
+            return jsonify(Error="Malformed post request2")
 
     def searchRequests(self, args):
         request_id = args.get('request_id')
