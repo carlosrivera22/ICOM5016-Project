@@ -7,9 +7,10 @@ from handler.request_completed import RequestCompletedHandler
 from handler.disaster_victim import DisasterVictimHandler
 from handler.distribution_region import DistributionRegionHandler
 from handler.credit_card import CreditCardHandler
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 
 
 @app.route('/')
