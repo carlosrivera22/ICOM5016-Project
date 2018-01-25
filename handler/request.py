@@ -82,7 +82,6 @@ class RequestHandler:
         return jsonify(Request = result)
 
     def insertRequest(self, form):
-        return jsonify(len(form))
         if form and len(form) == 3:
             date_submited = form['date_sumited']
             resource_id = form['resource_id']

@@ -8,6 +8,7 @@ from handler.disaster_victim import DisasterVictimHandler
 from handler.distribution_region import DistributionRegionHandler
 from handler.credit_card import CreditCardHandler
 from flask_cors import CORS
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -138,7 +139,7 @@ def getResourceByResourceId(resource_id):
 @app.route('/DisasterApp/Request', methods=['GET', 'POST'])
 def getAllRequest():
     if request.method == 'POST':
-        return RequestHandler().insertRequest(request.form)
+        return RequestHandler().insertRequest(json.loads(list(request.form.to_dict().keys())[0]))
     else:
         if not request.args:
             return RequestHandler().getAllRequests()
