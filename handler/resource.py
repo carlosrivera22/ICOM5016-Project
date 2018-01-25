@@ -87,7 +87,7 @@ class ResourceHandler:
             result_list.append(result)
         return result
 
-    def insertSupplier(self, form):
+    def insertResource(self, form):
         if form and len(form) == 10:
             category_id = form['category_id']
             resource_name = form['resource_name']

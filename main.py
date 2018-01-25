@@ -110,16 +110,27 @@ def getAllSupplier():
             return SupplierHandler().searchSuppliers(request.args)
 
 
+result = {}
+result["category_id"] = "1"
+result["resource_name"] = "Great Value"
+result["isavailable"] = "TRUE"
+result["isneeded"] = "TRUE"
+result["quantity"] = "12"
+result["keyword"] = "Great Value"
+result["subcategory_id"] = "1"
+result["supplier_id"] = "3"
+result["price"] = "5.00"
+result["isfree"] = "FALSE"
 
 @app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
 def getAllResource():
-    if request.method == 'POST':
-        return ResourceHandler().insertSupplier(request.form)
-    else:
-        if not request.args:
-            return ResourceHandler().getAllResources()
-        else:
-            return ResourceHandler().searchResources(request.args)
+    #if request.method == 'POST':
+        return ResourceHandler().insertResource(result)
+    #else:
+        #if not request.args:
+           # return ResourceHandler().getAllResources()
+        #else:
+            #return ResourceHandler().searchResources(request.args)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
