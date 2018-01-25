@@ -14,6 +14,25 @@ class ResourceHandler:
         result['keyword'] = row[6]
         return result
 
+
+
+
+    def build_resource_attribute_dict(self, resource_id,category_id, resource_name, is_available, is_needed, quantity, keyword,
+                                  subcategory_id, supplier_id, price, is_free):
+        result = {}
+        result['resource_id'] = resource_id
+        result['category_id'] = category_id
+        result['resource_name'] = resource_name
+        result['is_available'] = is_available
+        result['is_needed'] = is_needed
+        result['quantity'] = quantity
+        result['keyword'] = keyword
+        result['subcategory_id'] = subcategory_id
+        result['supplier_id'] = supplier_id
+        result['price'] = price
+        result['isfree'] = is_free
+        return result
+
     def getAllResources(self):
         resource_dao = ResourceData()
         resource_list = resource_dao.getAllResources()
@@ -128,6 +147,7 @@ class ResourceHandler:
         if not dao.getResourcesById(resource_id):
             return jsonify(Error="Resource not found."), 404
         else:
+            print(len(form))
             if len(form) != 10:
                 return jsonify(Error="Malformed update request"), 400
             else:
@@ -144,7 +164,7 @@ class ResourceHandler:
                 if category_id and resource_name and isavailable and isneeded and quantity and keyword and subcategory_id and supplier_id and price and isfree:
                     dao.update(resource_id, category_id, resource_name, isavailable, isneeded, quantity, keyword,
                                subcategory_id, supplier_id, price, isfree)
-                    result = self.build_part_attributes(resource_id, category_id, resource_name, isavailable, isneeded,
+                    result = self.build_resource_attribute_dict(resource_id, category_id, resource_name, isavailable, isneeded,
                                                         quantity, keyword, subcategory_id, supplier_id, price, isfree)
                     return jsonify(Resource=result), 200
                 else:

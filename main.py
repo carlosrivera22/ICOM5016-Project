@@ -124,6 +124,7 @@ def getAllResource():
             return ResourceHandler().searchResources(request.args)
 
 
+
 # Not tested
 @app.route('/Disaster/Resource/<int:resource_id>', methods=['GET','PUT'])
 def getResourceByResourceId(resource_id):
@@ -135,7 +136,8 @@ def getResourceByResourceId(resource_id):
         return jsonify(Error="Method not allowed."), 405
 
 
-# Not tested
+
+# works phase3
 @app.route('/DisasterApp/Request', methods=['GET', 'POST'])
 def getAllRequest():
     if request.method == 'POST':

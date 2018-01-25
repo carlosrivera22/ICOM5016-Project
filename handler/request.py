@@ -83,7 +83,7 @@ class RequestHandler:
 
     def insertRequest(self, form):
         if form and len(form) == 3:
-            date_submited = form['date_sumited']
+            date_submited = form['date_submited']
             resource_id = form['resource_id']
             victim_id = form['victim_id']
 
