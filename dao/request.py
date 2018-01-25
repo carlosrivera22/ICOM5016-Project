@@ -9,9 +9,10 @@ class RequestData:
 
         self.conn = psycopg2._connect(connection_url)
 
+
     def getAllRequests(self):
         cursor = self.conn.cursor()
-        query = "select * from request;"
+        query = "select request_id, date_submitted, resource_id from request;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -60,3 +61,13 @@ class RequestData:
         for row in cursor:
             result.append(row)
         return result
+
+    def insert(self, date_sumited, resource_id, victim_id):
+        cursor = self.conn.cursor()
+        query_1 = "insert into Request(date_sumited, resource_id) values (%s, %s) returning request_id;"
+        cursor.execute(query_1, (date_sumited, resource_id))
+        request_id = cursor.fetchone()[0]
+        query_2 = "insert into RequestedBy(victim_id, request_id) values (%s, %s) returning requestedBy_id"
+        cursor.execute(query_2, (victim_id, request_id))
+        self.conn.commit()
+        return request_id

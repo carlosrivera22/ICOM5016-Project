@@ -88,7 +88,7 @@ def getAllCreditCards():
             return CreditCardHandler().getAllCreditCards()
 
 
-
+#funciona phase3
 @app.route('/DisasterApp/DisasterVictim', methods=['GET', 'POST'])
 def getAllVictims():
     if request.method == 'POST':
@@ -99,7 +99,7 @@ def getAllVictims():
         else:
             return DisasterVictimHandler().searchVictims(request.args)
 
-
+#funciona phase3
 @app.route('/DisasterApp/Supplier', methods=['GET', 'POST'])
 def getAllSupplier():
     if request.method == 'POST':
@@ -111,27 +111,43 @@ def getAllSupplier():
             return SupplierHandler().searchSuppliers(request.args)
 
 
-result = {}
-result["category_id"] = "1"
-result["resource_name"] = "Great Value"
-result["isavailable"] = "TRUE"
-result["isneeded"] = "TRUE"
-result["quantity"] = "12"
-result["keyword"] = "Great Value"
-result["subcategory_id"] = "1"
-result["supplier_id"] = "3"
-result["price"] = "5.00"
-result["isfree"] = "FALSE"
-
+#funciona phase3
 @app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
 def getAllResource():
-    #if request.method == 'POST':
-        return ResourceHandler().insertResource(result)
-    #else:
-        #if not request.args:
-           # return ResourceHandler().getAllResources()
-        #else:
-            #return ResourceHandler().searchResources(request.args)
+    if request.method == 'POST':
+        return ResourceHandler().insertResource(request.form)
+    else:
+        if not request.args:
+            return ResourceHandler().getAllResources()
+        else:
+            return ResourceHandler().searchResources(request.args)
+
+
+# Not tested
+@app.route('/Disaster/Resource/<int:resource_id>', methods=['GET','PUT'])
+def getResourceByResourceId(resource_id):
+    if request.method == 'GET':
+        return ResourceHandler().getResourcesById(resource_id)
+    elif request.method == 'PUT':
+        return ResourceHandler().updateResource(resource_id, request.form)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+
+# Not tested
+@app.route('/DisasterApp/Request', methods=['GET', 'POST'])
+def getAllRequest():
+    if request.method == 'POST':
+        return RequestHandler().insertRequest(request.form)
+    else:
+        if not request.args:
+            return RequestHandler().getAllRequests()
+        else:
+            return RequestHandler().searchRequests(request.args)
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

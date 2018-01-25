@@ -81,6 +81,26 @@ class RequestHandler:
             result = self.build_request_dict(row)
         return jsonify(Request = result)
 
+    def insertRequest(self, form):
+        if form and len(form) == 3:
+            date_submited = form['date_sumited']
+            resource_id = form['resource_id']
+            victim_id = form['victim_id']
+
+            if date_submited and resource_id and victim_id:
+                dao = RequestData()
+                request_id = dao.insert(date_submited, resource_id, victim_id)
+                result = {}
+                result["request_id"] = request_id
+                result["date_submited"] = date_submited
+                result["resource_id"] = resource_id
+                result["victim_id"] = victim_id
+                return jsonify(Request=result), 201
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")
+
     def searchRequests(self, args):
         request_id = args.get('request_id')
         status = args.get('status')
@@ -101,6 +121,6 @@ class RequestHandler:
 
         result_list = []
         for row in requests_list:
-            result = this.build_request_dict(row)
+            result = self.build_request_dict(row)
             result_list.append(result)
         return jsonify(Requests = result_list)

@@ -123,6 +123,34 @@ class ResourceHandler:
             return jsonify(Error="Malformed post request")
 
 
+    def updateResource(self, resource_id, form):
+        dao = ResourceData()
+        if not dao.getResourcesById(resource_id):
+            return jsonify(Error="Resource not found."), 404
+        else:
+            if len(form) != 10:
+                return jsonify(Error="Malformed update request"), 400
+            else:
+                category_id = form['category_id']
+                resource_name = form['resource_name']
+                isavailable = form['isavailable']
+                isneeded = form['isneeded']
+                quantity = form['quantity']
+                keyword = form['keyword']
+                subcategory_id = form['subcategory_id']
+                supplier_id = form['supplier_id']
+                price = form['price']
+                isfree = form['isfree']
+                if category_id and resource_name and isavailable and isneeded and quantity and keyword and subcategory_id and supplier_id and price and isfree:
+                    dao.update(resource_id, category_id, resource_name, isavailable, isneeded, quantity, keyword,
+                               subcategory_id, supplier_id, price, isfree)
+                    result = self.build_part_attributes(resource_id, category_id, resource_name, isavailable, isneeded,
+                                                        quantity, keyword, subcategory_id, supplier_id, price, isfree)
+                    return jsonify(Resource=result), 200
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"), 400
+
+
     def searchResources(self, args):
         resource_id = args.get('victim_id')
         resource_name = args.get('user_id')
