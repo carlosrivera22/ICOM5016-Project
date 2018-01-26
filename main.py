@@ -79,11 +79,11 @@ def getAvailableResourcesByKeyword(keyword):
     return ResourceHandler().getResourcesByKeywordAndAvailability(keyword,False,True)
 
 
-# Get all credit cards
+# funciona phase3
 @app.route('/DisasterApp/CreditCards', methods=['GET','POST'])
 def getAllCreditCards():
     if request.method == 'POST':
-        return CreditCardHandler().insertCreditCard(request.form)
+        return CreditCardHandler().insertCreditCard(json.loads(list(request.form.to_dict().keys())[0]))
     else:
         if not request.args:
             return CreditCardHandler().getAllCreditCards()
@@ -93,7 +93,7 @@ def getAllCreditCards():
 @app.route('/DisasterApp/DisasterVictim', methods=['GET', 'POST'])
 def getAllVictims():
     if request.method == 'POST':
-        return DisasterVictimHandler().insertVictim(request.form)
+        return DisasterVictimHandler().insertVictim(json.loads(list(request.form.to_dict().keys())[0]))
     else:
         if not request.args:
             return DisasterVictimHandler().getAllDisasterVictims()
@@ -104,7 +104,7 @@ def getAllVictims():
 @app.route('/DisasterApp/Supplier', methods=['GET', 'POST'])
 def getAllSupplier():
     if request.method == 'POST':
-        return SupplierHandler().insertSupplier(request.form)
+        return SupplierHandler().insertSupplier(json.loads(list(request.form.to_dict().keys())[0]))
     else:
         if not request.args:
             return SupplierHandler().getAllSuppliers()
@@ -116,7 +116,7 @@ def getAllSupplier():
 @app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
 def getAllResource():
     if request.method == 'POST':
-        return ResourceHandler().insertResource(request.form)
+        return ResourceHandler().insertResource(json.loads(list(request.form.to_dict().keys())[0]))
     else:
         if not request.args:
             return ResourceHandler().getAllResources()
@@ -125,13 +125,13 @@ def getAllResource():
 
 
 
-# Not tested
+# Works phase 3
 @app.route('/Disaster/Resource/<int:resource_id>', methods=['GET','PUT'])
 def getResourceByResourceId(resource_id):
     if request.method == 'GET':
         return ResourceHandler().getResourcesById(resource_id)
     elif request.method == 'PUT':
-        return ResourceHandler().updateResource(resource_id, request.form)
+        return ResourceHandler().updateResource(resource_id, json.loads(list(request.form.to_dict().keys())[0]))
     else:
         return jsonify(Error="Method not allowed."), 405
 
