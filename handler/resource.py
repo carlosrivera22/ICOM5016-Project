@@ -14,7 +14,17 @@ class ResourceHandler:
         result['keyword'] = row[6]
         return result
 
-
+    def build_annoucement_dit(self, row):
+        result = {}
+        result['resource_id'] = row[0]
+        result['resource_name'] = row[1]
+        result['quantity'] = row[2]
+        result['price'] = row[3]
+        result['isavailable'] = row[4]
+        result['first_name'] = row[5]
+        result['last_name'] = row[6]
+        result['company_name'] = row[7]
+        return result
 
 
     def build_resource_attribute_dict(self, resource_id,category_id, resource_name, is_available, is_needed, quantity, keyword,
@@ -170,6 +180,14 @@ class ResourceHandler:
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
 
+    def getAnnouncement(self):
+        resource_dao = ResourceData()
+        resource_list = resource_dao.getResourceAnnouncement()
+        result_list = []
+        for row in resource_list:
+            result = self.build_annoucement_dit(row)
+            result_list.append(result)
+        return jsonify(Announcement=result_list)
 
     def searchResources(self, args):
         resource_id = args.get('victim_id')
