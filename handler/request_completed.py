@@ -16,6 +16,7 @@ class RequestCompletedHandler:
         return result
     '''
 
+
     def build_sale_request_completed_dict(self,row):
         result={}
         result['request_completed_id'] = row[0]
@@ -26,6 +27,15 @@ class RequestCompletedHandler:
         result['victim_id'] = row[5]
         return result
 
+    def build_donation_request_completed_dict(self,row):
+        result = {}
+        result['request_completed_id'] = row[0]
+        result['request_id'] = row[1]
+        result['date_resolved'] = row[2]
+        result['order_type'] = row[3]
+        result['supplier_id'] = row[4]
+        result['victim_id'] = row[5]
+        return result
 
     def build_request_completed_dict(self,row):
         result = {}
@@ -74,6 +84,19 @@ class RequestCompletedHandler:
         result['quantity'] = quantity
         return result
 
+    def build_donation_attributes(self, request_completed_id, date_resolved, supplier_id, victim_id, resource_id, price,
+                                  quantity):
+        result = {}
+        result['request_completed_id'] = request_completed_id
+        result['date_resolved'] = date_resolved
+        result['supplier_id'] = supplier_id
+        result['victim_id'] = victim_id
+        result['resource_id'] = resource_id
+        result['price'] = price
+        result['quantity'] = quantity
+        return result
+
+
     def getAllRequestsCompleted(self):
         requests_completed_dao = RequestCompletedData()
         requests_completed_list = requests_completed_dao.getAllRequestsCompleted()
@@ -91,6 +114,17 @@ class RequestCompletedHandler:
             result = self.build_sale_request_completed_dict(row)
             result_list.append(result)
         return jsonify(Sales=result_list)
+
+
+    def getAllDonation(self):
+        donation_data = RequestCompletedData()
+        donation_list = donation_data.getAllDonation()
+        result_list = []
+        for row in donation_list:
+            result = self.build_donation_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Donation=result_list)
+
 
     def getRequestCompletedById(self, request_completed_id):
         requests_completed_dao = RequestCompletedData()
@@ -197,6 +231,25 @@ class RequestCompletedHandler:
                 return jsonify(Error="Unexpected attributes in post request"), 400
 
 
+    def insertDonation(self, form):
+        if len(form) != 5:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            date_resolved = form['date_resolved']
+            supplier_id = form['supplier_id']
+            victim_id = form['victim_id']
+            resource_id = form['resource_id']
+            quantity = form['quantity']
+
+            if date_resolved and supplier_id and victim_id and resource_id and quantity:
+                dao = RequestCompletedData()
+                request_completed_id = dao.insertDonation(date_resolved, supplier_id, victim_id, resource_id,
+                                                          quantity)
+                result = self.build_donation_attributes(request_completed_id, date_resolved, supplier_id, victim_id,
+                                                        resource_id, 0.00, quantity)
+                return jsonify(Donation=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
 
 
 

@@ -176,7 +176,7 @@ def getRequestCompletedByResourceId(resource_id):
 @app.route('/DisasterApp/RequestCompleted/Sale/', methods=['GET', 'POST'])
 def getAllSaleRequestCompleted():
     if request.method == 'POST':
-        return RequestCompletedHandler().insertSale(request.form)
+        return RequestCompletedHandler().insertSale(json.loads(list(request.form.to_dict().keys())[0]))
     else:
         if not request.args:
             return RequestCompletedHandler().getAllSales()
@@ -189,6 +189,15 @@ def getResourceAnnouncement():
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
+
+@app.route('/DisasterApp/RequestCompleted/Donation/', methods=['GET', 'POST'])
+def getAllDonationRequestCompleted():
+    if request.method == 'POST':
+        return RequestCompletedHandler().insertDonation(json.loads(list(request.form.to_dict().keys())[0]))
+    else:
+        if not request.args:
+            return RequestCompletedHandler().getAllDonation()
 
 
 

@@ -134,5 +134,39 @@ class RequestCompletedData:
             result.append(row)
         return result
 
+    def insertDonation(self, date_resolved, supplier_id, victim_id, resource_id, quantity):
+        cursor = self.conn.cursor()
+        query_1 = "insert into request(date_submited, resource_id) values (%s, %s) returning request_id;"
+        cursor.execute(query_1, (date_resolved, resource_id))
+        print("done1")
+        request_id = cursor.fetchone()[0]
+        query_2 = "insert into requestby( victim_id, request_id) values (%s, %s);"
+        cursor.execute(query_2, (victim_id, request_id))
+        print("done2")
+        query_get_quantity = "Select quantity from resource where resource_id = %s;"
+        cursor.execute(query_get_quantity, (resource_id,))
+        print("done_quantity")
+        actual_quantity = cursor.fetchone()[0]
+        query_3 = "update resource set quantity = %s;"
+        new_quantity = int(actual_quantity) - int(quantity)
+        new_quantity = str(new_quantity)
+        cursor.execute(query_3, (new_quantity,))
+        print("done3")
+        query_4 = "insert into request_completed(request_id, date_resolved, order_type, supplier_id, victim_id, resource_id, price) values (%s, %s, 'Donation', %s, %s, %s, %s) returning request_completed_id;"
+        price = 0.00*float(quantity)
+        cursor.execute(query_4, (request_id, date_resolved, supplier_id, victim_id, resource_id, price))
+        request_completed_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return request_completed_id
+
+    def getAllDonation(self):
+        cursor = self.conn.cursor()
+        query = "select * from request_completed where order_type = 'Donation';"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
 
 
