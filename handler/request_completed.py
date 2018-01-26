@@ -239,12 +239,21 @@ class RequestCompletedHandler:
             supplier_id = form['supplier_id']
             victim_id = form['victim_id']
             resource_id = form['resource_id']
-            quantity = form['quantity']
+            quantity = int(form['quantity'])
 
             if date_resolved and supplier_id and victim_id and resource_id and quantity:
+                isavailable = True
+                print(quantity)
+                if (int(quantity) - 1 <= 0):
+                    quantity = 0
+                    print(quantity)
+                    isavailable = False
+                else:
+                    quantity = int(quantity) - 1
+                    print(quantity)
                 dao = RequestCompletedData()
                 request_completed_id = dao.insertDonation(date_resolved, supplier_id, victim_id, resource_id,
-                                                          quantity)
+                                                          str(quantity),isavailable)
                 result = self.build_donation_attributes(request_completed_id, date_resolved, supplier_id, victim_id,
                                                         resource_id, 0.00, quantity)
                 return jsonify(Donation=result), 201
