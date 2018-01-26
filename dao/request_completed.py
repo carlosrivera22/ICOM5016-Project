@@ -123,18 +123,7 @@ class RequestCompletedData:
         request_completed_id = cursor.fetchone[0]
         self.conn.commit()
         return request_completed_id
-    '''
-    def getAllSales(self):
-        cursor = self.conn.cursor()
-        query = "select resource_name, date_resolved, price, company_name, victim_id from request_completed natural inner join request natural inner join resource" \
-                " natural inner join supplier natural inner join supplies where order_type = 'Sale';"
-        cursor.execute(query)
-        result = []
-        for row in cursor:
-            result.append(row)
-        print(result)
-        return result
-    '''
+
 
     def getAllSales(self):
         cursor = self.conn.cursor()

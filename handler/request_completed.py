@@ -24,7 +24,7 @@ class RequestCompletedHandler:
         result['order_type'] = row[3]
         result['supplier_id'] = row[4]
         result['victim_id'] = row[5]
-        return result;
+        return result
 
 
     def build_request_completed_dict(self,row):
