@@ -149,7 +149,7 @@ class RequestCompletedHandler:
         for row in requests_completed_list:
             result = self.build_sale_request_completed_dict(row)
             result_list.append(result)
-        return jsonify(Requests=result_list)
+        return jsonify(Transaction=result_list)
 
     def insertSale(self, form):
         if len(form) != 6:
