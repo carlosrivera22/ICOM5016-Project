@@ -161,7 +161,9 @@ def getCreditCardById(credit_card_id):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-#Get Transaction of a Resource - NOT TESTED
+
+
+#Get Transaction of a Resource - funciona
 @app.route('/Disaster/Request_Completed/<int:resource_id>', methods=['GET'])
 def getRequestCompletedByResourceId(resource_id):
     if request.method == 'GET':
@@ -169,7 +171,32 @@ def getRequestCompletedByResourceId(resource_id):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+# NOT TESTED
+@app.route('/DisasterApp/RequestCompleted/Sale/', methods=['GET', 'POST'])
+def getAllSaleRequestCompleted():
+    if request.method == 'POST':
+        return RequestCompletedHandler().insertSale(request.form)
+    else:
+        if not request.args:
+            return RequestCompletedHandler().getsSale()
 
+
+
+
+
+
+
+
+
+'''
+result = {}
+result['date_resolved'] =
+result['supplier_id'] =
+result['victim_id'] =
+result['resource_id'] =
+result['price'] =
+result['quantity'] =
+'''
 
 
 if __name__ == '__main__':

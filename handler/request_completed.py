@@ -3,6 +3,18 @@ from dao.request_completed import RequestCompletedData
 
 class RequestCompletedHandler:
 
+
+    def build_sale_attributes(self,request_completed_id,date_resolved,supplier_id,victim_id,resource_id,price,quantity):
+        result = {}
+        result['request_completed_id'] = request_completed_id
+        result['date_resolved'] = date_resolved
+        result['supplier_id'] = supplier_id
+        result['victim_id'] = victim_id
+        result['resource_id'] = resource_id
+        result['price'] = price
+        result['quantity'] = quantity
+        return result
+
     def build_sale_request_completed_dict(self,row):
         result={}
         result['resource_name'] = row[0]
@@ -10,6 +22,7 @@ class RequestCompletedHandler:
         result['price'] = row[2]
         result['company_name'] = row[3]
         result['victim_id'] = row[4]
+        return result;
 
 
     def build_request_completed_dict(self,row):
@@ -138,6 +151,26 @@ class RequestCompletedHandler:
             result_list.append(result)
         return jsonify(Requests=result_list)
 
+    def insertSale(self, form):
+        if len(form) != 6:
+            return jsonify(Error="Malformed post request"), 400
+        else:
+            date_resolved = form['date_resolved']
+            supplier_id = form['supplier_id']
+            victim_id = form['victim_id']
+            resource_id = form['resource_id']
+            price = form['price']
+            quantity = form['quantity']
+
+            if date_resolved and supplier_id and victim_id and resource_id and price and quantity:
+                dao = RequestCompletedData()
+                request_completed_id = dao.insertSale(date_resolved, supplier_id, victim_id, resource_id, price,
+                                                       quantity)
+                result = self.build_sale_attributes(request_completed_id, date_resolved, supplier_id, victim_id,
+                                                    resource_id, price, quantity)
+                return jsonify(Sale=result), 201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
 
     def searchRequestsCompleted(self, args):
         request_completed_id = args.get['request_completed_id']

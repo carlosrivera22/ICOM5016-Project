@@ -100,8 +100,26 @@ class RequestCompletedData:
     def getSaleRequestCompletedByResourceId(self, resource_id):
         cursor = self.conn.cursor()
         query = "select resource_name, date_resolved, price, company_name, victim_id from request_completed natural inner join resource natural inner join supplier where resource_id = 26 and order_type = 'Sale';"
-        cursor.execute(query, (resource_id))
+        cursor.execute(query, (resource_id,))
         result = []
         for row in cursor:
             result.append(row)
         return result
+
+    def insertSale(self, date_resolved, supplier_id, victim_id, resource_id, price, quantity):
+        cursor = self.conn.cursor()
+        query_1 = "insert into request(date_summited, resource_id) values (%s, %s) returning request_id;"
+        cursor.execute(query_1, (date_resolved, resource_id))
+        request_id = cursor.fetchone()[0]
+        query_2 = "insert into requestby( victim_id, request_id) values (%s, %s);"
+        cursor.execute(query_2, (victim_id, request_id))
+        query_get_quantity = "Select quantity from resource where resource_id = %s;"
+        cursor.execute(query_get_quantity, (resource_id))
+        actual_quantity = cursor.fetchone[0]
+        query_3 = "update resource set quantity = %s;"
+        cursor.execute(query_3, (actual_quantity - quantity))
+        query_4 = "insert into request_completed(request_id, date_resolved, order_type, supplier_id, victim_id, resource_id, price) values (%s, %s, 'Sale, %s, %s, %s, %s) returning request_completed_id;"
+        cursor.execute(query_4, (request_id, date_resolved, supplier_id, victim_id, resource_id, (price * quantity)))
+        request_completed_id = cursor.fetchone[0]
+        self.conn.commit()
+        return request_completed_id

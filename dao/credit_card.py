@@ -127,12 +127,7 @@ class CreditCardData:
         self.conn.commit()
         return credit_card_id
 
-    def updateCreditCard(self,credit_card_id,victim_id,credit_card_number,name_on_card,exp_date,cvs):
-        cursor = self.conn.cursor()
-        query = "update credit_card set victim_id=%s, credit_card_number=%s, name_on_card=%s, exp_date=%s, cvs=%s where credit_card_id=%s;"
-        cursor.execute(query,(victim_id,credit_card_number,name_on_card,exp_date,cvs,credit_card_id,))
-        self.conn.commit()
-        return credit_card_id
+
 
     def update(self, credit_card_id, victim_id, credit_card_number, name_on_card, exp_date, cvs):
         cursor = self.conn.cursor()
