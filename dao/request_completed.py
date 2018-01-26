@@ -96,3 +96,12 @@ class RequestCompletedData:
         for row in cursor:
             result.append(row)
         return result
+
+    def getSaleRequestCompletedByResourceId(self, resource_id):
+        cursor = self.conn.cursor()
+        query = "select resource_name, date_resolved, price, company_name, victim_id from request_completed natural inner join resource natural inner join supplier where resource_id = 26 and order_type = 'Sale';"
+        cursor.execute(query, (resource_id))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

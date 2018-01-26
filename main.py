@@ -151,6 +151,26 @@ def getAllRequest():
 
 
 
+#Credit Card Update - funciona phase3
+@app.route('/Disaster/CreditCard/<int:credit_card_id>', methods=['GET','PUT'])
+def getCreditCardById(credit_card_id):
+    if request.method == 'GET':
+        return CreditCardHandler().getCreditCardById(credit_card_id)
+    elif request.method == 'PUT':
+        return CreditCardHandler().updateCreditCard(credit_card_id, json.loads(list(request.form.to_dict().keys())[0]))
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+#Get Transaction of a Resource - NOT TESTED
+@app.route('/Disaster/Request_Completed/<int:resource_id>', methods=['GET'])
+def getRequestCompletedByResourceId(resource_id):
+    if request.method == 'GET':
+        return RequestCompletedHandler().getSaleRequestCompletedByResourceId(resource_id)
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

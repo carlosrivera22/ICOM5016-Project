@@ -3,6 +3,15 @@ from dao.request_completed import RequestCompletedData
 
 class RequestCompletedHandler:
 
+    def build_sale_request_completed_dict(self,row):
+        result={}
+        result['resource_name'] = row[0]
+        result['date_resolved'] = row[1]
+        result['price'] = row[2]
+        result['company_name'] = row[3]
+        result['victim_id'] = row[4]
+
+
     def build_request_completed_dict(self,row):
         result = {}
         result['resource_name'] = row[0]
@@ -118,6 +127,16 @@ class RequestCompletedHandler:
             result = self.build_request_completed_dict(row)
             result_list.append(result)
         return jsonify(Requests = result_list)
+
+
+    def getSaleRequestCompletedByResourceId(self, resource_id):
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getSaleRequestCompletedByResourceId(resource_id)
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_sale_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Requests=result_list)
 
 
     def searchRequestsCompleted(self, args):

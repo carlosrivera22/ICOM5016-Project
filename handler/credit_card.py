@@ -175,23 +175,26 @@ class CreditCardHandler:
             else:
                 return jsonify(Error="Unexpected attributes in post request"),400
 
-
-    def updateCreditCard(self,credit_card_id,form):
+    def updateCreditCard(self, credit_card_id, form):
         dao = CreditCardData()
         if not dao.getCreditCardById(credit_card_id):
-            return jsonify(Error="Credit Card Not Found"),404
+            return jsonify(Error="Credit Card not found."), 404
         else:
-            victim_id = form['victim_id']
-            credit_card_number = form['credit_card_number']
-            name_on_card = form['name_on_card']
-            exp_date = form['exp_date']
-            cvs = form['cvs']
-            if victim_id and credit_card_number and name_on_card and exp_date and cvs:
-                dao.updateCreditCard(credit_card_id,victim_id,credit_card_number,name_on_card,exp_date,cvs)
-                result = self.build_card_attributes(credit_card_id,victim_id,credit_card_number,name_on_card,exp_date,cvs)
-                return jsonify(CreditCard=result),200
+            if len(form) != 5:
+                return jsonify(Error="Malformed update request"), 400
             else:
-                return jsonify(Error="Unexpected attributes in update request"),400
+                victim_id = form['victim_id']
+                credit_card_number = form['credit_card_number']
+                name_on_card = form['name_on_card']
+                exp_date = form['exp_date']
+                cvs = form['cvs']
+                if victim_id and credit_card_id and name_on_card and cvs:
+                    dao.update(credit_card_id, victim_id, credit_card_number, name_on_card, exp_date, cvs)
+                    result = self.build_card_attributes(credit_card_id, victim_id, credit_card_number, name_on_card,
+                                                        exp_date, cvs)
+                    return jsonify(CreditCard=result), 200
+                else:
+                    return jsonify(Error="Unexpected attributes in update request"), 400
 
 
 
