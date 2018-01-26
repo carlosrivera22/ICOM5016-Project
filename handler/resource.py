@@ -139,7 +139,7 @@ class ResourceHandler:
             else:
                 return jsonify(Error="Malformed post request")
         else:
-            return jsonify(Error="Malformed post request")
+            return jsonify(Error="Malformed post request2")
 
 
     def updateResource(self, resource_id, form):

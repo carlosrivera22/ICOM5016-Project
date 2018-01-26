@@ -112,7 +112,8 @@ def getAllSupplier():
             return SupplierHandler().searchSuppliers(request.args)
 
 
-#funciona phase3
+
+#funciona phase3 --
 @app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
 def getAllResource():
     if request.method == 'POST':
@@ -181,22 +182,15 @@ def getAllSaleRequestCompleted():
             return RequestCompletedHandler().getsSale()
 
 
+@app.route('/DisasterApp/Resource/Announcement', methods=['GET'])
+def getResourceAnnouncement():
+    if request.method == 'GET':
+        return ResourceHandler().getResourceAnnouncement()
+    else:
+        return jsonify(Error="Method not allowed."), 405
 
 
 
-
-
-
-
-'''
-result = {}
-result['date_resolved'] =
-result['supplier_id'] =
-result['victim_id'] =
-result['resource_id'] =
-result['price'] =
-result['quantity'] =
-'''
 
 
 if __name__ == '__main__':
