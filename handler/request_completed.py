@@ -3,7 +3,7 @@ from dao.request_completed import RequestCompletedData
 
 class RequestCompletedHandler:
 
-
+    '''
     def build_sale_attributes(self,request_completed_id,date_resolved,supplier_id,victim_id,resource_id,price,quantity):
         result = {}
         result['request_completed_id'] = request_completed_id
@@ -14,14 +14,16 @@ class RequestCompletedHandler:
         result['price'] = price
         result['quantity'] = quantity
         return result
+    '''
 
     def build_sale_request_completed_dict(self,row):
         result={}
-        result['resource_name'] = row[0]
-        result['date_resolved'] = row[1]
-        result['price'] = row[2]
-        result['company_name'] = row[3]
-        result['victim_id'] = row[4]
+        result['request_completed_id'] = row[0]
+        result['request_id'] = row[1]
+        result['date_resolved'] = row[2]
+        result['order_type'] = row[3]
+        result['supplier_id'] = row[4]
+        result['victim_id'] = row[5]
         return result;
 
 
@@ -59,6 +61,19 @@ class RequestCompletedHandler:
         result['keyword'] = row[5]
         return result
 
+
+    def build_sale_attributes(self, request_completed_id, date_resolved, supplier_id, victim_id, resource_id, price,
+                              quantity):
+        result = {}
+        result['request_completed_id'] = request_completed_id
+        result['date_resolved'] = date_resolved
+        result['supplier_id'] = supplier_id
+        result['victim_id'] = victim_id
+        result['resource_id'] = resource_id
+        result['price'] = price
+        result['quantity'] = quantity
+        return result
+
     def getAllRequestsCompleted(self):
         requests_completed_dao = RequestCompletedData()
         requests_completed_list = requests_completed_dao.getAllRequestsCompleted()
@@ -67,6 +82,15 @@ class RequestCompletedHandler:
             result = self.build_request_completed_dict(row)
             result_list.append(result)
         return jsonify(Requests = result_list)
+
+    def getAllSales(self):
+        sale_data = RequestCompletedData()
+        sale_list = sale_data.getAllSales()
+        result_list = []
+        for row in sale_list:
+            result = self.build_sale_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Sales=result_list)
 
     def getRequestCompletedById(self, request_completed_id):
         requests_completed_dao = RequestCompletedData()
@@ -171,6 +195,10 @@ class RequestCompletedHandler:
                 return jsonify(Sale=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+
+
+
+
 
     def searchRequestsCompleted(self, args):
         request_completed_id = args.get['request_completed_id']

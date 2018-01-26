@@ -179,7 +179,7 @@ def getAllSaleRequestCompleted():
         return RequestCompletedHandler().insertSale(request.form)
     else:
         if not request.args:
-            return RequestCompletedHandler().getsSale()
+            return RequestCompletedHandler().getAllSales()
 
 
 @app.route('/DisasterApp/Resource/Announcement', methods=['GET'])
@@ -188,7 +188,6 @@ def getResourceAnnouncement():
         return ResourceHandler().getAnnouncement()
     else:
         return jsonify(Error="Method not allowed."), 405
-
 
 
 
