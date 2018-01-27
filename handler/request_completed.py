@@ -19,11 +19,20 @@ class RequestCompletedHandler:
 
     def build_sale_request_completed_dict(self,row):
         result={}
-        result['request_completed_id'] = row[0]
-        result['request_id'] = row[1]
+        result['request_id'] = row[0]
+        result['date_resolved'] = row[1]
+        result['order_type'] = row[2]
+        result['supplier_id'] = row[3]
+        result['victim_id'] = row[4]
+        return result
+
+    def build_transaction_dict(self,row):
+        result = {}
+        result['request_completed_id'] = [0]
+        result['resource_name'] = row[1]
         result['date_resolved'] = row[2]
-        result['order_type'] = row[3]
-        result['supplier_id'] = row[4]
+        result['price'] = row[3]
+        result['company_name'] = row[4]
         result['victim_id'] = row[5]
         return result
 
@@ -202,10 +211,10 @@ class RequestCompletedHandler:
 
     def getSaleRequestCompletedByResourceId(self, resource_id):
         requests_completed_dao = RequestCompletedData()
-        requests_completed_list = requests_completed_dao.getSaleRequestCompletedByResourceId(resource_id)
+        requests_completed_list = requests_completed_dao.getTransactionSaleRequestCompletedByResourceId(resource_id)
         result_list = []
         for row in requests_completed_list:
-            result = self.build_sale_request_completed_dict(row)
+            result = self.build_transaction_dict(row)
             result_list.append(result)
         return jsonify(Transaction=result_list)
 

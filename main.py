@@ -127,7 +127,7 @@ def getAllResource():
 
 
 # Works phase 3
-@app.route('/Disaster/Resource/<int:resource_id>', methods=['GET','PUT'])
+@app.route('/DisasterApp/Resource/<int:resource_id>', methods=['GET','PUT'])
 def getResourceByResourceId(resource_id):
     if request.method == 'GET':
         return ResourceHandler().getResourcesById(resource_id)
@@ -153,7 +153,7 @@ def getAllRequest():
 
 
 #Credit Card Update - funciona phase3
-@app.route('/Disaster/CreditCard/<int:credit_card_id>', methods=['GET','PUT'])
+@app.route('/DisasterApp/CreditCard/<int:credit_card_id>', methods=['GET','PUT'])
 def getCreditCardById(credit_card_id):
     if request.method == 'GET':
         return CreditCardHandler().getCreditCardById(credit_card_id)
@@ -165,10 +165,10 @@ def getCreditCardById(credit_card_id):
 
 
 #Get Transaction of a Resource - funciona
-@app.route('/Disaster/Request_Completed/<int:resource_id>', methods=['GET'])
+@app.route('/DisasterApp/Request_Completed/<resource_id>', methods=['GET'])
 def getRequestCompletedByResourceId(resource_id):
     if request.method == 'GET':
-        return RequestCompletedHandler().getSaleRequestCompletedByResourceId(resource_id)
+        return RequestCompletedHandler().getSaleRequestCompletedByResourceId(int(resource_id))
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -202,4 +202,4 @@ def getAllDonationRequestCompleted():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run(debug=True, port=5000)

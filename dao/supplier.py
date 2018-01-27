@@ -135,7 +135,7 @@ class SupplierDAO:
         query_2 = "insert into Address(street, region_id, city, state, country, zipcode) values (%s, %s, %s, %s, %s, %s) returning address_id;"
         cursor.execute(query_2, (street, region_id, city, state, country, zipcode))
         address_id = cursor.fetchone()[0]
-        query_3 = "insert into Victim(user_id, address_id, company_name) values (%s, %s, %s) returning supplier_id;"
+        query_3 = "insert into Supplier(user_id, address_id, company_name) values (%s, %s, %s) returning supplier_id;"
         cursor.execute(query_3, (user_id, address_id, company_name))
         supplier_id = cursor.fetchone()[0]
         self.conn.commit()

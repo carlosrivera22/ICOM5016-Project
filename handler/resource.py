@@ -157,8 +157,7 @@ class ResourceHandler:
         if not dao.getResourcesById(resource_id):
             return jsonify(Error="Resource not found."), 404
         else:
-            print(len(form))
-            if len(form) != 10:
+            if len(form) != 11:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 category_id = form['category_id']

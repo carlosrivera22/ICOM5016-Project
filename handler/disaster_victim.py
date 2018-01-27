@@ -49,7 +49,7 @@ class DisasterVictimHandler:
 
     def getAllDisasterVictims(self):
         victims_dao = DisasterVictimData()
-        victims_list = victims_dao.getAllDisasterVictims()
+        victims_list = victims_dao.getAllVictims()
         result_list = []
         for row in victims_list:
             result = self.build_victim_dict(row)

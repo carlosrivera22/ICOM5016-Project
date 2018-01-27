@@ -180,7 +180,7 @@ class CreditCardHandler:
         if not dao.getCreditCardById(credit_card_id):
             return jsonify(Error="Credit Card not found."), 404
         else:
-            if len(form) != 5:
+            if len(form) != 6:
                 return jsonify(Error="Malformed update request"), 400
             else:
                 victim_id = form['victim_id']
