@@ -38,9 +38,6 @@ def getNeededResources():
 
 
 # Supplier's products route
-@app.route('/DisasterApp/supplier/<int:sid>/supplies')
-def getResourcesBySupplierId(sid):
-    return SupplierHandler().getResourcesBySupplierId(sid)
 
 
 # Products supplied by Supplier route
@@ -78,8 +75,57 @@ def getRequestedResourcesByKeyword(keyword):
 def getAvailableResourcesByKeyword(keyword):
     return ResourceHandler().getResourcesByKeywordAndAvailability(keyword,False,True)
 
+# ---------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------
 
-# funciona phase3
+# Phase3
+
+# DISASTER VICTIM ROUTES
+
+@app.route('/DisasterApp/DisasterVictim', methods=['GET', 'POST'])
+def getAllVictims():
+    if request.method == 'POST':
+        return DisasterVictimHandler().insertVictim(request.form.to_dict())
+    else:
+        if not request.args:
+            return DisasterVictimHandler().getAllDisasterVictimsInfo()
+        else:
+            return DisasterVictimHandler().searchVictims(request.args)
+
+@app.route('/DisasterApp/DisasterVictim/<int:victim_id>', methods=['GET'])
+def getVictimInfoById(victim_id):
+    if request.method == 'GET':
+        return DisasterVictimHandler().getVictimInfoById(victim_id)
+    else:
+        return DisasterVictimHandler().searchVictims(request.args)
+
+# ------------------------------------------------------------------------------
+
+# SUPPLIER ROUTES
+
+@app.route('/DisasterApp/Supplier', methods=['GET', 'POST'])
+def getAllSupplier():
+    if request.method == 'POST':
+        return SupplierHandler().insertSupplier(request.form.to_dict())
+    else:
+        if not request.args:
+            return SupplierHandler().getAllSuppliers()
+        else:
+            return SupplierHandler().searchSuppliers(request.args)
+
+@app.route('/DisasterApp/Supplier/<int:supplier_id>', methods=['GET'])
+def getSupplierById(supplier_id):
+    if request.method == 'GET':
+        return SupplierHandler().getSupplierById(supplier_id)
+    else:
+        return SupplierHandler().searchSuppliers(request.args)
+
+@app.route('/DisasterApp/Supplier/<int:supplier_id>/Resources')
+def getResourcesBySupplierId(supplier_id):
+    return SupplierHandler().getResourcesBySupplierId(supplier_id)
+
+# ------------------------------------------------------------------
+
 @app.route('/DisasterApp/CreditCards', methods=['GET','POST'])
 def getAllCreditCards():
     if request.method == 'POST':
@@ -87,31 +133,6 @@ def getAllCreditCards():
     else:
         if not request.args:
             return CreditCardHandler().getAllCreditCards()
-
-
-#funciona phase3
-@app.route('/DisasterApp/DisasterVictim', methods=['GET', 'POST'])
-def getAllVictims():
-    if request.method == 'POST':
-        return DisasterVictimHandler().insertVictim(json.loads(list(request.form.to_dict().keys())[0]))
-    else:
-        if not request.args:
-            return DisasterVictimHandler().getAllDisasterVictims()
-        else:
-            return DisasterVictimHandler().searchVictims(request.args)
-
-#funciona phase3
-@app.route('/DisasterApp/Supplier', methods=['GET', 'POST'])
-def getAllSupplier():
-    if request.method == 'POST':
-        return SupplierHandler().insertSupplier(json.loads(list(request.form.to_dict().keys())[0]))
-    else:
-        if not request.args:
-            return SupplierHandler().getAllSuppliers()
-        else:
-            return SupplierHandler().searchSuppliers(request.args)
-
-
 
 #funciona phase3 --
 @app.route('/DisasterApp/Resource', methods=['GET', 'POST'])

@@ -10,6 +10,19 @@ class DisasterVictimHandler:
         result['address_id'] = row[2]
         return result
 
+    def build_victim_info_dict(self, row):
+        result = {}
+        result['victim_id'] = row[0]
+        result['first_name'] = row[1]
+        result['last_name'] = row[2]
+        result['street'] = row[3]
+        result['city'] = row[4]
+        result['state'] = row[5]
+        result['country'] = row[6]
+        result['zipcode'] = row[7]
+        result['card_number'] = row[8]
+        return result
+
     def build_address_dict(self, row):
         result = {}
         result['address_id'] = row[0]
@@ -56,6 +69,15 @@ class DisasterVictimHandler:
             result_list.append(result)
         return jsonify(DisasterVictims = result_list)
 
+    def getAllDisasterVictimsInfo(self):
+        victims_dao = DisasterVictimData()
+        victims_list = victims_dao.getAllVictimsInfo()
+        result_list = []
+        for row in victims_list:
+            result = self.build_victim_info_dict(row)
+            result_list.append(result)
+        return jsonify(DisasterVictims = result_list)
+
     def getVictimById(self,vid):
         victims_dao = DisasterVictimData()
         row = victims_dao.getVictimById(vid)
@@ -63,6 +85,15 @@ class DisasterVictimHandler:
             return jsonify(Error = "Victim Not Found"), 404
         else:
             victim = self.build_victim_dict(row)
+        return jsonify(DisasterVictim = victim)
+
+    def getVictimInfoById(self,vid):
+        victims_dao = DisasterVictimData()
+        row = victims_dao.getVictimInfoById(vid)
+        if not row:
+            return jsonify(Error = "Victim Not Found"), 404
+        else:
+            victim = self.build_victim_info_dict(row)
         return jsonify(DisasterVictim = victim)
 
     def getVictimByUserId(self,uid):
