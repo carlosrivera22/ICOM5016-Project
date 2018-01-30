@@ -227,12 +227,12 @@ class RequestCompletedHandler:
             victim_id = form['victim_id']
             resource_id = form['resource_id']
             price = form['price']
-            quantity = form['quantity']
+            quantity = int(form['quantity'])
 
             if date_resolved and supplier_id and victim_id and resource_id and price and quantity:
                 dao = RequestCompletedData()
                 request_completed_id = dao.insertSale(date_resolved, supplier_id, victim_id, resource_id, price,
-                                                       quantity)
+                                                       int(quantity))
                 result = self.build_sale_attributes(request_completed_id, date_resolved, supplier_id, victim_id,
                                                     resource_id, price, quantity)
                 return jsonify(Sale=result), 201

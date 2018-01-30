@@ -54,12 +54,12 @@ class ResourceHandler:
 
     def getResourcesById(self,resource_id):
         resource_dao = ResourceData()
-        resource_list = resource_dao.getResourcesById(resource_id)
-        result_list = []
-        for row in resource_list:
-            result = self.build_resource_dict(row)
-            result_list.append(result)
-        return jsonify(Resources = result_list)
+        row = resource_dao.getResourcesById(resource_id)
+        if not row:
+            return jsonify(Error="User Not Found"), 404
+        else:
+            resource = self.build_resource_dict(row)
+            return jsonify(Resources = resource)
 
     def getAvailableResources(self):
         resource_dao = ResourceData()

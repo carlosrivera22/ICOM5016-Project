@@ -127,8 +127,8 @@ def getAllResource():
 
 
 # Works phase 3
-@app.route('/DisasterApp/Resource/<int:resource_id>', methods=['GET','PUT'])
-def getResourceByResourceId(resource_id):
+@app.route('/DisasterApp/Resource/<int:resource_id>', methods=['GET', 'PUT'])
+def getResourcesByResourceId(resource_id):
     if request.method == 'GET':
         return ResourceHandler().getResourcesById(resource_id)
     elif request.method == 'PUT':
