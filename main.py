@@ -96,7 +96,7 @@ def getSupplierById(supplier_id):
         return SupplierHandler().searchSuppliers(request.args)
 
 #6
-@app.route('/DisasterApp/Supplier/<int:supplier_id>/Resources')
+@app.route('/DisasterApp/Supplier/<int:supplier_id>/Resource')
 def getResourcesBySupplierId(supplier_id):
     return SupplierHandler().getResourcesBySupplierId(supplier_id)
 
@@ -156,8 +156,8 @@ def getRequestedResourcesByKeyword(keyword):
     return RequestHandler().getAllRequestedResourcesByKeyword(keyword)
 
 #7
-@app.route('/DisasterApp/Resource/<string:resource_id>/Supplier')
-def getSuppliersByResource(rame):
+@app.route('/DisasterApp/Resource/<int:resource_id>/Supplier')
+def getSuppliersByResource(resource_id):
     return SupplierHandler().getSuppliersOfResourceId(resource_id)
 
 #8
