@@ -31,6 +31,7 @@ class DisasterVictimHandler:
         result['credit_card_number'] = row[4]
         result['exp_date'] = row[5]
         result['cvs'] = row[6]
+        result['credit_card_id'] = row[7]
         return result
 
     def build_address_dict(self, row):
@@ -113,7 +114,7 @@ class DisasterVictimHandler:
         for row in victims_list:
             result = self.build_victim_cc_info_dict(row)
             result_list.append(result)
-        return jsonify(DisasterVictims = result_list)
+        return jsonify(DisasterVictimCreditCard = result_list)
 
     def getVictimByUserId(self,uid):
         victims_dao = DisasterVictimData()

@@ -39,7 +39,7 @@ class DisasterVictimData:
 
     def getVictimCreditCard(self, victim_id):
         cursor = self.conn.cursor()
-        query = "select first_name, last_name, victim_id, name_on_card, credit_card_number, exp_date, cvs from disaster_victim natural inner join account natural inner join credit_card where victim_id = %s"
+        query = "select first_name, last_name, victim_id, name_on_card, credit_card_number, exp_date, cvs, credit_card_id from disaster_victim natural inner join account natural inner join credit_card where victim_id = %s"
         cursor.execute(query,(victim_id,))
         result = []
         for row in cursor:
@@ -62,7 +62,6 @@ class DisasterVictimData:
         result = []
         for row in cursor:
             result.append(row)
-        print(row)
         return result
 
     def getRequestedCompletedByVictimId(self, victim_id):

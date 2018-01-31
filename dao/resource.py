@@ -134,8 +134,8 @@ class ResourceData:
         cursor = self.conn.cursor()
         query_1 = "update resource set category_id = %s, resource_name = %s, isavailable = %s, isneeded = %s, quantity = %s, keyword = %s, subcategory_id = %s where resource_id=%s;"
         cursor.execute(query_1, (category_id, resource_name, isavailable, isneeded, quantity, keyword, subcategory_id, resource_id))
-        query_2 = "update supplies set supplier_id = %s, resource_id =%s, price = %s, isfree = %s;"
-        cursor.execute(query_2, (supplier_id, resource_id, price, isfree))
+        query_2 = "update supplies set supplier_id = %s, resource_id =%s, price = %s, isfree = %s where resource_id = %s;"
+        cursor.execute(query_2, (supplier_id, resource_id, price, isfree, resource_id))
         self.conn.commit()
         return resource_id
 
