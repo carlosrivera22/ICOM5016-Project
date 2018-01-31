@@ -13,7 +13,6 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-
 @app.route('/')
 def greeting():
     return render_template('index.html')
@@ -36,10 +35,6 @@ def getFreeResources():
 def getNeededResources():
     return RequestHandler().getAllRequestedResources()
 
-
-# Supplier's products route
-
-
 # Products supplied by Supplier route
 @app.route('/DisasterApp/supplies/<string:rame>/supplier')
 def getSuppliersByResource(rame):
@@ -57,18 +52,10 @@ def getResourceByRegionIdAndResourceId(region_id,resource_id):
 def getRequestCompletedBySupplierId(sid):
     return RequestCompletedHandler().getRequestCompletedBySupplierId(sid)
 
-
-# Orders made by Victim
-@app.route('/DisasterApp/victim/<int:victim_id>/requests')
-def getRequestsByVictimId(victim_id):
-    return DisasterVictimHandler().getRequestsByVictimId(victim_id)
-
-
 # Keyword search resources being requested, with sorting by resource name
 @app.route('/DisasterApp/resources/requested/<string:keyword>')
 def getRequestedResourcesByKeyword(keyword):
     return RequestHandler().getAllRequestedResourcesByKeyword(keyword)
-
 
 # Keyword search resources available, with sorting by resource name
 @app.route('/DisasterApp/resources/available/<string:keyword>')
@@ -98,6 +85,18 @@ def getVictimInfoById(victim_id):
         return DisasterVictimHandler().getVictimInfoById(victim_id)
     else:
         return DisasterVictimHandler().searchVictims(request.args)
+
+@app.route('/DisasterApp/DisasterVictim/<int:victim_id>/Requests')
+def getRequestsByVictimId(victim_id):
+    return DisasterVictimHandler().getRequestsByVictimId(victim_id)
+
+@app.route('/DisasterApp/DisasterVictim/<int:victim_id>/RequestCompleted')
+def getRequestCompletedByVictimId(victim_id):
+    return DisasterVictimHandler().getRequestCompletedByVictimId(victim_id)
+
+@app.route('/DisasterApp/DisasterVictim/<int:victim_id>/CreditCards')
+def getVictimCreditCard(victim_id):
+    return DisasterVictimHandler().getVictimCreditCard(victim_id)
 
 # ------------------------------------------------------------------------------
 
@@ -146,7 +145,6 @@ def getAllResource():
             return ResourceHandler().searchResources(request.args)
 
 
-
 # Works phase 3
 @app.route('/DisasterApp/Resource/<int:resource_id>', methods=['GET', 'PUT'])
 def getResourcesByResourceId(resource_id):
@@ -156,7 +154,6 @@ def getResourcesByResourceId(resource_id):
         return ResourceHandler().updateResource(resource_id, json.loads(list(request.form.to_dict().keys())[0]))
     else:
         return jsonify(Error="Method not allowed."), 405
-
 
 
 # works phase3
@@ -171,8 +168,6 @@ def getAllRequest():
             return RequestHandler().searchRequests(request.args)
 
 
-
-
 #Credit Card Update - funciona phase3
 @app.route('/DisasterApp/CreditCard/<int:credit_card_id>', methods=['GET','PUT'])
 def getCreditCardById(credit_card_id):
@@ -182,7 +177,6 @@ def getCreditCardById(credit_card_id):
         return CreditCardHandler().updateCreditCard(credit_card_id, json.loads(list(request.form.to_dict().keys())[0]))
     else:
         return jsonify(Error="Method not allowed."), 405
-
 
 
 #Get Transaction of a Resource - funciona
@@ -219,7 +213,6 @@ def getAllDonationRequestCompleted():
     else:
         if not request.args:
             return RequestCompletedHandler().getAllDonation()
-
 
 
 if __name__ == '__main__':

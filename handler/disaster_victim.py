@@ -20,7 +20,17 @@ class DisasterVictimHandler:
         result['state'] = row[5]
         result['country'] = row[6]
         result['zipcode'] = row[7]
-        result['card_number'] = row[8]
+        return result
+
+    def build_victim_cc_info_dict(self, row):
+        result = {}
+        result['first_name'] = row[0]
+        result['last_name'] = row[1]
+        result['victim_id'] = row[2]
+        result['name_on_card'] = row[3]
+        result['credit_card_number'] = row[4]
+        result['exp_date'] = row[5]
+        result['cvs'] = row[6]
         return result
 
     def build_address_dict(self, row):
@@ -95,6 +105,15 @@ class DisasterVictimHandler:
         else:
             victim = self.build_victim_info_dict(row)
         return jsonify(DisasterVictim = victim)
+
+    def getVictimCreditCard(self, vid):
+        victims_dao = DisasterVictimData()
+        victims_list = victims_dao.getVictimCreditCard(vid)
+        result_list = []
+        for row in victims_list:
+            result = self.build_victim_cc_info_dict(row)
+            result_list.append(result)
+        return jsonify(DisasterVictims = result_list)
 
     def getVictimByUserId(self,uid):
         victims_dao = DisasterVictimData()

@@ -45,7 +45,7 @@ class RequestCompletedData:
 
     def getRequestCompletedBySupplierId(self, supplier_id):
         cursor = self.conn.cursor()
-        query = "select resource_name, date_resolved, price, order_type from request_completed natural inner join supplier natural inner join resource where supplier_id = %s;"
+        query = "select request_completed_id, resource_name, date_resolved, price, order_type from request_completed natural inner join supplier natural inner join resource where supplier_id = %s;"
         cursor.execute(query, (supplier_id,))
         result = []
         for row in cursor:
@@ -54,7 +54,7 @@ class RequestCompletedData:
 
     def getRequestCompletedByVictimId(self, victim_id):
         cursor = self.conn.cursor()
-        query = "select * from request_completed natural inner join disaster_victim where victim_id = %s;"
+        query = "select victim_id, company_name, resource_name, date_resolved, order_type, price, total from request_completed natural inner join disaster_victim natural inner join supplier natural inner join resource natural inner join supplies natural inner join account where victim_id = %s;"
         cursor.execute(query, (victim_id,))
         result = []
         for row in cursor:
@@ -63,7 +63,7 @@ class RequestCompletedData:
 
     def getRequestCompletedByResourceId(self, resource_id):
         cursor = self.conn.cursor()
-        query = "select resource_name,date_resolved,price,order_type from request_completed natural inner join resource where resource_id = %s;"
+        query = "select request_completed_id, resource_name, price, quantity, total, date_resolved, order_type from request_completed natural inner join resource where resource_id = %s;"
         cursor.execute(query, (resource_id,))
         result = []
         for row in cursor:

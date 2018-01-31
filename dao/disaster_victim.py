@@ -18,7 +18,7 @@ class DisasterVictimData:
 
     def getVictimInfoById(self, victim_id):
         cursor = self.conn.cursor()
-        query = "select victim_id, first_name, last_name, street, city, state, country, zipcode, credit_card_number from disaster_victim natural inner join account natural inner join credit_card natural inner join address where victim_id = %s;"
+        query = "select victim_id, first_name, last_name, street, city, state, country, zipcode from disaster_victim natural inner join account natural inner join address where victim_id = %s;"
         cursor.execute(query, (victim_id,))
         result = cursor.fetchone()
         return result
@@ -37,6 +37,15 @@ class DisasterVictimData:
         result = cursor.fetchone()
         return result
 
+    def getVictimCreditCard(self, victim_id):
+        cursor = self.conn.cursor()
+        query = "select first_name, last_name, victim_id, name_on_card, credit_card_number, exp_date, cvs from disaster_victim natural inner join account natural inner join credit_card where victim_id = %s"
+        cursor.execute(query,(victim_id,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getAllVictims(self):
         cursor = self.conn.cursor()
         query = "select * from disaster_victim;"
@@ -48,7 +57,7 @@ class DisasterVictimData:
 
     def getAllVictimsInfo(self):
         cursor = self.conn.cursor()
-        query = "select victim_id, first_name, last_name, street, city, state, country, zipcode, credit_card_number from disaster_victim natural inner join account natural inner join credit_card natural inner join address;"
+        query = "select victim_id, first_name, last_name, street, city, state, country, zipcode from disaster_victim natural inner join account natural inner join address;"
         cursor.execute(query)
         result = []
         for row in cursor:
