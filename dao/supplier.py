@@ -116,10 +116,10 @@ class SupplierDAO:
         return result
 
 
-    def getSuppliersByResource(self,resource_name):
+    def getSuppliersOfResourceId(self, resource_id):
         cursor = self.conn.cursor()
-        query = "select first_name,last_name,company_name from account natural inner join supplier natural inner join supplies natural inner join resource where resource_name=%s;"
-        cursor.execute(query,(resource_name,))
+        query = "select first_name,last_name,company_name from account natural inner join supplier natural inner join supplies natural inner join resource where resource_id=%s;"
+        cursor.execute(query,(resource_id,))
         result = []
         for row in cursor:
             result.append(row)

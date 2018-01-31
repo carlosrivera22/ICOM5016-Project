@@ -17,37 +17,6 @@ CORS(app)
 def greeting():
     return render_template('index.html')
 
-@app.route('/DisasterApp/FreeResources')
-def getFreeResources():
-    return ResourceHandler().getFreeResources()
-
-# Products supplied by Supplier route
-@app.route('/DisasterApp/supplies/<string:rame>/supplier')
-def getSuppliersByResource(rame):
-    return SupplierHandler().getSuppliersByResource(rame)
-
-# Products supplied by region route
-@app.route('/DisasterApp/region/<int:region_id>/<int:resource_id>/resource')
-def getResourceByRegionIdAndResourceId(region_id,resource_id):
-    return DistributionRegionHandler().getResourcesByRegionIdAndResourceId(region_id,resource_id)
-
-#=====================================================
-
-# Request completed by Supplier route
-@app.route('/DisasterApp/supplier/<int:sid>/requestsCompleted')
-def getRequestCompletedBySupplierId(sid):
-    return RequestCompletedHandler().getRequestCompletedBySupplierId(sid)
-
-# Keyword search resources being requested, with sorting by resource name
-@app.route('/DisasterApp/resources/requested/<string:keyword>')
-def getRequestedResourcesByKeyword(keyword):
-    return RequestHandler().getAllRequestedResourcesByKeyword(keyword)
-
-# Keyword search resources available, with sorting by resource name
-@app.route('/DisasterApp/resources/available/<string:keyword>')
-def getAvailableResourcesByKeyword(keyword):
-    return ResourceHandler().getResourcesByKeywordAndAvailability(keyword,False,True)
-
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
 
@@ -70,10 +39,12 @@ def getVictimInfoById(victim_id):
     else:
         return DisasterVictimHandler().searchVictims(request.args)
 
+#9.a
 @app.route('/DisasterApp/DisasterVictim/<int:victim_id>/Request')
 def getRequestsByVictimId(victim_id):
     return RequestHandler().getRequestsInfoByVictimId(victim_id)
 
+#9.b
 @app.route('/DisasterApp/DisasterVictim/<int:victim_id>/RequestCompleted')
 def getRequestCompletedByVictimId(victim_id):
     return RequestCompletedHandler().getRequestCompletedByVictimId(victim_id)
@@ -103,9 +74,15 @@ def getSupplierById(supplier_id):
     else:
         return SupplierHandler().searchSuppliers(request.args)
 
+#6
 @app.route('/DisasterApp/Supplier/<int:supplier_id>/Resources')
 def getResourcesBySupplierId(supplier_id):
     return SupplierHandler().getResourcesBySupplierId(supplier_id)
+
+#10
+@app.route('/DisasterApp/Supplier/<int:supplier_id>/RequestCompleted')
+def getRequestCompletedBySupplierId(sid):
+    return RequestCompletedHandler().getRequestCompletedBySupplierId(supplier_id)
 
 # ------------------------------------------------------------------
 
@@ -121,28 +98,7 @@ def getAllResources():
         else:
             return ResourceHandler().searchResources(request.args)
 
-@app.route('/DisasterApp/Resource/Available')
-def getAvailableResources():
-    return ResourceHandler().getAvailableResources()
-
-
-@app.route('/DisasterApp/Resource/Request')
-def getNeededResources():
-    return RequestHandler().getAllRequestedResources()
-
-# Keyword search resources being requested, with sorting by resource name
-@app.route('/DisasterApp/Resource/Request/<string:keyword>')
-def getRequestedResourcesByKeyword(keyword):
-    return RequestHandler().getAllRequestedResourcesByKeyword(keyword)
-
-@app.route('/DisasterApp/Resource/Request/<string:keyword>/sort/<string:resource_name>')
-def getRequestedResourcesByKeywordSortedByResourceName(keyword):
-    return RequestHandler().getAllRequestedResourcesByKeywordSortedByResourceName(keyword, resource_name)
-
-@app.route('/DisasterApp/Resource/available/<string:keyword>')
-def getAvailableResourcesByKeyword(keyword):
-    return ResourceHandler().getResourcesByKeywordAndAvailability(keyword,False,True)
-
+#
 @app.route('/DisasterApp/Resource/<int:resource_id>', methods=['GET', 'PUT'])
 def getResourcesByResourceId(resource_id):
     if request.method == 'GET':
@@ -153,9 +109,43 @@ def getResourcesByResourceId(resource_id):
         return jsonify(Error="Method not allowed."), 405
 
 
+@app.route('/DisasterApp/Resource/Free')
+def getFreeResources():
+    return ResourceHandler().getFreeResources()
+
+#2
+@app.route('/DisasterApp/Resource/Available')
+def getAvailableResources():
+    return ResourceHandler().getAvailableResources()
+
+#5
+@app.route('/DisasterApp/Resource/Available/<string:keyword>')
+def getAvailableResourcesByKeyword(keyword):
+    return ResourceHandler().getResourcesByKeywordAndAvailability(keyword,False,True)
+
+#3
+@app.route('/DisasterApp/Resource/Request')
+def getNeededResources():
+    return RequestHandler().getAllRequestedResources()
+
+#4
+@app.route('/DisasterApp/Resource/Request/<string:keyword>')
+def getRequestedResourcesByKeyword(keyword):
+    return RequestHandler().getAllRequestedResourcesByKeyword(keyword)
+
+#7
+@app.route('/DisasterApp/Resource/<string:resource_id>/Supplier')
+def getSuppliersByResource(rame):
+    return SupplierHandler().getSuppliersOfResourceId(resource_id)
+
+#8
+@app.route('/DisasterApp/Resource/<int:resource_id>/Region/<int:region_id>')
+def getResourceByRegionIdAndResourceId(region_id, resource_id):
+    return DistributionRegionHandler().getResourcesByRegionIdAndResourceId(region_id, resource_id)
 
 # ------------------------------------------------------------------------------
-@app.route('/DisasterApp/CreditCards', methods=['GET','POST'])
+
+@app.route('/DisasterApp/DisasterVictim/CreditCard', methods=['GET','POST'])
 def getAllCreditCards():
     if request.method == 'POST':
         return CreditCardHandler().insertCreditCard(json.loads(list(request.form.to_dict().keys())[0]))
@@ -164,7 +154,7 @@ def getAllCreditCards():
             return CreditCardHandler().getAllCreditCards()
 
 # works phase3
-@app.route('/DisasterApp/Request', methods=['GET', 'POST'])
+@app.route('/DisasterApp/DisasterVictim/Request', methods=['GET', 'POST'])
 def getAllRequest():
     if request.method == 'POST':
         return RequestHandler().insertRequest(json.loads(list(request.form.to_dict().keys())[0]))

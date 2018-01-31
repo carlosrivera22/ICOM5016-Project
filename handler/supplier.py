@@ -136,9 +136,9 @@ class SupplierHandler:
             result_list.append(result)
         return jsonify(Request_Completed=result_list)
 
-    def getSuppliersByResource(self, resource_name):
+    def getSuppliersOfResourceId(self, resource_id):
         dao = SupplierDAO()
-        supplier_list = dao.getSuppliersByResource(resource_name)
+        supplier_list = dao.getSuppliersOfResourceId(resource_id)
         result_list = []
         for row in supplier_list:
             result = self.build_supplier_by_product_dict(row)
