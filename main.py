@@ -104,7 +104,7 @@ def getResourcesByResourceId(resource_id):
     if request.method == 'GET':
         return ResourceHandler().getResourcesById(resource_id)
     elif request.method == 'PUT':
-        return ResourceHandler().updateResource(resource_id, json.loads(list(request.form.to_dict().keys())[0]))
+        return ResourceHandler().updateResource(resource_id, request.form.to_dict())
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -148,7 +148,7 @@ def getResourceByRegionIdAndResourceId(region_id, resource_id):
 @app.route('/DisasterApp/DisasterVictim/CreditCard', methods=['GET','POST'])
 def getAllCreditCards():
     if request.method == 'POST':
-        return CreditCardHandler().insertCreditCard(json.loads(list(request.form.to_dict().keys())[0]))
+        return CreditCardHandler().insertCreditCard(json.loads(request.form.to_dict())
     else:
         if not request.args:
             return CreditCardHandler().getAllCreditCards()
@@ -157,7 +157,7 @@ def getAllCreditCards():
 @app.route('/DisasterApp/DisasterVictim/Request', methods=['GET', 'POST'])
 def getAllRequest():
     if request.method == 'POST':
-        return RequestHandler().insertRequest(json.loads(list(request.form.to_dict().keys())[0]))
+        return RequestHandler().insertRequest(request.form.to_dict())
     else:
         if not request.args:
             return RequestHandler().getAllRequests()
@@ -170,15 +170,15 @@ def getCreditCardById(credit_card_id):
     if request.method == 'GET':
         return CreditCardHandler().getCreditCardById(credit_card_id)
     elif request.method == 'PUT':
-        return CreditCardHandler().updateCreditCard(credit_card_id, json.loads(list(request.form.to_dict().keys())[0]))
+        return CreditCardHandler().updateCreditCard(credit_card_id, request.form.to_dict())
     else:
         return jsonify(Error="Method not allowed."), 405
 
 #Get Transaction of a Resource - funciona
-@app.route('/DisasterApp/Request_Completed/<resource_id>', methods=['GET'])
+@app.route('/DisasterApp/Request_Completed/<int:resource_id>', methods=['GET'])
 def getRequestCompletedByResourceId(resource_id):
     if request.method == 'GET':
-        return RequestCompletedHandler().getSaleRequestCompletedByResourceId(int(resource_id))
+        return RequestCompletedHandler().getSaleRequestCompletedByResourceId(resource_id)
     else:
         return jsonify(Error="Method not allowed."), 405
 
@@ -186,7 +186,7 @@ def getRequestCompletedByResourceId(resource_id):
 @app.route('/DisasterApp/RequestCompleted/Sale/', methods=['GET', 'POST'])
 def getAllSaleRequestCompleted():
     if request.method == 'POST':
-        return RequestCompletedHandler().insertSale(json.loads(list(request.form.to_dict().keys())[0]))
+        return RequestCompletedHandler().insertSale(request.form.to_dict())
     else:
         if not request.args:
             return RequestCompletedHandler().getAllSales()
@@ -201,7 +201,7 @@ def getResourceAnnouncement():
 @app.route('/DisasterApp/RequestCompleted/Donation/', methods=['GET', 'POST'])
 def getAllDonationRequestCompleted():
     if request.method == 'POST':
-        return RequestCompletedHandler().insertDonation(json.loads(list(request.form.to_dict().keys())[0]))
+        return RequestCompletedHandler().insertDonation(request.form.to_dict())
     else:
         if not request.args:
             return RequestCompletedHandler().getAllDonation()
