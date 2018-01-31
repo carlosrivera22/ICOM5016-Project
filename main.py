@@ -50,10 +50,6 @@ def getRequestsByVictimId(victim_id):
 def getRequestCompletedByVictimId(victim_id):
     return RequestCompletedHandler().getRequestCompletedByVictimId(victim_id)
 
-@app.route('/DisasterApp/DisasterVictim/<int:victim_id>/CreditCards')
-def getVictimCreditCard(victim_id):
-    return DisasterVictimHandler().getVictimCreditCard(victim_id)
-
 #14
 @app.route('/DisasterApp/DisasterVictim/Request', methods=['GET', 'POST'])
 def getAllRequest():
@@ -64,6 +60,19 @@ def getAllRequest():
             return RequestHandler().getAllRequests()
         else:
             return RequestHandler().searchRequests(request.args)
+
+#18
+@app.route('/DisasterApp/DisasterVictim/CreditCard', methods=['GET','POST'])
+def getAllCreditCards():
+    if request.method == 'POST':
+        return CreditCardHandler().insertCreditCard(request.form.to_dict())
+    else:
+        if not request.args:
+            return CreditCardHandler().getAllCreditCards()
+
+@app.route('/DisasterApp/DisasterVictim/<int:victim_id>/CreditCard')
+def getVictimCreditCard(victim_id):
+    return DisasterVictimHandler().getVictimCreditCard(victim_id)
 
 # ------------------------------------------------------------------------------
 
@@ -157,15 +166,6 @@ def getResourceByRegionIdAndResourceId(region_id, resource_id):
     return DistributionRegionHandler().getResourcesByRegionIdAndResourceId(region_id, resource_id)
 
 # ------------------------------------------------------------------------------
-
-#18
-@app.route('/DisasterApp/DisasterVictim/CreditCard', methods=['GET','POST'])
-def getAllCreditCards():
-    if request.method == 'POST':
-        return CreditCardHandler().insertCreditCard(request.form.to_dict())
-    else:
-        if not request.args:
-            return CreditCardHandler().getAllCreditCards()
 
 # works phase3
 

@@ -120,15 +120,15 @@ class ResourceHandler:
         if form and len(form) == 7:
             category_id = form['category_id']
             resource_name = form['resource_name']
-            quantity = form['quantity']
+            quantity = int(form['quantity'])
             keyword = form['keyword']
             subcategory_id = form['subcategory_id']
             supplier_id = form['supplier_id']
-            price = form['price']
+            price = float(form['price'])
 
             if category_id and resource_name and quantity and keyword and subcategory_id and supplier_id and price:
                 dao = ResourceData()
-                resource_id = dao.insert(category_id, resource_name, quantity, keyword, subcategory_id, subcategory_id, price)
+                resource_id = dao.insert(category_id, resource_name, quantity, keyword, subcategory_id, supplier_id, price)
                 result = {}
                 result["category_id"] = category_id
                 result["resource_name"] = resource_name
