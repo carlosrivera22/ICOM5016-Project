@@ -15,7 +15,7 @@ class RequestHandler:
         result['victim_id'] = row[0]
         result['resouce_name'] = row[1]
         result['date_submited'] = row[2]
-        result['is_available'] = row[3]
+        result['isavailable'] = row[3]
         result['quantity'] = row[4]
         return result
 
@@ -81,12 +81,15 @@ class RequestHandler:
 
     def getRequestsInfoByVictimId(self, vid):
         requests_dao = RequestData()
-        row = requests_dao.getRequestsInfoByVictimId(vid)
-        if not row:
+        requests_list = requests_dao.getRequestsInfoByVictimId(vid)
+        if not requests_list:
             return jsonify(Error = "Request Not Found"), 404
         else:
-            result = self.build_request_info_dict(row)
-        return jsonify(Request = result) 
+            result_list = []
+            for row in requests_list:
+                result = self.build_request_info_dict(row)
+                result_list.append(result)
+        return jsonify(Request = result_list) 
 
     def getRequestsByResourceId(self,resid):
         requests_dao = RequestData()
