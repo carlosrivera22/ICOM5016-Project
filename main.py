@@ -17,23 +17,9 @@ CORS(app)
 def greeting():
     return render_template('index.html')
 
-@app.route('/DisasterApp/allResources')
-def getAllResources():
-    return ResourceHandler().getAllResources()
-
-# Available Resources route
-@app.route('/DisasterApp/AvailableResources')
-def getAvailableResources():
-    return ResourceHandler().getAvailableResources()
-
 @app.route('/DisasterApp/FreeResources')
 def getFreeResources():
     return ResourceHandler().getFreeResources()
-
-# Needed Resources route
-@app.route('/DisasterApp/RequestedResources')
-def getNeededResources():
-    return RequestHandler().getAllRequestedResources()
 
 # Products supplied by Supplier route
 @app.route('/DisasterApp/supplies/<string:rame>/supplier')
@@ -65,8 +51,6 @@ def getAvailableResourcesByKeyword(keyword):
 # ---------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
 
-# Phase3
-
 # DISASTER VICTIM ROUTES
 
 @app.route('/DisasterApp/DisasterVictim', methods=['GET', 'POST'])
@@ -86,13 +70,13 @@ def getVictimInfoById(victim_id):
     else:
         return DisasterVictimHandler().searchVictims(request.args)
 
-@app.route('/DisasterApp/DisasterVictim/<int:victim_id>/Requests')
+@app.route('/DisasterApp/DisasterVictim/<int:victim_id>/Request')
 def getRequestsByVictimId(victim_id):
-    return DisasterVictimHandler().getRequestsByVictimId(victim_id)
+    return RequestHandler().getRequestsInfoByVictimId(victim_id)
 
 @app.route('/DisasterApp/DisasterVictim/<int:victim_id>/RequestCompleted')
 def getRequestCompletedByVictimId(victim_id):
-    return DisasterVictimHandler().getRequestCompletedByVictimId(victim_id)
+    return RequestCompletedHandler().getRequestCompletedByVictimId(victim_id)
 
 @app.route('/DisasterApp/DisasterVictim/<int:victim_id>/CreditCards')
 def getVictimCreditCard(victim_id):
@@ -125,27 +109,40 @@ def getResourcesBySupplierId(supplier_id):
 
 # ------------------------------------------------------------------
 
-@app.route('/DisasterApp/CreditCards', methods=['GET','POST'])
-def getAllCreditCards():
-    if request.method == 'POST':
-        return CreditCardHandler().insertCreditCard(json.loads(list(request.form.to_dict().keys())[0]))
-    else:
-        if not request.args:
-            return CreditCardHandler().getAllCreditCards()
+# RESOURCE ROUTES
 
-#funciona phase3 --
 @app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
-def getAllResource():
+def getAllResources():
     if request.method == 'POST':
-        return ResourceHandler().insertResource(json.loads(list(request.form.to_dict().keys())[0]))
+        return ResourceHandler().insertResource(request.form.to_dict())
     else:
         if not request.args:
             return ResourceHandler().getAllResources()
         else:
             return ResourceHandler().searchResources(request.args)
 
+@app.route('/DisasterApp/Resource/Available')
+def getAvailableResources():
+    return ResourceHandler().getAvailableResources()
 
-# Works phase 3
+
+@app.route('/DisasterApp/Resource/Request')
+def getNeededResources():
+    return RequestHandler().getAllRequestedResources()
+
+# Keyword search resources being requested, with sorting by resource name
+@app.route('/DisasterApp/Resource/Request/<string:keyword>')
+def getRequestedResourcesByKeyword(keyword):
+    return RequestHandler().getAllRequestedResourcesByKeyword(keyword)
+
+@app.route('/DisasterApp/Resource/Request/<string:keyword>/sort/<string:resource_name>')
+def getRequestedResourcesByKeywordSortedByResourceName(keyword):
+    return RequestHandler().getAllRequestedResourcesByKeywordSortedByResourceName(keyword, resource_name)
+
+@app.route('/DisasterApp/Resource/available/<string:keyword>')
+def getAvailableResourcesByKeyword(keyword):
+    return ResourceHandler().getResourcesByKeywordAndAvailability(keyword,False,True)
+
 @app.route('/DisasterApp/Resource/<int:resource_id>', methods=['GET', 'PUT'])
 def getResourcesByResourceId(resource_id):
     if request.method == 'GET':
@@ -155,6 +152,16 @@ def getResourcesByResourceId(resource_id):
     else:
         return jsonify(Error="Method not allowed."), 405
 
+
+
+# ------------------------------------------------------------------------------
+@app.route('/DisasterApp/CreditCards', methods=['GET','POST'])
+def getAllCreditCards():
+    if request.method == 'POST':
+        return CreditCardHandler().insertCreditCard(json.loads(list(request.form.to_dict().keys())[0]))
+    else:
+        if not request.args:
+            return CreditCardHandler().getAllCreditCards()
 
 # works phase3
 @app.route('/DisasterApp/Request', methods=['GET', 'POST'])
@@ -167,7 +174,6 @@ def getAllRequest():
         else:
             return RequestHandler().searchRequests(request.args)
 
-
 #Credit Card Update - funciona phase3
 @app.route('/DisasterApp/CreditCard/<int:credit_card_id>', methods=['GET','PUT'])
 def getCreditCardById(credit_card_id):
@@ -177,7 +183,6 @@ def getCreditCardById(credit_card_id):
         return CreditCardHandler().updateCreditCard(credit_card_id, json.loads(list(request.form.to_dict().keys())[0]))
     else:
         return jsonify(Error="Method not allowed."), 405
-
 
 #Get Transaction of a Resource - funciona
 @app.route('/DisasterApp/Request_Completed/<resource_id>', methods=['GET'])
@@ -196,15 +201,12 @@ def getAllSaleRequestCompleted():
         if not request.args:
             return RequestCompletedHandler().getAllSales()
 
-
 @app.route('/DisasterApp/Resource/Announcement', methods=['GET'])
 def getResourceAnnouncement():
     if request.method == 'GET':
         return ResourceHandler().getAnnouncement()
     else:
         return jsonify(Error="Method not allowed."), 405
-
-
 
 @app.route('/DisasterApp/RequestCompleted/Donation/', methods=['GET', 'POST'])
 def getAllDonationRequestCompleted():
@@ -213,7 +215,6 @@ def getAllDonationRequestCompleted():
     else:
         if not request.args:
             return RequestCompletedHandler().getAllDonation()
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

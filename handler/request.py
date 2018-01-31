@@ -10,6 +10,15 @@ class RequestHandler:
         result['resource_id'] = row[2]
         return result
 
+    def build_request_info_dict(self, row):
+        result = {}
+        result['victim_id'] = row[0]
+        result['resouce_name'] = row[1]
+        result['date_submited'] = row[2]
+        result['is_available'] = row[3]
+        result['quantity'] = row[4]
+        return result
+
     def build_resource_dict(self, row):
         result = {}
         result['resource_id'] = row[0]
@@ -24,8 +33,6 @@ class RequestHandler:
         result = {}
         result['resource_name'] = row[0]
         return result
-
-
 
     def getAllRequests(self):
         requests_dao = RequestData()
@@ -65,12 +72,21 @@ class RequestHandler:
 
     def getRequestsByVictimId(self,vid):
         requests_dao = RequestData()
-        row = requests_dao.getRequestById(vid)
+        row = requests_dao.getRequestByVictimId(vid)
         if not row:
             return jsonify(Error = "Request Not Found"), 404
         else:
             result = self.build_request_dict(row)
         return jsonify(Request = result)
+
+    def getRequestsInfoByVictimId(self, vid):
+        requests_dao = RequestData()
+        row = requests_dao.getRequestsInfoByVictimId(vid)
+        if not row:
+            return jsonify(Error = "Request Not Found"), 404
+        else:
+            result = self.build_request_info_dict(row)
+        return jsonify(Request = result) 
 
     def getRequestsByResourceId(self,resid):
         requests_dao = RequestData()

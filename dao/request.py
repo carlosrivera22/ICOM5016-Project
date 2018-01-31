@@ -53,6 +53,15 @@ class RequestData:
             result.append(row)
         return result
 
+    def getRequestsInfoByVictimId(self,vid):
+        cursor = self.conn.cursor()
+        query = "select victim_id, resource_name, date_submited, is_available, quantity from request natural inner join requestby natural inner join disaster_victim natural inner join resource where victim_id = %s"
+        cursor.execute(query, (vid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def getRequestsByResourceId(self,resid):
         cursor = self.conn.cursor()
         query = "select * from request natural inner join resource where resource_id = %s;"
