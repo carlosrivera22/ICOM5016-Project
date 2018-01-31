@@ -3,20 +3,6 @@ from dao.request_completed import RequestCompletedData
 
 class RequestCompletedHandler:
 
-    '''
-    def build_sale_attributes(self,request_completed_id,date_resolved,supplier_id,victim_id,resource_id,price,quantity):
-        result = {}
-        result['request_completed_id'] = request_completed_id
-        result['date_resolved'] = date_resolved
-        result['supplier_id'] = supplier_id
-        result['victim_id'] = victim_id
-        result['resource_id'] = resource_id
-        result['price'] = price
-        result['quantity'] = quantity
-        return result
-    '''
-
-
     def build_sale_request_completed_dict(self,row):
         result={}
         result['request_id'] = row[0]
@@ -33,16 +19,6 @@ class RequestCompletedHandler:
         result['date_resolved'] = row[2]
         result['price'] = row[3]
         result['company_name'] = row[4]
-        result['victim_id'] = row[5]
-        return result
-
-    def build_donation_request_completed_dict(self,row):
-        result = {}
-        result['request_completed_id'] = row[0]
-        result['request_id'] = row[1]
-        result['date_resolved'] = row[2]
-        result['order_type'] = row[3]
-        result['supplier_id'] = row[4]
         result['victim_id'] = row[5]
         return result
 
@@ -91,32 +67,6 @@ class RequestCompletedHandler:
         result['keyword'] = row[5]
         return result
 
-
-    def build_sale_attributes(self, request_completed_id, date_resolved, supplier_id, victim_id, resource_id, price,
-                              quantity):
-        result = {}
-        result['request_completed_id'] = request_completed_id
-        result['date_resolved'] = date_resolved
-        result['supplier_id'] = supplier_id
-        result['victim_id'] = victim_id
-        result['resource_id'] = resource_id
-        result['price'] = price
-        result['quantity'] = quantity
-        return result
-
-    def build_donation_attributes(self, request_completed_id, date_resolved, supplier_id, victim_id, resource_id, price,
-                                  quantity):
-        result = {}
-        result['request_completed_id'] = request_completed_id
-        result['date_resolved'] = date_resolved
-        result['supplier_id'] = supplier_id
-        result['victim_id'] = victim_id
-        result['resource_id'] = resource_id
-        result['price'] = price
-        result['quantity'] = quantity
-        return result
-
-
     def getAllRequestsCompleted(self):
         requests_completed_dao = RequestCompletedData()
         requests_completed_list = requests_completed_dao.getAllRequestsCompleted()
@@ -134,17 +84,6 @@ class RequestCompletedHandler:
             result = self.build_sale_request_completed_dict(row)
             result_list.append(result)
         return jsonify(Sales=result_list)
-
-
-    def getAllDonation(self):
-        donation_data = RequestCompletedData()
-        donation_list = donation_data.getAllDonation()
-        result_list = []
-        for row in donation_list:
-            result = self.build_donation_request_completed_dict(row)
-            result_list.append(result)
-        return jsonify(Donation=result_list)
-
 
     def getRequestCompletedById(self, request_completed_id):
         requests_completed_dao = RequestCompletedData()
@@ -228,29 +167,68 @@ class RequestCompletedHandler:
             result = self.build_transaction_dict(row)
             result_list.append(result)
         return jsonify(Transaction=result_list)
-
+#Mikael insert donation method.....................................................................................................
     def insertSale(self, form):
-        if len(form) != 6:
+        if len(form) != 5:
             return jsonify(Error="Malformed post request"), 400
         else:
             date_resolved = form['date_resolved']
             supplier_id = form['supplier_id']
             victim_id = form['victim_id']
             resource_id = form['resource_id']
-            price = form['price']
             quantity = int(form['quantity'])
 
-            if date_resolved and supplier_id and victim_id and resource_id and price and quantity:
+            if date_resolved and supplier_id and victim_id and resource_id and quantity:
                 dao = RequestCompletedData()
-                request_completed_id = dao.insertSale(date_resolved, supplier_id, victim_id, resource_id, price,
-                                                       int(quantity))
-                result = self.build_sale_attributes(request_completed_id, date_resolved, supplier_id, victim_id,
-                                                    resource_id, price, quantity)
+                request_completed_id = dao.insertSale(date_resolved, supplier_id, victim_id, resource_id, quantity)
+                result = self.build_sale_attributes(request_completed_id, date_resolved, supplier_id, victim_id, resource_id, price, quantity)
                 return jsonify(Sale=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+        
+    def getAllSales(self):
+        sale_data = RequestCompletedData()
+        sale_list = sale_data.getAllSales()
+        result_list = []
+        for row in sale_list:
+            result = self.build_sale_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Sales=result_list)
+
+        
+    def build_sale_attributes(self, request_completed_id, date_resolved, supplier_id, victim_id, resource_id, total, quantity):
+        result = {}
+        result['request_completed_id'] = request_completed_id
+        result['date_resolved'] = date_resolved
+        result['supplier_id'] = supplier_id
+        result['victim_id'] = victim_id
+        result['resource_id'] = resource_id
+        result['total'] = total
+        result['quantity'] = quantity
+        return result
+    
+    def build_sale_request_completed_dict(self, row):
+        result = {}
+        result['request_completed_id'] = row[0]
+        result['request_id'] = row[1]
+        result['date_resolved'] = row[2]
+        result['order_type'] = row[3]
+        result['supplier_id'] = row[4]
+        result['victim'] = row[5]
+        result['resource_id'] = row[6]
+        result['total'] = row[7]
+        result['quantity'] = row[8]
+        result['credit_card_id'] = row[9]
+        result['credit_card_number'] = row[10]
+        result['name_on_card'] = row[11]
+        result['exp_date'] = row[12]
+        result['cvs'] = row[13]
+        return result
+#............................................END OF SALES METHODS...................................................................................
 
 
+
+#Mikael insert donation method.....................................................................................................
     def insertDonation(self, form):
         if len(form) != 5:
             return jsonify(Error="Malformed post request"), 400
@@ -262,23 +240,46 @@ class RequestCompletedHandler:
             quantity = int(form['quantity'])
 
             if date_resolved and supplier_id and victim_id and resource_id and quantity:
-                isavailable = True
-                print(quantity)
-                if (int(quantity) - 1 <= 0):
-                    quantity = 0
-                    print(quantity)
-                    isavailable = False
-                else:
-                    quantity = int(quantity) - 1
-                    print(quantity)
                 dao = RequestCompletedData()
-                request_completed_id = dao.insertDonation(date_resolved, supplier_id, victim_id, resource_id,
-                                                          str(quantity),isavailable)
-                result = self.build_donation_attributes(request_completed_id, date_resolved, supplier_id, victim_id,
-                                                        resource_id, 0.00, quantity)
+                request_completed_id = dao.insertDonation(date_resolved, supplier_id, victim_id, resource_id, str(quantity))
+                result = self.build_donation_attributes(request_completed_id, date_resolved, 'Donation', supplier_id, victim_id, resource_id, quantity)
                 return jsonify(Donation=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
+
+    def getAllDonation(self):
+        donation_data = RequestCompletedData()
+        donation_list = donation_data.getAllDonation()
+        result_list = []
+        for row in donation_list:
+            result = self.build_donation_request_completed_dict(row)
+            result_list.append(result)
+        return jsonify(Donation=result_list)
+
+    def build_donation_attributes(self, request_completed_id, date_resolved, order_type, supplier_id, victim_id, resource_id, quantity):
+        result = {}
+        result['request_completed_id'] = request_completed_id
+        result['date_resolved'] = date_resolved
+        result['order_type'] = order_type
+        result['supplier_id'] = supplier_id
+        result['victim_id'] = victim_id
+        result['resource_id'] = resource_id
+        result['quantity'] = quantity
+        return result
+    
+    def build_donation_request_completed_dict(self, row):
+        result = {}
+        result['request_completed_id'] = row[0]
+        result['request_id'] = row[1]
+        result['date_resolved'] = row[2]
+        result['order_type'] = row[3]
+        result['supplier_id'] = row[4]
+        result['victim'] = row[5]
+        result['resource_id'] = row[6]
+        result['total'] = row[7]
+        result['quantity'] = row[8]
+        return result
+#............................................END OF DONATIONS METHODS...................................................................................
 
 
 

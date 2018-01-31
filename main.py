@@ -202,7 +202,7 @@ def getAllSaleRequestCompleted():
 @app.route('/DisasterApp/Resource/Announcement', methods=['GET'])
 def getResourceAnnouncement():
     if request.method == 'GET':
-        return ResourceHandler().getAnnouncement()
+        return ResourceHandlegr().getAnnouncement()
     else:
         return jsonify(Error="Method not allowed."), 405
 

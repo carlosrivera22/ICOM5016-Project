@@ -130,8 +130,7 @@ class ResourceData:
         self.conn.commit()
         return resource_id
 
-    def update(self, resource_id, category_id, resource_name, isavailable, isneeded, quantity, keyword, subcategory_id,
-               supplier_id, price, isfree):
+    def update(self, resource_id, category_id, resource_name, isavailable, isneeded, quantity, keyword, subcategory_id, supplier_id, price, isfree):
         cursor = self.conn.cursor()
         query_1 = "update resource set category_id = %s, resource_name = %s, isavailable = %s, isneeded = %s, quantity = %s, keyword = %s, subcategory_id = %s where resource_id=%s;"
         cursor.execute(query_1, (category_id, resource_name, isavailable, isneeded, quantity, keyword, subcategory_id, resource_id))
