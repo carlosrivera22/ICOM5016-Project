@@ -22,6 +22,7 @@ def greeting():
 
 # DISASTER VICTIM ROUTES
 
+#11
 @app.route('/DisasterApp/DisasterVictim', methods=['GET', 'POST'])
 def getAllVictims():
     if request.method == 'POST':
@@ -52,6 +53,17 @@ def getRequestCompletedByVictimId(victim_id):
 @app.route('/DisasterApp/DisasterVictim/<int:victim_id>/CreditCards')
 def getVictimCreditCard(victim_id):
     return DisasterVictimHandler().getVictimCreditCard(victim_id)
+
+#14
+@app.route('/DisasterApp/DisasterVictim/Request', methods=['GET', 'POST'])
+def getAllRequest():
+    if request.method == 'POST':
+        return RequestHandler().insertRequest(request.form.to_dict())
+    else:
+        if not request.args:
+            return RequestHandler().getAllRequests()
+        else:
+            return RequestHandler().searchRequests(request.args)
 
 # ------------------------------------------------------------------------------
 
@@ -88,6 +100,7 @@ def getRequestCompletedBySupplierId(sid):
 
 # RESOURCE ROUTES
 
+#12
 @app.route('/DisasterApp/Resource', methods=['GET', 'POST'])
 def getAllResources():
     if request.method == 'POST':
@@ -98,7 +111,7 @@ def getAllResources():
         else:
             return ResourceHandler().searchResources(request.args)
 
-#
+#19
 @app.route('/DisasterApp/Resource/<int:resource_id>', methods=['GET', 'PUT'])
 def getResourcesByResourceId(resource_id):
     if request.method == 'GET':
@@ -145,27 +158,20 @@ def getResourceByRegionIdAndResourceId(region_id, resource_id):
 
 # ------------------------------------------------------------------------------
 
+#18
 @app.route('/DisasterApp/DisasterVictim/CreditCard', methods=['GET','POST'])
 def getAllCreditCards():
     if request.method == 'POST':
-        return CreditCardHandler().insertCreditCard(json.loads(request.form.to_dict())
+        return CreditCardHandler().insertCreditCard(request.form.to_dict())
     else:
         if not request.args:
             return CreditCardHandler().getAllCreditCards()
 
 # works phase3
-@app.route('/DisasterApp/DisasterVictim/Request', methods=['GET', 'POST'])
-def getAllRequest():
-    if request.method == 'POST':
-        return RequestHandler().insertRequest(request.form.to_dict())
-    else:
-        if not request.args:
-            return RequestHandler().getAllRequests()
-        else:
-            return RequestHandler().searchRequests(request.args)
 
 #Credit Card Update - funciona phase3
-@app.route('/DisasterApp/CreditCard/<int:credit_card_id>', methods=['GET','PUT'])
+#20
+@app.route('/DisasterApp/DisasterVictim/CreditCard/<int:credit_card_id>', methods=['GET','PUT'])
 def getCreditCardById(credit_card_id):
     if request.method == 'GET':
         return CreditCardHandler().getCreditCardById(credit_card_id)
@@ -175,7 +181,8 @@ def getCreditCardById(credit_card_id):
         return jsonify(Error="Method not allowed."), 405
 
 #Get Transaction of a Resource - funciona
-@app.route('/DisasterApp/Request_Completed/<int:resource_id>', methods=['GET'])
+#17
+@app.route('/DisasterApp/RequestCompleted/<int:resource_id>', methods=['GET'])
 def getRequestCompletedByResourceId(resource_id):
     if request.method == 'GET':
         return RequestCompletedHandler().getSaleRequestCompletedByResourceId(resource_id)
@@ -183,7 +190,8 @@ def getRequestCompletedByResourceId(resource_id):
         return jsonify(Error="Method not allowed."), 405
 
 # NOT TESTED
-@app.route('/DisasterApp/RequestCompleted/Sale/', methods=['GET', 'POST'])
+#15
+@app.route('/DisasterApp/Sale', methods=['GET', 'POST'])
 def getAllSaleRequestCompleted():
     if request.method == 'POST':
         return RequestCompletedHandler().insertSale(request.form.to_dict())
@@ -198,7 +206,8 @@ def getResourceAnnouncement():
     else:
         return jsonify(Error="Method not allowed."), 405
 
-@app.route('/DisasterApp/RequestCompleted/Donation/', methods=['GET', 'POST'])
+#16
+@app.route('/DisasterApp/Donation', methods=['GET', 'POST'])
 def getAllDonationRequestCompleted():
     if request.method == 'POST':
         return RequestCompletedHandler().insertDonation(request.form.to_dict())

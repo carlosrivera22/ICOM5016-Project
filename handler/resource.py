@@ -117,34 +117,27 @@ class ResourceHandler:
         return result
 
     def insertResource(self, form):
-        if form and len(form) == 10:
+        if form and len(form) == 7:
             category_id = form['category_id']
             resource_name = form['resource_name']
-            isavailable = form['isavailable']
-            isneeded = form['isneeded']
             quantity = form['quantity']
             keyword = form['keyword']
             subcategory_id = form['subcategory_id']
             supplier_id = form['supplier_id']
             price = form['price']
-            isfree = form['isfree']
 
-            if category_id and resource_name and isavailable and isneeded and quantity and keyword and subcategory_id and supplier_id and price and isfree:
+            if category_id and resource_name and quantity and keyword and subcategory_id and supplier_id and price:
                 dao = ResourceData()
-                resource_id = dao.insert(category_id, resource_name, isavailable, isneeded, quantity, keyword,
-                                         subcategory_id, subcategory_id,
-                                         price, isfree)
+                resource_id = dao.insert(category_id, resource_name, quantity, keyword, subcategory_id, subcategory_id, price)
                 result = {}
                 result["category_id"] = category_id
                 result["resource_name"] = resource_name
-                result["isavailable"] = isavailable
-                result["isneeded"] = isneeded
                 result["quantity"] = quantity
                 result["keyword"] = keyword
                 result["subcategory_id"] = subcategory_id
                 result["supplier_id"] = supplier_id
                 result["price"] = price
-                result["isfree"] = isfree
+
                 return jsonify(Resource=result), 201
             else:
                 return jsonify(Error="Malformed post request")

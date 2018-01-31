@@ -71,10 +71,10 @@ class RequestData:
             result.append(row)
         return result
 
-    def insert(self, date_sumited, resource_id, victim_id):
+    def insert(self, date_submited, resource_id, victim_id):
         cursor = self.conn.cursor()
         query_1 = "insert into Request(date_submited, resource_id) values (%s, %s) returning request_id;"
-        cursor.execute(query_1, (date_sumited, resource_id))
+        cursor.execute(query_1, (date_submited, resource_id))
         request_id = cursor.fetchone()[0]
         query_2 = "insert into RequestBy(victim_id, request_id) values (%s, %s) returning requestBy_id"
         cursor.execute(query_2, (victim_id, request_id))
