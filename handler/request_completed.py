@@ -14,12 +14,14 @@ class RequestCompletedHandler:
 
     def build_transaction_dict(self,row):
         result = {}
-        result['request_completed_id'] = [0]
+        result['request_completed_id'] = row[0]
         result['resource_name'] = row[1]
         result['date_resolved'] = row[2]
-        result['price'] = row[3]
+        result['total'] = row[3]
         result['company_name'] = row[4]
         result['victim_id'] = row[5]
+        result['r.quantity'] = row[6]
+        result['rq.quantity'] = row[7]
         return result
 
     def build_request_completed_dict(self,row):
@@ -186,6 +188,7 @@ class RequestCompletedHandler:
             result = self.build_transaction_dict(row)
             result_list.append(result)
         return jsonify(Transaction=result_list)
+
 #Mikael insert sale method.....................................................................................................
     def insertSale(self, form):
         if len(form) != 6:
