@@ -74,6 +74,16 @@ def getAllCreditCards():
 def getVictimCreditCard(victim_id):
     return DisasterVictimHandler().getVictimCreditCard(victim_id)
 
+#20
+@app.route('/DisasterApp/DisasterVictim/CreditCard/<int:credit_card_id>', methods=['GET','PUT'])
+def getCreditCardById(credit_card_id):
+    if request.method == 'GET':
+        return CreditCardHandler().getCreditCardById(credit_card_id)
+    elif request.method == 'PUT':
+        return CreditCardHandler().updateCreditCard(credit_card_id, request.form.to_dict())
+    else:
+        return jsonify(Error="Method not allowed."), 405
+
 # ------------------------------------------------------------------------------
 
 # SUPPLIER ROUTES
@@ -170,20 +180,12 @@ def getResourceByRegionId(region_id):
     return ResourceHandler().getResourcesByRegionId(region_id)
 # ------------------------------------------------------------------------------
 
-# works phase3
+# REQUESTS ROUTES
 
-#Credit Card Update - funciona phase3
-#20
-@app.route('/DisasterApp/DisasterVictim/CreditCard/<int:credit_card_id>', methods=['GET','PUT'])
-def getCreditCardById(credit_card_id):
-    if request.method == 'GET':
-        return CreditCardHandler().getCreditCardById(credit_card_id)
-    elif request.method == 'PUT':
-        return CreditCardHandler().updateCreditCard(credit_card_id, request.form.to_dict())
-    else:
-        return jsonify(Error="Method not allowed."), 405
+@app.route('/DisasterApp/RequestCompleted', methods=['GET'])
+def getAllRequestsCompleted():
+        return RequestCompletedHandler().getAllRequestsCompleted()
 
-#Get Transaction of a Resource - funciona
 #17
 @app.route('/DisasterApp/RequestCompleted/<int:resource_id>', methods=['GET'])
 def getRequestCompletedByResourceId(resource_id):
@@ -192,9 +194,8 @@ def getRequestCompletedByResourceId(resource_id):
     else:
         return jsonify(Error="Method not allowed."), 405
 
-# NOT TESTED
 #15
-@app.route('/DisasterApp/Sale', methods=['GET', 'POST'])
+@app.route('/DisasterApp/RequestCompleted/Sale', methods=['GET', 'POST'])
 def getAllSaleRequestCompleted():
     if request.method == 'POST':
         return RequestCompletedHandler().insertSale(request.form.to_dict())
@@ -202,10 +203,18 @@ def getAllSaleRequestCompleted():
         if not request.args:
             return RequestCompletedHandler().getAllSales()
 
-#Annoucement Routes.....................................................................................................................................................
+#16
+@app.route('/DisasterApp/RequestCompleted/Donation', methods=['GET', 'POST'])
+def getAllDonationRequestCompleted():
+    if request.method == 'POST':
+        return RequestCompletedHandler().insertDonation(request.form.to_dict())
+    else:
+        if not request.args:
+            return RequestCompletedHandler().getAllDonation()
+
+#Announcement Routes.....................................................................................................................................................
 #1
 #13
-
 @app.route('/DisasterApp/Resource/Announcement', methods=['GET', 'POST'])
 def getAllResourceAnnouncement():
     if request.method == 'POST':
@@ -217,15 +226,6 @@ def getAllResourceAnnouncement():
 def getAnnouncementByResourceId(resource_id):
         return ResourceHandler().getAnnouncementByResourceId(resource_id)
 #End of announcement routes.............................................................................................................................................
-
-#16
-@app.route('/DisasterApp/Donation', methods=['GET', 'POST'])
-def getAllDonationRequestCompleted():
-    if request.method == 'POST':
-        return RequestCompletedHandler().insertDonation(request.form.to_dict())
-    else:
-        if not request.args:
-            return RequestCompletedHandler().getAllDonation()
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -28,8 +28,21 @@ class RequestCompletedHandler:
         result = {}
         result['resource_name'] = row[0]
         result['date_resolved'] = row[1]
-        result['price'] = row[2]
+        result['total'] = row[2]
         result['order_type'] = row[3]
+        return result
+
+    def build_all_request_completed_dict(self,row):
+        result = {}
+        result['request_completed_id'] = row[0]
+        result['request_id'] = row[1]
+        result['date_resolved'] = row[2]
+        result['order_type'] = row[3]
+        result['supplier_id'] = row[4]
+        result['victim_id'] = row[5]
+        result['resource_id'] = row[6]
+        result['total'] = row[7]
+        result['quantity'] = row[8]
         return result
 
     def build_request_completed_info_dict(self,row):
@@ -84,18 +97,9 @@ class RequestCompletedHandler:
         requests_completed_list = requests_completed_dao.getAllRequestsCompleted()
         result_list = []
         for row in requests_completed_list:
-            result = self.build_request_completed_dict(row)
+            result = self.build_all_request_completed_dict(row)
             result_list.append(result)
         return jsonify(Requests = result_list)
-
-    def getAllSales(self):
-        sale_data = RequestCompletedData()
-        sale_list = sale_data.getAllSales()
-        result_list = []
-        for row in sale_list:
-            result = self.build_sale_request_completed_dict(row)
-            result_list.append(result)
-        return jsonify(Sales=result_list)
 
     def getRequestCompletedById(self, request_completed_id):
         requests_completed_dao = RequestCompletedData()
@@ -238,7 +242,7 @@ class RequestCompletedHandler:
         result['date_resolved'] = row[2]
         result['order_type'] = row[3]
         result['supplier_id'] = row[4]
-        result['victim'] = row[5]
+        result['victim_id'] = row[5]
         result['resource_id'] = row[6]
         result['total'] = row[7]
         result['quantity'] = row[8]
@@ -298,7 +302,7 @@ class RequestCompletedHandler:
         result['date_resolved'] = row[2]
         result['order_type'] = row[3]
         result['supplier_id'] = row[4]
-        result['victim'] = row[5]
+        result['victim_id'] = row[5]
         result['resource_id'] = row[6]
         result['total'] = row[7]
         result['quantity'] = row[8]

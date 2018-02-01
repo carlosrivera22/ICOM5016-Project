@@ -161,7 +161,7 @@ class RequestCompletedData:
 
     def getAllSales(self):
         cursor = self.conn.cursor()
-        query = "select request_complete_id, request_id, date_resolved, order_type, supplier_id, victim_id, resource_id, total, quantity, credit_card_id, credit_card_number, name_on_card, exp_date, cvs from request_completed natural inner join where order_type = 'Sale';"
+        query = "select request_completed_id, request_id, date_resolved, order_type, supplier_id, victim_id, resource_id, total, quantity, credit_card_id, credit_card_number, name_on_card, exp_date, cvs from request_completed natural inner join sale natural inner join credit_card where order_type = 'Sale';"
         cursor.execute(query)
         result = []
         for row in cursor:
