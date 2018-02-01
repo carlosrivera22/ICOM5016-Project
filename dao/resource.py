@@ -141,7 +141,7 @@ class ResourceData:
 #Annoucement DAO methods....................................................................................................................................................
     def getAllAnnouncement(self):
         cursor = self.conn.cursor()
-        query = "SELECT resource_id, resource_name, quantity, price, isavailable, first_name, last_name, company_name from resource natural inner join announcement natural inner join supplies natural inner join account;"
+        query = "SELECT resource_id, resource_name, quantity, price, isavailable, first_name, last_name, company_name from resource natural inner join announcement natural inner join supplies natural inner join account natural inner join supplier;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -150,8 +150,8 @@ class ResourceData:
 
     def getAnnouncementByResourceId(self, resource_id):
         cursor = self.conn.cursor()
-        query = "SELECT resource_id, resource_name, quantity, price, isavailable, first_name, last_name, company_name from resource natural inner join announcement natural inner join supplies natural inner join account where resource_id = %s;"
-        cursor.execute(query, (resource_id))
+        query = "SELECT resource_id, resource_name, quantity, price, isavailable, first_name, last_name, company_name from resource natural inner join announcement natural inner join supplies natural inner join account natural inner join supplier where resource_id = %s;"
+        cursor.execute(query, (resource_id,))
         result = []
         for row in cursor:
             result.append(row)
@@ -159,8 +159,8 @@ class ResourceData:
 
     def insertAnnouncement(self,resource_id):
         cursor = self.conn.cursor()
-        query = "insert into announcement(resource_id) values (%s) returning annoucement_id;"
-        cursor.execute(query,(resource_id))
+        query = "insert into announcement(resource_id) values (%s) returning announcement_id;"
+        cursor.execute(query,(resource_id,))
         annoucement_id = cursor.fetchone()[0]
         self.conn.commit()
         return annoucement_id

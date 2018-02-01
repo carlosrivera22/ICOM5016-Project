@@ -179,16 +179,16 @@ class ResourceHandler:
         for row in resource_list:
             result = self.build_annoucement_dict(row)
             result_list.append(result)
-        return jsonify(Resources = result_list)
+        return jsonify(Announcements = result_list)
 
-    def getAnnouncementByResourceId(self,resource_id):
+    def getAnnouncementByResourceId(self, resource_id):
         resource_dao = ResourceData()
-        row = resource_dao.getAnnouncementByResourceId(resource_id)
-        if not row:
-            return jsonify(Error="User Not Found"), 404
-        else:
-            resource = self.build_annoucement_dict(row)
-            return jsonify(Resources = resource)
+        resource_list = resource_dao.getAnnouncementByResourceId(resource_id)
+        result_list = []
+        for row in resource_list:
+            result = self.build_annoucement_dict(row)
+            result_list.append(result)
+        return jsonify(Announcements = result_list)
 #insert announcement
     def insertAnnouncement(self, form):
         if len(form) != 1:
@@ -198,9 +198,9 @@ class ResourceHandler:
             if resource_id:
                 data = ResourceData()
                 annoucement_id = data.insertAnnouncement(resource_id)
-                row = data.getAnnouncementByResourceId(resource_id)
-                result = self.build_annoucement_dict(row)
-                return jsonify(Annoucement=result),201
+                #row = data.getAnnouncementByResourceId(resource_id)
+                #result = self.build_annoucement_dict(row)
+                return jsonify(Announcement=annoucement_id),201
             else:
                 return jsonify(Error="Unexpected attributes in post request"),400
     

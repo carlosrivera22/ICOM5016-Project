@@ -200,11 +200,17 @@ def getAllSaleRequestCompleted():
             return RequestCompletedHandler().getAllSales()
 
 #Annoucement Routes.....................................................................................................................................................
-@app.route('/DisasterApp/Resource/Announcement')
+#1
+#13
+
+@app.route('/DisasterApp/Resource/Announcement', methods=['GET', 'POST'])
 def getAllResourceAnnouncement():
+    if request.method == 'POST':
+        return ResourceHandler().insertAnnouncement(request.form.to_dict())
+    else:
         return ResourceHandler().getAllAnnouncement()
 
-@app.route('/DisasterApp/Resource/Announcement/<int:resource_id>')
+@app.route('/DisasterApp/Resource/<int:resource_id>/Announcement/')
 def getAnnouncementByResourceId(resource_id):
         return ResourceHandler().getAnnouncementByResourceId(resource_id)
 #End of announcement routes.............................................................................................................................................
