@@ -165,5 +165,14 @@ class ResourceData:
         self.conn.commit()
         return annoucement_id
 
+    def getResourcesByRegionId(self, region_id):
+        cursor = self.conn.cursor()
+        query = "select resource_id, resource_name from resource natural inner join supplies natural inner join supplier natural inner join distribution_region natural inner join region where region_id = %s;"
+        cursor.execute(query, (region_id,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
    
 

@@ -62,11 +62,4 @@ class RegionDAO:
             result.append(row)
         return result
 
-    def getResourcesByRegionId(self, region_id):
-        cursor = self.conn.cursor()
-        query = ""
-        cursor.execute(query, (region_id,))
-        result = []
-        for row in cursor:
-            result.append(row)
-        return result
+   
