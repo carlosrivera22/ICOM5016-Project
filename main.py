@@ -220,6 +220,12 @@ def getAllDonationRequestCompleted():
         if not request.args:
             return RequestCompletedHandler().getAllDonation()
 
+
+@app.route('/DisasterApp/Supplier/Region/<int:region_id>')
+def getSuppliersByRegionId(region_id):
+    return SupplierHandler().getSupplierByRegionId(region_id)
+
+
 #Announcement Routes.....................................................................................................................................................
 #1
 #13
