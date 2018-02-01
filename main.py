@@ -102,8 +102,8 @@ def getResourcesBySupplierId(supplier_id):
 
 #10
 @app.route('/DisasterApp/Supplier/<int:supplier_id>/RequestCompleted')
-def getRequestCompletedBySupplierId(sid):
-    return RequestCompletedHandler().getRequestCompletedBySupplierId(supplier_id)
+def getRequestCompletedBySupplierId(supplier_id):
+    return RequestCompletedHandler().getRequestCompletedInfoBySupplierId(supplier_id)
 
 # ------------------------------------------------------------------
 

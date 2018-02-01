@@ -52,6 +52,16 @@ class RequestCompletedData:
             result.append(row)
         return result
 
+    def getRequestCompletedInfoBySupplierId(self, supplier_id):
+        cursor = self.conn.cursor()
+        query = "select request_completed_id, victim_id, supplier_id, resource_id, total, quantity from request_completed where supplier_id = %s;"
+        cursor.execute(query, (supplier_id,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        print(result)
+        return result
+
     def getRequestCompletedByVictimId(self, victim_id):
         cursor = self.conn.cursor()
         query = "select victim_id, company_name, resource_name, date_resolved, order_type, price, total from request_completed natural inner join disaster_victim natural inner join supplier natural inner join resource natural inner join supplies natural inner join account where victim_id = %s;"
@@ -137,14 +147,14 @@ class RequestCompletedData:
         print("query 3 done, new quantity =" + str(new_quantity))
         price_query = "select price from supplies natural inner join resource where resource_id = %s;"
         cursor.execute(price_query, (resource_id,))
-        resource_price = cursor.fetchone[0]
+        resource_price = cursor.fetchone()[0]
         total = (quantity * (int)(resource_price))
         query_4 = "insert into request_completed(request_id, date_resolved, order_type, supplier_id, victim_id, resource_id, total, quantity) values (%s, %s, %s, %s, %s, %s, %s, %s) returning request_completed_id;"
         cursor.execute(query_4, (request_id, date_resolved, 'Sale', supplier_id, victim_id, resource_id, total, quantity))
         request_completed_id = cursor.fetchone()[0]
         query_5 = "insert into sale(credit_card_id, request_completed_id) values (%s, %s) returning sale_id;"
         cursor.execute(query_5, (credit_card_id, request_completed_id))
-        sale_id = cursor.fetchone[0]
+        sale_id = cursor.fetchone()[0]
         self.conn.commit()
         return [request_completed_id, total]
 

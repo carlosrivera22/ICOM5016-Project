@@ -30,6 +30,16 @@ class RequestCompletedHandler:
         result['order_type'] = row[3]
         return result
 
+    def build_request_completed_info_dict(self,row):
+        result = {}
+        result['request_completed_id'] = row[0]
+        result['victim_id'] = row[1]
+        result['supplier_id'] = row[2]
+        result['resource_id'] = row[3]
+        result['total'] = row[4]
+        result['quantity'] = row[5]
+        return result
+
     def build_request_completed_by_victim_id(self, row):
         result = {}
         result['request_completed_id'] = row[0]
@@ -121,6 +131,15 @@ class RequestCompletedHandler:
             result = self.build_request_completed_dict(row)
             result_list.append(result)
         return jsonify(Requests = result_list)
+
+    def getRequestCompletedInfoBySupplierId(self, supplier_id):
+        requests_completed_dao = RequestCompletedData()
+        requests_completed_list = requests_completed_dao.getRequestCompletedInfoBySupplierId(supplier_id)
+        result_list = []
+        for row in requests_completed_list:
+            result = self.build_request_completed_info_dict(row)
+            result_list.append(result)
+        return jsonify(RequestsCompleted = result_list)
 
     def getRequestCompletedByVictimId(self, victim_id):
         requests_completed_dao = RequestCompletedData()

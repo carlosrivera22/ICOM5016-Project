@@ -114,7 +114,7 @@ class ResourceHandler:
         for row in resource_list:
             result = self.build_resource_dict(row)
             result_list.append(result)
-        return result
+        return jsonify(Resources=result_list)
 
     def insertResource(self, form):
         if form and len(form) == 7:
