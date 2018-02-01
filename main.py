@@ -135,6 +135,12 @@ def getResourcesByResourceId(resource_id):
 def getFreeResources():
     return ResourceHandler().getFreeResources()
 
+
+@app.route('/DisasterApp/Resource/NonFree')
+def getNonFreeResources():
+    return ResourceHandler().getNonFreeResources()
+
+
 #2
 @app.route('/DisasterApp/Resource/Available')
 def getAvailableResources():

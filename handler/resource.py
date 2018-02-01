@@ -114,7 +114,17 @@ class ResourceHandler:
         for row in resource_list:
             result = self.build_resource_dict(row)
             result_list.append(result)
-        return result
+        return jsonify(Resources=result_list)
+
+    #get non-free resources
+    def getNonFreeResources(self):
+        resource_dao = ResourceData()
+        resource_list = resource_dao.getNonFreeResources()
+        result_list = []
+        for row in resource_list:
+            result = self.build_resource_dict(row)
+            result_list.append(result)
+        return jsonify(Resources=result_list)
 
     def insertResource(self, form):
         if form and len(form) == 7:
@@ -126,7 +136,7 @@ class ResourceHandler:
             supplier_id = form['supplier_id']
             price = float(form['price'])
 
-            if category_id and resource_name and quantity and keyword and subcategory_id and supplier_id and price:
+            if category_id and resource_name and quantity and keyword and subcategory_id and supplier_id and str(price):
                 dao = ResourceData()
                 resource_id = dao.insert(category_id, resource_name, quantity, keyword, subcategory_id, supplier_id, price)
                 result = {}
