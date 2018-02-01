@@ -167,9 +167,9 @@ class RequestCompletedHandler:
             result = self.build_transaction_dict(row)
             result_list.append(result)
         return jsonify(Transaction=result_list)
-#Mikael insert donation method.....................................................................................................
+#Mikael insert sale method.....................................................................................................
     def insertSale(self, form):
-        if len(form) != 5:
+        if len(form) != 6:
             return jsonify(Error="Malformed post request"), 400
         else:
             date_resolved = form['date_resolved']
@@ -177,11 +177,12 @@ class RequestCompletedHandler:
             victim_id = form['victim_id']
             resource_id = form['resource_id']
             quantity = int(form['quantity'])
+            credit_card_id = form['credit_card_id']
 
-            if date_resolved and supplier_id and victim_id and resource_id and quantity:
+            if date_resolved and supplier_id and victim_id and resource_id and quantity and credit_card_id:
                 dao = RequestCompletedData()
-                request_completed_id = dao.insertSale(date_resolved, supplier_id, victim_id, resource_id, quantity)
-                result = self.build_sale_attributes(request_completed_id, date_resolved, supplier_id, victim_id, resource_id, price, quantity)
+                request_completed_id = dao.insertSale(date_resolved, supplier_id, victim_id, resource_id, quantity, credit_card_id)
+                result = self.build_sale_attributes(request_completed_id[0], date_resolved, supplier_id, victim_id, resource_id, request_completed_id[1], quantity, credit_card_id)
                 return jsonify(Sale=result), 201
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
@@ -196,7 +197,7 @@ class RequestCompletedHandler:
         return jsonify(Sales=result_list)
 
         
-    def build_sale_attributes(self, request_completed_id, date_resolved, supplier_id, victim_id, resource_id, total, quantity):
+    def build_sale_attributes(self, request_completed_id, date_resolved, supplier_id, victim_id, resource_id, total, quantity, credit_card_id):
         result = {}
         result['request_completed_id'] = request_completed_id
         result['date_resolved'] = date_resolved
@@ -205,6 +206,7 @@ class RequestCompletedHandler:
         result['resource_id'] = resource_id
         result['total'] = total
         result['quantity'] = quantity
+        result['credit_card_id'] = credit_card_id
         return result
     
     def build_sale_request_completed_dict(self, row):

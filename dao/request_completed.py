@@ -115,7 +115,7 @@ class RequestCompletedData:
             result.append(row)
         return result
 
-    def insertSale(self, date_resolved, supplier_id, victim_id, resource_id, price, quantity, credit_card_id):
+    def insertSale(self, date_resolved, supplier_id, victim_id, resource_id, quantity, credit_card_id):
         cursor = self.conn.cursor()
         query_1 = "insert into request(date_submited, resource_id) values (%s, %s) returning request_id;"
         cursor.execute(query_1, (date_resolved, resource_id))
@@ -123,7 +123,7 @@ class RequestCompletedData:
         query_2 = "insert into requestby( victim_id, request_id) values (%s, %s);"
         cursor.execute(query_2, (victim_id, request_id))
         query_get_quantity = "Select quantity from resource where resource_id = %s;"
-        cursor.execute(query_get_quantity, (resource_id))
+        cursor.execute(query_get_quantity, (resource_id,))
         actual_quantity = cursor.fetchone()[0]
         print(actual_quantity)
         actual_quantity_int = int(actual_quantity)
@@ -135,17 +135,18 @@ class RequestCompletedData:
         query_3 = "update resource set quantity = %s where resource_id=%s;"
         cursor.execute(query_3, (new_quantity,resource_id))
         print("query 3 done, new quantity =" + str(new_quantity))
-        price_query = "Select price from supplies natural inner join resource where resource_id = %s;"
-        cursor.execute(price_query, (resource_id))
+        price_query = "select price from supplies natural inner join resource where resource_id = %s;"
+        cursor.execute(price_query, (resource_id,))
         resource_price = cursor.fetchone[0]
+        total = (quantity * (int)(resource_price))
         query_4 = "insert into request_completed(request_id, date_resolved, order_type, supplier_id, victim_id, resource_id, total, quantity) values (%s, %s, %s, %s, %s, %s, %s, %s) returning request_completed_id;"
-        cursor.execute(query_4, (request_id, date_resolved, 'Sale', supplier_id, victim_id, resource_id, (quantity * (int)(resource_price)) , quantity))
+        cursor.execute(query_4, (request_id, date_resolved, 'Sale', supplier_id, victim_id, resource_id, total, quantity))
         request_completed_id = cursor.fetchone()[0]
         query_5 = "insert into sale(credit_card_id, request_completed_id) values (%s, %s) returning sale_id;"
         cursor.execute(query_5, (credit_card_id, request_completed_id))
         sale_id = cursor.fetchone[0]
         self.conn.commit()
-        return request_completed_id
+        return [request_completed_id, total]
 
 
     def getAllSales(self):
@@ -167,7 +168,7 @@ class RequestCompletedData:
         cursor.execute(query_2, (victim_id, request_id))
         print("done2")
         query_get_quantity = "Select quantity from resource where resource_id = %s;"
-        cursor.execute(query_get_quantity, (resource_id))
+        cursor.execute(query_get_quantity, (resource_id,))
         actual_quantity = cursor.fetchone()[0]
         print(actual_quantity)
         actual_quantity_int = int(actual_quantity)
