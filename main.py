@@ -165,6 +165,9 @@ def getSuppliersByResource(resource_id):
 def getResourceByRegionIdAndResourceId(region_id, resource_id):
     return DistributionRegionHandler().getResourcesByRegionIdAndResourceId(region_id, resource_id)
 
+@app.route('/DisasterApp/Resource/Region/<int:region_id>')
+def getResourceByRegionId(region_id):
+    return ResourceHandler().getResourcesByRegionId(region_id)
 # ------------------------------------------------------------------------------
 
 # works phase3

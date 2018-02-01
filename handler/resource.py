@@ -235,3 +235,18 @@ class ResourceHandler:
             result = self.build_resource_dict(row)
             result_list.append(result)
         return jsonify(Resource = result_list)
+    
+    def getResourcesByRegionId(self,region_id):
+        resource_dao = ResourceData()
+        resource_list = resource_dao.getResourcesByRegionId(region_id)
+        result_list = []
+        for row in resource_list:
+            result = self.build_resource_region_dict(row)
+            result_list.append(result)
+        return jsonify(Resources=result_list)
+    
+    def build_resource_region_dict(self, row):
+        result = {}
+        result['resource_id'] = row[0]
+        result['resource_name'] = row[1]
+        return result
