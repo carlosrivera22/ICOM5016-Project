@@ -12,7 +12,7 @@ class RequestData:
 
     def getAllRequests(self):
         cursor = self.conn.cursor()
-        query = "select request_id, date_submited, resource_id from request;"
+        query = "SELECT r.request_id, r.date_submited, r.resource_id, rb.victim_id, rc.request_completed_id from requestby rb LEFT JOIN request r on (rb.request_id = r.request_id ) LEFT JOIN request_completed rc on (r.request_id = rc.request_id);"
         cursor.execute(query)
         result = []
         for row in cursor:

@@ -8,10 +8,11 @@ class ResourceHandler:
         result['resource_id'] = row[0]
         result['category_id'] = row[1]
         result['resource_name'] = row[2]
-        result['is_available'] = row[3]
-        result['is_needed'] = row[4]
+        result['isavailable'] = row[3]
+        result['isneeded'] = row[4]
         result['quantity'] = row[5]
         result['keyword'] = row[6]
+        result['price'] = row[7]
         return result
 
     def build_annoucement_dit(self, row):

@@ -22,7 +22,9 @@ class RequestCompletedData:
         cursor = self.conn.cursor()
         query = "select * from request_completed where request_completed_id = %s;"
         cursor.execute(query, (request_completed_id,))
-        result = cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
     def getRequestCompletedByDateResolved(self, date_resolved):
@@ -148,7 +150,7 @@ class RequestCompletedData:
         price_query = "select price from supplies natural inner join resource where resource_id = %s;"
         cursor.execute(price_query, (resource_id,))
         resource_price = cursor.fetchone()[0]
-        total = (quantity * (int)(resource_price))
+        total = (quantity * (float)(resource_price))
         query_4 = "insert into request_completed(request_id, date_resolved, order_type, supplier_id, victim_id, resource_id, total, quantity) values (%s, %s, %s, %s, %s, %s, %s, %s) returning request_completed_id;"
         cursor.execute(query_4, (request_id, date_resolved, 'Sale', supplier_id, victim_id, resource_id, total, quantity))
         request_completed_id = cursor.fetchone()[0]

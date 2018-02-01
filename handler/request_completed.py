@@ -106,7 +106,7 @@ class RequestCompletedHandler:
         requests_completed_list = requests_completed_dao.getRequestCompletedByID(request_completed_id)
         result_list = []
         for row in requests_completed_list:
-            result = self.build_request_completed_dict(row)
+            result = self.build_all_request_completed_dict(row)
             result_list.append(result)
         return jsonify(Requests = result_list)
 

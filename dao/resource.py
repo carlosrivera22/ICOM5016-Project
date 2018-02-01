@@ -13,7 +13,7 @@ class ResourceData:
 
     def getAllResources(self):
         cursor = self.conn.cursor()
-        query = "select * from resource;"
+        query = "select resource_id, category_id, resource_name, isavailable, isneeded, quantity, keyword, price from resource natural inner join supplies;"
         cursor.execute(query)
         result = []
         for row in cursor:

@@ -186,6 +186,14 @@ def getResourceByRegionId(region_id):
 def getAllRequestsCompleted():
         return RequestCompletedHandler().getAllRequestsCompleted()
 
+@app.route('/DisasterApp/Request/Completed/<int:request_completed_id>', methods=['GET'])
+def getAllRequestsCompletedByRequestCompletedID(request_completed_id):
+        return RequestCompletedHandler().getRequestCompletedById(request_completed_id)
+
+@app.route('/DisasterApp/Request/<int:request_id>', methods=['GET'])
+def getAllRequestByRequestID(request_id):
+        return RequestHandler().getRequestById(request_id)
+
 #17
 @app.route('/DisasterApp/RequestCompleted/<int:resource_id>', methods=['GET'])
 def getRequestCompletedByResourceId(resource_id):

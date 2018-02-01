@@ -10,6 +10,15 @@ class RequestHandler:
         result['resource_id'] = row[2]
         return result
 
+    def build_all_request_dict(self, row):
+        result = {}
+        result['request_id'] = row[0]
+        result['date_submited'] = row[1]
+        result['resource_id'] = row[2]
+        result['victim_id'] = row[3]
+        result['request_completed_id'] = row[4]
+        return result
+
     def build_request_info_dict(self, row):
         result = {}
         result['victim_id'] = row[0]
@@ -39,7 +48,7 @@ class RequestHandler:
         requests_list = requests_dao.getAllRequests()
         result_list = []
         for row in requests_list:
-            result = self.build_request_dict(row)
+            result = self.build_all_request_dict(row)
             result_list.append(result)
         return jsonify(Requests = result_list)
 
