@@ -249,4 +249,6 @@ class ResourceHandler:
         result = {}
         result['resource_id'] = row[0]
         result['resource_name'] = row[1]
+        result['region_id'] = row[2]
+        result['region_name'] = row[3]
         return result
