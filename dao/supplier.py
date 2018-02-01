@@ -127,16 +127,12 @@ class SupplierDAO:
 
     def getSupplierByRegionId(self,region_id):
         cursor = self.conn.cursor()
-        query = "select first_name, last_name, company_name, region_id from account natural inner join supplier natural inner join supplies natural inner join distribution_region where region_id = %s;"
+        query = "select distinct first_name, last_name, company_name, region_id from account natural inner join supplier natural inner join supplies natural inner join distribution_region where region_id = %s;"
         cursor.execute(query,(region_id,))
         result = []
         for row in cursor:
             result.append(row)
         return result
-
-
-
-
 
     def insert(self, first_name, last_name, email, phone, password, confirm_password, company_name, street, region_id,
                city, state,

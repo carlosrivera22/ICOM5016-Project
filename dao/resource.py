@@ -98,7 +98,7 @@ class ResourceData:
     #GET FREE RESOURCES
     def getFreeResources(self):
         cursor = self.conn.cursor()
-        query = "select resource_id, category_id, resource_name, isavailable, isneeded, quantity, keyword from resource natural inner join supplies where isfree= TRUE;"
+        query = "select resource_id, category_id, resource_name, isavailable, isneeded, quantity, keyword, price from resource natural inner join supplies where isfree= TRUE;"
         cursor.execute(query)
         result = []
         for row in cursor:
