@@ -167,7 +167,7 @@ class RequestCompletedHandler:
             result = self.build_transaction_dict(row)
             result_list.append(result)
         return jsonify(Transaction=result_list)
-#Mikael insert donation method.....................................................................................................
+#Mikael insert sale method.....................................................................................................
     def insertSale(self, form):
         if len(form) != 5:
             return jsonify(Error="Malformed post request"), 400

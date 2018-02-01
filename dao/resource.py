@@ -138,13 +138,32 @@ class ResourceData:
         cursor.execute(query_2, (supplier_id, resource_id, price, isfree, resource_id))
         self.conn.commit()
         return resource_id
-
-    def getResourceAnnouncement(self):
+#Annoucement DAO methods....................................................................................................................................................
+    def getAllAnnouncement(self):
         cursor = self.conn.cursor()
-        query = "SELECT resource_id, resource_name, quantity, price, isavailable, first_name, last_name, company_name FROM resource natural inner join supplies natural inner join supplier natural inner join account ORDER BY resource_id DESC LIMIT 1;"
+        query = "SELECT resource_id, resource_name, quantity, price, isavailable, first_name, last_name, company_name from resource natural inner join announcement natural inner join supplies natural inner join account;"
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         return result
+
+    def getAnnouncementByResourceId(self, resource_id):
+        cursor = self.conn.cursor()
+        query = "SELECT resource_id, resource_name, quantity, price, isavailable, first_name, last_name, company_name from resource natural inner join announcement natural inner join supplies natural inner join account where resource_id = %s;"
+        cursor.execute(query, (resource_id))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def insertAnnouncement(self,resource_id):
+        cursor = self.conn.cursor()
+        query = "insert into announcement(resource_id) values (%s) returning annoucement_id;"
+        cursor.execute(query,(resource_id))
+        annoucement_id = cursor.fetchone()[0]
+        self.conn.commit()
+        return annoucement_id
+
+   
 

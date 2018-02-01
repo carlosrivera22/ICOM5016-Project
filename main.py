@@ -199,12 +199,15 @@ def getAllSaleRequestCompleted():
         if not request.args:
             return RequestCompletedHandler().getAllSales()
 
-@app.route('/DisasterApp/Resource/Announcement', methods=['GET'])
-def getResourceAnnouncement():
-    if request.method == 'GET':
-        return ResourceHandlegr().getAnnouncement()
-    else:
-        return jsonify(Error="Method not allowed."), 405
+#Annoucement Routes.....................................................................................................................................................
+@app.route('/DisasterApp/Resource/Announcement')
+def getAllResourceAnnouncement():
+        return ResourceHandlegr().getAllAnnouncement()
+
+@app.route('/DisasterApp/Resource/Announcement/<int:resource_id>')
+def getAllResourceAnnouncement():
+        return ResourceHandlegr().getAnnouncementByResourceId(resource_id):
+#End of announcement routes.............................................................................................................................................
 
 #16
 @app.route('/DisasterApp/Donation', methods=['GET', 'POST'])

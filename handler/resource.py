@@ -171,15 +171,50 @@ class ResourceHandler:
                     return jsonify(Resource=result), 200
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
-
-    def getAnnouncement(self):
+#Annoucement Handler methods....................................................................................................................................................
+   def getAllAnnouncement(self):
         resource_dao = ResourceData()
-        resource_list = resource_dao.getResourceAnnouncement()
+        resource_list = resource_dao.getAllAnnouncement()
         result_list = []
         for row in resource_list:
-            result = self.build_annoucement_dit(row)
+            result = self.build_annoucement_dict(row)
             result_list.append(result)
-        return jsonify(Announcement=result_list)
+        return jsonify(Resources = result_list)
+
+    def getAnnouncementByResourceId(self,resource_id):
+        resource_dao = ResourceData()
+        row = resource_dao.getAnnouncementByResourceId(resource_id)
+        if not row:
+            return jsonify(Error="User Not Found"), 404
+        else:
+            resource = self.build_annoucement_dict(row)
+            return jsonify(Resources = resource)
+
+    def insertAnnouncement(self, form):
+        if len(form) != 1:
+            return jsonify(Error="Malformed post request"),400
+        else:
+            resource_id = form['resource_id']
+            if resource_id:
+                data = ResourceData()
+                annoucement_id = data.insertAnnouncement(resource_id)
+                row = data.getAnnouncementByResourceId(resource_id)
+               result = self.build_annoucement_dict(row)
+                return jsonify(Annoucement=result),201
+            else:
+                return jsonify(Error="Unexpected attributes in post request"),400
+    
+    def build_annoucement_dict(self, row):
+        result = {}
+        result['resource_id'] = row[0]
+        result['resource_name'] = row[1]
+        result['quantity'] = row[2]
+        result['price'] = row[3]
+        result['isavailable'] = row[4]
+        result['first_name'] = row[5]
+        result['last_name'] = row[6]
+        result['company_name'] = row[7]
+        return result
 
     def searchResources(self, args):
         resource_id = args.get('victim_id')
