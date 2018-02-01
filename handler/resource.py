@@ -189,7 +189,7 @@ class ResourceHandler:
         else:
             resource = self.build_annoucement_dict(row)
             return jsonify(Resources = resource)
-
+#insert announcement
     def insertAnnouncement(self, form):
         if len(form) != 1:
             return jsonify(Error="Malformed post request"),400
