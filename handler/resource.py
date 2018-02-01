@@ -172,7 +172,7 @@ class ResourceHandler:
                 else:
                     return jsonify(Error="Unexpected attributes in update request"), 400
 #Annoucement Handler methods....................................................................................................................................................
-   def getAllAnnouncement(self):
+    def getAllAnnouncement(self):
         resource_dao = ResourceData()
         resource_list = resource_dao.getAllAnnouncement()
         result_list = []
@@ -199,7 +199,7 @@ class ResourceHandler:
                 data = ResourceData()
                 annoucement_id = data.insertAnnouncement(resource_id)
                 row = data.getAnnouncementByResourceId(resource_id)
-               result = self.build_annoucement_dict(row)
+                result = self.build_annoucement_dict(row)
                 return jsonify(Annoucement=result),201
             else:
                 return jsonify(Error="Unexpected attributes in post request"),400

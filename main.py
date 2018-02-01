@@ -202,11 +202,11 @@ def getAllSaleRequestCompleted():
 #Annoucement Routes.....................................................................................................................................................
 @app.route('/DisasterApp/Resource/Announcement')
 def getAllResourceAnnouncement():
-        return ResourceHandlegr().getAllAnnouncement()
+        return ResourceHandler().getAllAnnouncement()
 
 @app.route('/DisasterApp/Resource/Announcement/<int:resource_id>')
-def getAllResourceAnnouncement():
-        return ResourceHandlegr().getAnnouncementByResourceId(resource_id):
+def getAnnouncementByResourceId(resource_id):
+        return ResourceHandler().getAnnouncementByResourceId(resource_id)
 #End of announcement routes.............................................................................................................................................
 
 #16
