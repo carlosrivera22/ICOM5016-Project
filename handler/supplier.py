@@ -11,6 +11,14 @@ class SupplierHandler:
         result['company_name'] = row[2]
         return result
 
+    def build_supplier_by_region_dict(self,row):
+        result = {}
+        result['first_name'] = row[0]
+        result['last_name'] = row[1]
+        result['company_name'] = row[2]
+        result['region_id'] = row[3]
+        return result
+
     def build_supplier_dict(self, row):
         result = {}
         result['supplier_id'] = row[0]
@@ -142,6 +150,15 @@ class SupplierHandler:
         result_list = []
         for row in supplier_list:
             result = self.build_supplier_by_product_dict(row)
+            result_list.append(result)
+        return jsonify(Suppliers=result_list)
+
+    def getSupplierByRegionId(self,region_id):
+        dao = SupplierDAO()
+        supplier_list = dao.getSupplierByRegionId(region_id)
+        result_list = []
+        for row in supplier_list:
+            result = self.build_supplier_by_region_dict(row)
             result_list.append(result)
         return jsonify(Suppliers=result_list)
 
